@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--favicon-->
+    <title>Login - Student Assistant</title>
+    <link rel="stylesheet"  href="/css/loginStyle.css"/>
+</head>
+<style>
+    .register-button{
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        width: 65px !important;
+    }
+</style>
+<body>
+<div class="parent">
+    <div class="login-form">
+        <div class="actual-form">
+            <div class="form-body">
+                <a href="/">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path class="desktop-logo" d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"></path></svg>
+                </a>
+                <form th:action="@{/login}" class="form-signin" method="post">
+                    <div class="input-group">
+                        <i class="fa fa-user"></i>
+                        <input id="username"  type="text" class="form-control underline-blue" name="username" placeholder="Username" />
+                    </div>
+                    <div class="input-group">
+                        <i class="fa fa-lock"></i>
+                        <input id="password" type="password" class="form-control underline-blue" name="password" placeholder="Password" />
+                    </div>
+                    <div class="submit-btn">
+                        <button type="submit" value="login" class="underline-blue"> Login </button>
+                        <a href="/register" class="register-button" style="text-decoration: none"> Register </a>
+                    </div>
+                </form>
+
+                <div th:if="${param.error}" class="alert alert-error">
+                    <div id="status"  class="text-center" style="padding-top:5px; text-align: center">
+                        Invalid Credentials
+                    </div>
+                </div>
+                <div th:if="${param.logout}" class="alert alert-success">
+                    <div id="status"  class="text-center" style="padding-top:5px; text-align: center">
+                        you have been logged out
+                    </div>
+                </div>
+                <div th:if="${param.register}" class="alert alert-success">
+                    <div id="status"  class="text-center" style="padding-top:5px; text-align: center">
+                        Registration Successful
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
