@@ -1,0 +1,29 @@
+svg{
+    width: 100%;
+}
+.form-check {
+    position: relative;
+    display: block;
+    padding: 11px 2.55rem;
+    border: 1px solid rgba(0,0,0,.125);
+}
+.added-courses{
+    margin-top: 30px;
+}
+.submit{
+    margin-top: 10px;
+}
+@media screen and (max-width: 575px){
+    .col-12{
+        padding-bottom: 10px;
+    }
+    svg{
+        width: 50%;
+    }
+    .container{
+        margin-top: 80px;
+    }
+    .added-courses{
+        margin-top: 8px;
+    }
+}

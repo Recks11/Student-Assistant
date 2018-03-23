@@ -1,27 +1,24 @@
-package com.emmanuelirem.studentassistant.Models.Security;
+package com.emmanuelirem.studentassistant.models.security;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
-public class Users {
+@Table(name = "user_roles")
+public class Roles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     @Column(name = "registration_number")
     private String registrationNumber;
-    private String password;
-    private boolean enabled;
+    private String role;
 
-    public Users() {
+    public Roles() {
     }
 
-    public Users(String registrationNumber, String password, boolean enabled) {
+    public Roles(String registrationNumber, String role) {
         this.registrationNumber = registrationNumber;
-        this.password = password;
-        this.enabled = enabled;
+        this.role = role;
     }
 
     public long getId() {
@@ -40,20 +37,12 @@ public class Users {
         this.registrationNumber = registrationNumber;
     }
 
-    public String getPassword() {
-        return password;
+    public String getRole() {
+        return role;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
@@ -61,9 +50,7 @@ public class Users {
         return "Roles{" +
                 "id=" + id +
                 ", registrationNumber='" + registrationNumber + '\'' +
-                ", password='" + password + '\'' +
-                ", enabled=" + enabled +
+                ", role='" + role + '\'' +
                 '}';
     }
-
 }

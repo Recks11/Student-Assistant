@@ -1,4 +1,4 @@
-package com.emmanuelirem.studentassistant.Services;
+package com.emmanuelirem.studentassistant.services;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

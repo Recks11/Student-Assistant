@@ -1,0 +1,10 @@
+
+
+@media screen and (max-width: 576px){
+    .img-thumbnail{
+        width: 70vw !important;
+    }
+    .card-body > h3 {
+        font-size: 4vw;
+    }
+}

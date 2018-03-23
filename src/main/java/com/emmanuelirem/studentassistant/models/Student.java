@@ -1,9 +1,10 @@
-package com.emmanuelirem.studentassistant.Models;
+package com.emmanuelirem.studentassistant.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.emmanuelirem.studentassistant.models.university.Program;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Student {
@@ -18,16 +19,29 @@ public class Student {
     private String roomNumber;
     private String password;
 
+    @ManyToOne
+    private Program program;
+
+    @ManyToMany
+    @JoinTable(
+            name = "course_students",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courses = new ArrayList<>();
+
     public Student() {
     }
 
-    public Student(String firstName, String lastName, String registrationNumber, String hallOfResidence, String roomNumber, String password) {
+    public Student(String firstName, String lastName, String registrationNumber, String hallOfResidence, String roomNumber, String password, Program program, List<Course> courses) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.registrationNumber = registrationNumber;
         this.hallOfResidence = hallOfResidence;
         this.roomNumber = roomNumber;
         this.password = password;
+        this.program = program;
+        this.courses = courses;
     }
 
     public long getId() {
@@ -84,6 +98,32 @@ public class Student {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+}
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public void addCourse(Course course) {
+        if(courses == null) {
+            courses = new ArrayList<>();
+        }
+
+        courses.add(course);
+        course.addStudent(this);
+
     }
 
     @Override

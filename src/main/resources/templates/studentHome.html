@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/imports::shared_header(~{::title},~{::link})}">
+    <title>Student Assistant Home</title>
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+</head>
+<body>
+<th:block th:insert="~{fragments/navbar}"/>
+<section class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <img class="card-img-top img-thumbnail" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22286%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20286%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16249ef39ba%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A14pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16249ef39ba%22%3E%3Crect%20width%3D%22286%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22107.1953125%22%20y%3D%2296.6%22%3E286x180%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
+        </div>
+        <div class="col-md-8 d-flex align-items-center">
+            <div class="card-body">
+                <!--<h5 class="card-title">Name:</h5>-->
+                <h3>Name: Irem Emmanuel John</h3>
+                <h3>Department: Computer and Information Sciences</h3>
+                <h3>Program: Computer Science</h3>
+            </div>
+        </div>
+    </div>
+</section>
+<br/><br/>
+<br/><br/>
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        COURSES
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">You have not registered any courses</p>
+                        <a href="#" class="btn btn-success">Add Courses</a>
+                    </div>
+                </div>
+                <!--<button class="btn btn-success btn-lg"> + Add Courses </button>-->
+            </div>
+            <div class="col-md-4">
+
+                <div class="card">
+                    <div class="card-header">
+                        NOTIFICATIONS
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center"><a href="#">CSC 411 Test on friday by 10am </a><span class="badge badge-primary badge-pill">1</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">CSC 411 Test on friday by 10am <span class="badge badge-primary badge-pill">1</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">CSC 411 Test on friday by 10am <span class="badge badge-primary badge-pill">1</span></li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+</body>
+</html>
