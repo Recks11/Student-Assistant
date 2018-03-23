@@ -7,4 +7,7 @@
     .card-body > h3 {
         font-size: 4vw;
     }
+    .breaks{
+        display: none;
+    }
 }

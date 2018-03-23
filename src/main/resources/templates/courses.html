@@ -88,7 +88,7 @@
 
 <div th:if="${(student.getProgram()!=null && student.getCourses().isEmpty()==false) || addCourse==true}" class="container">
     <div class="row align-items-center">
-        <div class="col-12 col-sm-4 text-center added-courses">
+        <div class="col-12 col-sm-5 text-center added-courses">
             <div class="card">
                 <div class="card-header">
                     Added Courses
@@ -102,7 +102,7 @@
 
             </div>
         </div>
-        <div class="col-12 col-sm-8">
+        <div class="col-12 col-sm-7">
             <h3 class="text-center"> REGISTER COURSES </h3>
             <form th:action="@{/register}" th:object="${course}" method="post">
                 <div th:each="cou : ${courseList}" class="form-check">

@@ -22,7 +22,7 @@ public class Program {
         @NaturalId
         private String name;
 
-        @ManyToMany
+        @ManyToMany(fetch = FetchType.EAGER)
         @JoinTable(
                 name = "program_courses",
                 joinColumns = @JoinColumn(name = "program_id"),

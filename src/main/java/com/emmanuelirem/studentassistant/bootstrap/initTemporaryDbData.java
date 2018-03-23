@@ -23,17 +23,19 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
     private ProgramRepository programRepository;
     private UsersService usersService;
     private RolesService rolesService;
+    private final CourseRepository courseRepository;
 
     @Autowired
     public initTemporaryDbData(StudentRepository studentRepository,
                                UsersService usersService, RolesService rolesService,
                                EncoderService encoderService,
-                               ProgramRepository programRepository) {
+                               ProgramRepository programRepository, CourseRepository courseRepository) {
         this.studentRepository = studentRepository;
         this.usersService = usersService;
         this.rolesService = rolesService;
         this.encoderService = encoderService;
         this.programRepository = programRepository;
+        this.courseRepository = courseRepository;
     }
 
     @Override
@@ -41,6 +43,7 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         //call methods here
         addRandomStudents();
         addUniversityCoursesDepartmentsAndColleges();
+        addCourses();
     }
 
     private void addRandomStudents() {
@@ -116,4 +119,45 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         return program;
     }
 
+    private void addCourses() {
+        Set<Course> coursesList = new HashSet<>();
+
+        Course course1 = new Course(400,"CSC 411","idk");
+        Course course2 = new Course(400,"CSC 412","idk");
+        Course course3 = new Course(400,"CSC 413","idk");
+        Course course4 = new Course(400,"CSC 421","idk");
+        Course course5 = new Course(400,"CSC 425","Algorithms and Data Structures");
+        Course course6 = new Course(400,"CSC 423","Graphics and Animation");
+        Course course7 = new Course(400,"CSC 431","idk");
+        Course course8 = new Course(400,"TMC 431","Total Man Concept");
+        Course course9 = new Course(400,"TMC 432","TMC SPORTS");
+        Course course0 = new Course(400,"EDS 431","Entrepreneurial Development Studies");
+
+        coursesList.add(course1);
+        coursesList.add(course2);
+        coursesList.add(course3);
+        coursesList.add(course4);
+        coursesList.add(course5);
+        coursesList.add(course6);
+        coursesList.add(course7);
+        coursesList.add(course8);
+        coursesList.add(course9);
+        coursesList.add(course0);
+
+        Program program = programRepository.findProgramByName(ProgramEnum.Computer_Science.name().replace('_',' '));//get computer science program
+        program.addCourse(course1);
+        program.addCourse(course2);
+        program.addCourse(course3);
+        program.addCourse(course4);
+        program.addCourse(course5);
+        program.addCourse(course6);
+        program.addCourse(course7);
+        program.addCourse(course8);
+        program.addCourse(course9);
+        program.addCourse(course0);
+
+        courseRepository.saveAll(coursesList);
+
+
+    }
 }

@@ -14,6 +14,12 @@ svg{
     margin-top: 10px;
 }
 @media screen and (max-width: 575px){
+    html,body{
+        margin-top: 0;
+    }
+    .jumbotron {
+        margin-bottom: 0;
+    }
     .col-12{
         padding-bottom: 10px;
     }
@@ -21,7 +27,7 @@ svg{
         width: 50%;
     }
     .container{
-        margin-top: 80px;
+        margin-top: 20px;
     }
     .added-courses{
         margin-top: 8px;
