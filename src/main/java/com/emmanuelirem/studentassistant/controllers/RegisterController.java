@@ -57,6 +57,6 @@ public class RegisterController {
         } catch (Exception e) {
             System.out.println(e);
         }
-        return "redirect:/";
+        return "redirect:/login";
     }
 }

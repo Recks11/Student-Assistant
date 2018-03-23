@@ -43,19 +43,21 @@ html,body {
 }
 
 @media screen and (max-width: 576px){
-    .collapsed >.notification-number{
+    .collapsed >.notification-number{/*notification icon before toggle*/
         display: unset !important;
+        top: 0;
+        right: 12px;
     }
     .notification-icon > span {
         display: block;
         /*position: fixed;*/
-        left: 35px;
-        bottom: 32px;
+        left: 49px;
+        bottom: 30px;
         top: unset !important;
         right: unset !important;
 
     }
-    .navbar-toggler > .notification-number{
+    .navbar-toggler > .notification-number{ /*notification icon after toggle*/
         display: none;
     }
 }

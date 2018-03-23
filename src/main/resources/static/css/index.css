@@ -1,6 +1,9 @@
 
 
 @media screen and (max-width: 576px){
+    html,body{
+        margin-top: 0;
+    }
     .img-thumbnail{
         width: 70vw !important;
     }
@@ -9,5 +12,8 @@
     }
     .breaks{
         display: none;
+    }
+    .card{
+        margin-bottom: 20px;
     }
 }
