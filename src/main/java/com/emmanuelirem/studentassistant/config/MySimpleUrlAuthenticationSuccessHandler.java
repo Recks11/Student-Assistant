@@ -50,21 +50,29 @@ public class MySimpleUrlAuthenticationSuccessHandler
     protected String determineTargetUrl(Authentication authentication) {
         boolean isUser = false;
         boolean isAdmin = false;
+        boolean isLecturer = false;
         Collection<? extends GrantedAuthority> authorities
                 = authentication.getAuthorities();
+        label:
         for (GrantedAuthority grantedAuthority : authorities) {
-            if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
-                isUser = true;
-                break;
-            } else if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
-                isAdmin = true;
-                break;
+            switch (grantedAuthority.getAuthority()) {
+                case "ROLE_USER":
+                    isUser = true;
+                    break label;
+                case "ROLE_ADMIN":
+                    isAdmin = true;
+                    break label;
+                case "ROLE_LECTURER":
+                    isLecturer = true;
+                    break;
             }
         }
         if (isUser) {
-            return "/";
+            return "/student/";
         } else if (isAdmin) {
-            return "/admin";
+            return "/admin/";
+        } else if (isLecturer) {
+            return "/lecturer/";
         } else {
             throw new IllegalStateException();
         }

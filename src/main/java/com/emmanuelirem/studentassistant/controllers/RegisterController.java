@@ -1,12 +1,12 @@
 package com.emmanuelirem.studentassistant.controllers;
 
-import com.emmanuelirem.studentassistant.Models.Security.Roles;
-import com.emmanuelirem.studentassistant.Models.Security.Users;
-import com.emmanuelirem.studentassistant.Models.Student;
-import com.emmanuelirem.studentassistant.Repository.RolesService;
-import com.emmanuelirem.studentassistant.Repository.StudentRepository;
-import com.emmanuelirem.studentassistant.Repository.UsersService;
-import com.emmanuelirem.studentassistant.Services.EncoderService;
+import com.emmanuelirem.studentassistant.models.security.Roles;
+import com.emmanuelirem.studentassistant.models.security.Users;
+import com.emmanuelirem.studentassistant.models.Student;
+import com.emmanuelirem.studentassistant.repository.RolesService;
+import com.emmanuelirem.studentassistant.repository.StudentRepository;
+import com.emmanuelirem.studentassistant.repository.UsersService;
+import com.emmanuelirem.studentassistant.services.EncoderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

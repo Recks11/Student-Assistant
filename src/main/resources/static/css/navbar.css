@@ -1,0 +1,61 @@
+/*Notification Icons*/
+html,body {
+    margin-top: 30px;
+}
+.notification-icon > span  {
+    background-color: red;
+    color: white;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    text-align: center;
+    line-height: 1.5;
+    font-size: 12px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+.dropdown-menu {
+    background-color: #343a40;
+}
+.dropdown-menu > a {
+    color: #fff;
+}
+.notification-number  {
+    background-color: red;
+    color: white;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    text-align: center;
+    line-height: 1.6;
+    font-size: 12px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+.notification-svg{
+    max-width: 50px;
+}
+
+@media screen and (max-width: 576px){
+    .collapsed >.notification-number{
+        display: unset !important;
+    }
+    .notification-icon > span {
+        display: block;
+        /*position: fixed;*/
+        left: 35px;
+        bottom: 32px;
+        top: unset !important;
+        right: unset !important;
+
+    }
+    .navbar-toggler > .notification-number{
+        display: none;
+    }
+}

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/imports::shared_header(~{::title},~{::link})">
+    <meta charset="UTF-8"/>
+    <title>Courses</title>
+    <link rel="stylesheet" type="text/css" href="/css/course.css">
+</head>
+<body>
+<th:block th:insert="~{fragments/navbar}"/>
+<div class="container-fluid">
+    <div class="jumbotron">
+        <h1>Add Courses</h1>
+    </div>
+</div>
+<div th:if="${student.getProgram()==null}">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">No Program?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="programForm" th:action="@{/student/program/}" th:object="${program}" method="post">
+                        <div class="form-group">
+                            <label for="department">College: </label>
+                            <p type="text" readonly class="form-control-plaintext" id="college" th:text="${programs.get(0).getDepartment().getCollege().getName().name().replace('_',' ')}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="program">Department:</label>
+                            <p type="text" readonly class="form-control-plaintext" id="department" th:text="${programs.get(0).getDepartment().getName()}"></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect2">Program:</label>
+                            <select class="form-control" id="exampleFormControlSelect2" th:field="*{name}">
+                                <option th:each="prog : ${programs}" th:text="${prog.getName()}" th:value="${prog.name} "></option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <script>
+                    var submitForm = function(){
+                        $('#programForm').submit();
+                    };
+                </script>
+                <div class="modal-footer">
+                    <a role="button" class="btn btn-secondary" href="/student/">No</a>
+                    <button type="button" class="btn btn-primary" onclick="submitForm()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div th:if="${addCourse==false && (student.getProgram()==null || student.getCourses().isEmpty())}">
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">No Courses?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    You have not registered any courses. would you like to register now?
+                </div>
+                <div class="modal-footer">
+                    <a role="button" class="btn btn-secondary" href="/student/">No</a>
+                    <a role="button" class="btn btn-primary"  href="/student/courses?add-courses=true">Yes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div th:if="${(student.getProgram()!=null && student.getCourses().isEmpty()==false) || addCourse==true}" class="container">
+    <div class="row align-items-center">
+        <div class="col-12 col-sm-4 text-center">
+            <div class="card">
+                <div class="card-header">
+                    Added Courses
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li  class="list-group-item d-flex justify-content-between align-items-center"><a href="#">(name) (title) </a>
+                        <span class="badge badge-danger badge-pill"><a href="/student/removecourse/course"><strong style="color: white;">X</strong></a></span>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="col-12 col-sm-8">
+            <h3 class="text-center"> REGISTER COURSES </h3>
+            <form th:action="@{/register}" th:object="${course}" method="post">
+                <div class="form-group">
+                    <label for="exampleFormControlSelect2">Example multiple select</label>
+                    <select  class="form-control" id="exampleFormControlSelect2">
+                        <option>1</option>
+                        <option>1</option>
+                        <option>1</option>
+                        <option>1</option>
+                        <option>1</option>
+                        <option>1</option>
+                    </select>
+                </div>
+                <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $( document ).ready( function(){
+        var modal = $("#exampleModalCenter");
+        if (modal != null){
+
+            modal.modal('show');
+        }
+    });
+</script>
+</body>
+</html>
