@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/imports::shared_header(~{::title},~{::link})}">
     <title>Student Assistant Home</title>
     <link rel="stylesheet" type="text/css" href="/css/index.css">
@@ -15,9 +15,17 @@
         <div class="col-md-8 d-flex align-items-center">
             <div class="card-body">
                 <!--<h5 class="card-title">Name:</h5>-->
-                <h3>Name: Irem Emmanuel John</h3>
-                <h3>Department: Computer and Information Sciences</h3>
-                <h3>Program: Computer Science</h3>
+                <h3 th:text="${'Name: '+loggedInStudent.lastName+' '+loggedInStudent.firstName}">Name: Irem Emmanuel John</h3>
+                    <th:block th:if="${loggedInStudent.program!=null}">
+                        <h3 th:if="${loggedInStudent.program.department!=null}"
+                            th:text="${'College: '+loggedInStudent.program.department.college.name.name().replace('_',' ')}"></h3>
+
+                        <h3 th:if="${loggedInStudent.program.department!=null}"
+                            th:text="${'Department: '+loggedInStudent.program.department.name}">Department: Computer and Information Sciences</h3>
+                    </th:block>
+
+                <h3 th:if="${loggedInStudent.program!=null}"
+                    th:text="${'Program: '+loggedInStudent.program.name}">Program: Computer Science</h3>
             </div>
         </div>
     </div>
@@ -49,7 +57,6 @@
                         </li>
                     </ul>
                 </div>
-                <!--<button class="btn btn-success btn-lg"> + Add Courses </button>-->
             </div>
             <div class="col-md-4">
 
