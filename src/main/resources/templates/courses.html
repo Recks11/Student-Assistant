@@ -12,19 +12,16 @@
         <h1>Add Courses</h1>
     </div>
 </div>
-<div th:if="${student.getProgram()==null}">
+<div th:if="${student.getProgram()==null && addCourse==true}">
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="programModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">No Program?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="programModalTitle">No Program?</h5>
                 </div>
                 <div class="modal-body">
-
+                    <h3>Please Select your program</h3>
                     <form id="programForm" th:action="@{/student/program/}" th:object="${program}" method="post">
                         <div class="form-group">
                             <label for="college">College: </label>
@@ -37,7 +34,7 @@
                         <div class="form-group">
                             <label for="exampleFormControlSelect2">Program:</label>
                             <select class="form-control" id="exampleFormControlSelect2" th:field="*{name}">
-                                <option th:each="prog : ${programs}" th:text="${prog.getName()}" th:value="${prog.name} "></option>
+                                <option th:each="prog : ${programs}" th:text="${prog.name}" th:value="${prog.name} "></option>
                             </select>
                         </div>
                     </form>
@@ -48,8 +45,8 @@
                     };
                 </script>
                 <div class="modal-footer">
-                    <a role="button" class="btn btn-secondary" href="/student/">No</a>
-                    <button type="button" class="btn btn-primary" onclick="submitForm()">Yes</button>
+                    <a role="button" class="btn btn-secondary" href="/student/">Cancel</a>
+                    <button type="button" class="btn btn-primary" onclick="submitForm()">Select</button>
                 </div>
             </div>
         </div>
@@ -61,14 +58,11 @@
 
 <div th:if="${addCourse==false && (student.getProgram()==null || student.getCourses().isEmpty())}">
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="courseOptionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">No Courses?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="CourseOptionTitle">No Courses?</h5>
                 </div>
                 <div class="modal-body">
                     You have not registered any courses. would you like to register now?
@@ -86,39 +80,61 @@
 
 
 
-<div th:if="${(student.getProgram()!=null && student.getCourses().isEmpty()==false) || addCourse==true}" class="container">
-    <div class="row align-items-center">
-        <div class="col-12 col-sm-5 text-center added-courses">
+<div th:if="${(student.getProgram()!=null && !student.getCourses().isEmpty()) || addCourse==true}" class="container">
+    <div class="row">
+        <div class="col-12 text-center added-courses"
+             th:classappend="${listOfCoursesToBeRegistered!=null && !listOfCoursesToBeRegistered.isEmpty()?'col-sm-5' : 'col-sm-12'}">
             <div class="card">
                 <div class="card-header">
                     Added Courses
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li  th:each="cou : ${courseList}" class="list-group-item d-flex justify-content-between align-items-center">
-                        <span th:text="${cou.code+' '+'-'+' '+cou.title}"></span>
-                        <span class="badge badge-danger badge-pill"><a href="/student/courses" th:href="@{/student/courses/remove(courseId=${cou.id})}"><strong style="color: white;">X</strong></a></span>
+
+                    <li  th:each="course : ${listOfRegisteredCourses}"
+                         class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <span th:text="${course.code+' '+'-'+' '+course.title}"></span>
+                        <span class="badge badge-danger badge-pill">
+                            <a href="/student/courses" th:href="@{'/student/courses/remove/'+${course.id}}">
+                                <strong style="color: white;">X</strong>
+                            </a>
+                        </span>
                     </li>
                 </ul>
-
             </div>
         </div>
-        <div class="col-12 col-sm-7">
+        <div class="col-12 col-sm-7" th:if="${listOfCoursesToBeRegistered!=null && !listOfCoursesToBeRegistered.isEmpty()}">
             <h3 class="text-center"> REGISTER COURSES </h3>
-            <form th:action="@{/register}" th:object="${course}" method="post">
-                <div th:each="cou : ${courseList}" class="form-check">
-                    <input class="form-check-input" type="checkbox" th:value="${cou.getId()}" id="defaultCheck1" th:field="${stringArray}">
-                    <label class="form-check-label" for="defaultCheck1" th:text="${cou.code+' '+'-'+' '+cou.title}">
+            <form th:action="@{/student/courses}" th:object="${listOfSelectedCourses}" method="post">
+                <div th:each="courseVariable : ${listOfCoursesToBeRegistered}" class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           th:value="${courseVariable.id}"
+                           th:id="${courseVariable.getCode()}"
+                           th:field="*{coursesList}"
+                           th:checked="${courseVariable.compulsory}"/>
+                    <label class="form-check-label" th:for="${courseVariable.code}" th:text="${courseVariable.code+' '+'-'+' '+courseVariable.title}" style="width: 100%;">
 
                     </label>
                 </div>
-                <button type="submit" value="Submit" class="btn btn-primary submit">Submit</button>
+                <button type="submit" value="Submit" class="btn btn-info submit">Add</button>
             </form>
         </div>
     </div>
 </div>
-<script>
+
+<script th:if="${student.getProgram()==null}">
     $( document ).ready( function(){
-        var modal = $("#exampleModalCenter");
+        var modal = $("#programModal");
+        if (modal != null){
+
+            modal.modal('show');
+        }
+    });
+</script>
+<script th:if="${addCourse==false && (student.getProgram()==null || student.getCourses().isEmpty())}">
+    $( document ).ready( function(){
+        var modal = $("#courseOptionModal");
         if (modal != null){
 
             modal.modal('show');

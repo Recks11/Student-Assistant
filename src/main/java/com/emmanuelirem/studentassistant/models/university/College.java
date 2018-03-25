@@ -14,7 +14,7 @@ public class College {
     @Enumerated(EnumType.STRING)
     private CollegeEnum name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "college", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+    @OneToMany( mappedBy = "college", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     private List<Department> departments = new ArrayList<>();
 
     public College() {

@@ -20,14 +20,14 @@ public class Student {
     private String password;
 
     @ManyToOne
+    @JoinTable(
+            name = "student_program",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "program_id")
+    )
     private Program program;
 
-    @ManyToMany
-    @JoinTable(
-            name = "course_students",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
+    @ManyToMany(mappedBy = "students")
     private List<Course> courses = new ArrayList<>();
 
     public Student() {
@@ -123,7 +123,15 @@ public class Student {
 
         courses.add(course);
         course.addStudent(this);
+    }
 
+    public void removeCourse(Course course){
+        if (course.getStudents().contains(this))
+            course.getStudents().remove(this);
+
+        if(courses.contains(course)){
+            courses.remove(course);
+        }
     }
 
     @Override

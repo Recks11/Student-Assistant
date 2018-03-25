@@ -3,6 +3,7 @@
 <head th:replace="~{fragments/imports::shared_header(~{::title},~{::link})}">
     <title>Student Assistant Home</title>
     <link rel="stylesheet" type="text/css" href="/css/index.css">
+    <link rel="stylesheet" type="text/css" href="/css/responsive-calendar.css">
 </head>
 <body>
 <th:block th:insert="~{fragments/navbar}"/>
@@ -31,20 +32,29 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header text-center">
                         COURSES
                     </div>
-                    <div class="card-body">
+                    <div th:if="${registeredCourses.isEmpty()}" class="card-body">
                         <p class="card-text">You have not registered any courses</p>
                         <a class="btn btn-success" href="/student/courses?add-courses=true">Add Courses</a>
                     </div>
+                    <ul th:if="${!registeredCourses.isEmpty()}" class="list-group list-group-flush">
+                        <li  th:each="course : ${registeredCourses}"
+                             class="list-group-item d-flex justify-content-between align-items-center">
+                            <span th:text="${course.code+' '+'-'+' '+course.title}"></span>
+                            <span class="badge badge-pill" th:classappend="${course.units>=3 ? 'badge-danger' : 'badge-info'}">
+                                <strong style="color: white;" th:text="${course.units}"></strong>
+                            </span>
+                        </li>
+                    </ul>
                 </div>
                 <!--<button class="btn btn-success btn-lg"> + Add Courses </button>-->
             </div>
             <div class="col-md-4">
 
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header text-center">
                         NOTIFICATIONS
                     </div>
                     <ul class="list-group list-group-flush">
@@ -58,21 +68,47 @@
             <div class="col-md-4">
 
                 <div class="card">
-                    <div class="card-header">
-                        Upcoming Classes
+                    <div class="card-header text-center">
+                        Calendar
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center"><a href="#">Tuesday: CSC 415 </a><span class="badge badge-primary badge-pill">1</span></li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Wednesday: CSC 415 <span class="badge badge-primary badge-pill">1</span></li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">Thursday: CSC 311 (Carry Over) <span class="badge badge-primary badge-pill">1</span></li>
-                    </ul>
+                    <!-- Responsive calendar - START -->
+                    <div th:if="${loggedInStudent.program!=null}" class="responsive-calendar">
+                        <div class="controls d-flex justify-content-between" th:classappend="${loggedInStudent.program.department.college.name.name()=='College_of_Science_and_Technology' ? 'cst' : 'cds'}">
+                            <a  data-go="prev"><div class="btn" style="-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;">Prev</div></a>
+                            <h4><span data-head-year></span> <span data-head-month></span></h4>
+                            <a  data-go="next"><div class="btn" style="-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;">Next</div></a>
+                        </div>
+                        <br/>
+                        <div class="day-headers">
+                            <div class="day header">Mon</div>
+                            <div class="day header">Tue</div>
+                            <div class="day header">Wed</div>
+                            <div class="day header">Thu</div>
+                            <div class="day header">Fri</div>
+                            <div class="day header">Sat</div>
+                            <div class="day header">Sun</div>
+                        </div>
 
+                        <div class="days" data-group="days"
+                             th:classappend="${loggedInStudent.program.department.college.name.name()=='College_of_Science_and_Technology' ? 'cst' : 'cds'}">
+
+                        </div>
+                    </div>
+                    <!-- Responsive calendar - END -->
                 </div>
             </div>
         </div>
     </div>
 </section>
 
+<script src="/js/responsive-calendar.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var calendar = $(".responsive-calendar");
 
+        calendar.responsiveCalendar({
+        })
+    });
+</script>
 </body>
 </html>

@@ -18,11 +18,11 @@ public class Lecturer {
 
     @ManyToMany
     @JoinTable(
-            name = "course_lecturer",
+            name = "lecturer_course",
             joinColumns=@JoinColumn(name = "lecturer_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
-    private Set<Course> courses;
+    private Set<Course> courses = new HashSet<>();
 
     public Lecturer() {
     }

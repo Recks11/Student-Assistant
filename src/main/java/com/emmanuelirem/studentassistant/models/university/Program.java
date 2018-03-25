@@ -1,12 +1,11 @@
 package com.emmanuelirem.studentassistant.models.university;
 
 import com.emmanuelirem.studentassistant.models.Course;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Function;
+import java.util.List;
 
 @Entity
 public class Program {
@@ -19,16 +18,15 @@ public class Program {
         @JoinColumn(name = "department_id")
         private Department department;
 
-        @NaturalId
         private String name;
 
-        @ManyToMany(fetch = FetchType.EAGER)
+        @ManyToMany
         @JoinTable(
                 name = "program_courses",
                 joinColumns = @JoinColumn(name = "program_id"),
                 inverseJoinColumns = @JoinColumn(name = "course_id")
         )
-        private Set<Course> courses = new HashSet<>();
+        private List<Course> courses = new ArrayList<>();
 
         public Program() {
         }
@@ -62,22 +60,34 @@ public class Program {
                 this.name = name;
         }
 
-        public Set<Course> getCourses() {
+        public List<Course> getCourses() {
                 return courses;
         }
 
-        public void setCourses(Set<Course> courses) {
+        public void setCourses(List<Course> courses) {
                 this.courses = courses;
         }
 
         public void addCourse(Course course) {
                 if (courses == null) {
-                        courses = new HashSet<>();
+                        courses = new ArrayList<>();
                 }
 
+                if (courses.contains(course))
+                        return;
                 courses.add(course);
                 course.addProgram(this);
 
+        }
+        public void removeCourse(Course course){
+                if(courses.contains(course))
+                        courses.remove(course);
+                if(course.getPrograms().contains(this))
+                        course.getPrograms().remove(this);
+        }
+
+        public void addCourses(List<Course> coursesList){
+                coursesList.forEach(this::addCourse);
         }
 
         @Override
