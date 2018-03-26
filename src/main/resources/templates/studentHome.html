@@ -16,6 +16,7 @@
             <div class="card-body">
                 <!--<h5 class="card-title">Name:</h5>-->
                 <h3 th:text="${'Name: '+loggedInStudent.lastName+' '+loggedInStudent.firstName}">Name: Irem Emmanuel John</h3>
+                <h3 th:text="${'Email: '+ loggedInStudent.emailAddress}">email: Irem Emmanuel John</h3>
                     <th:block th:if="${loggedInStudent.program!=null}">
                         <h3 th:if="${loggedInStudent.program.department!=null}"
                             th:text="${'College: '+loggedInStudent.program.department.college.name.name().replace('_',' ')}"></h3>

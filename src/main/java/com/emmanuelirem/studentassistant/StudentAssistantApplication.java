@@ -9,4 +9,9 @@ public class StudentAssistantApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(StudentAssistantApplication.class, args);
 	}
+		/*
+		TODO Implement My account page
+		TODO implement Messages
+		TODO implement Lecturers Page
+	 	*/
 }

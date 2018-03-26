@@ -41,6 +41,7 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public void save(Student student) {
+        student.setEmailAddress(student.getFirstName()+"."+student.getLastName()+"@stu.cu.edu.ng");
         studentRepository.save(student);
     }
 
