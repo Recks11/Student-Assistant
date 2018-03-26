@@ -11,6 +11,7 @@ import com.emmanuelirem.studentassistant.models.Student;
 import com.emmanuelirem.studentassistant.models.university.*;
 import com.emmanuelirem.studentassistant.repository.*;
 import com.emmanuelirem.studentassistant.services.EncoderService;
+import com.emmanuelirem.studentassistant.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -23,18 +24,18 @@ import java.util.*;
 public class initTemporaryDbData implements ApplicationListener<ContextRefreshedEvent> {
 
     private EncoderService encoderService;
-    private StudentRepository studentRepository;
+    private StudentService studentService;
     private ProgramRepository programRepository;
     private UsersService usersService;
     private RolesService rolesService;
     private final CourseRepository courseRepository;
 
     @Autowired
-    public initTemporaryDbData(StudentRepository studentRepository,
+    public initTemporaryDbData(StudentService studentService,
                                UsersService usersService, RolesService rolesService,
                                EncoderService encoderService,
                                ProgramRepository programRepository, CourseRepository courseRepository) {
-        this.studentRepository = studentRepository;
+        this.studentService = studentService;
         this.usersService = usersService;
         this.rolesService = rolesService;
         this.encoderService = encoderService;
@@ -58,7 +59,7 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
             newStudents.add(new Student("Emmanuel","Irem","13cg015929","Daniel","A407","12345",null, new ArrayList<Course>()));
             newStudents.add(new Student("Guy","Random","14CG083345","Paul","F401","12345",null, new ArrayList<Course>()));
             newStudents.add(new Student("Girl","Random","15AD015928","Esther","B301","12345",null, new ArrayList<Course>()));
-            studentRepository.saveAll(newStudents);
+            studentService.saveAll(newStudents);
             newStudents.forEach(student -> {
                 //get reg numbers and password from linked list
                 String registrationNumber = student.getRegistrationNumber();

@@ -45,6 +45,10 @@ public class StudentServiceImpl implements StudentService{
         studentRepository.save(student);
     }
 
+    public void saveAll(List<Student> studentList){
+        studentList.forEach(this::save);
+    }
+
     @Override
     public List<Course> findUnregisteredCoursesForStudent(Student student) {
         Program program = student.getProgram();
