@@ -5,6 +5,7 @@ import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.enums.CollegeEnum;
 import com.emmanuelirem.studentassistant.models.enums.DepartmentsEnum;
 import com.emmanuelirem.studentassistant.models.enums.ProgramEnum;
+import com.emmanuelirem.studentassistant.models.enums.SemesterEnum;
 import com.emmanuelirem.studentassistant.models.security.Roles;
 import com.emmanuelirem.studentassistant.models.security.Users;
 import com.emmanuelirem.studentassistant.models.Student;
@@ -131,20 +132,21 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         private void addCourses() {
             List<Course> coursesList = new ArrayList<>();
 
-            Course course1 = new Course(2,400,"CSC424","Data Communications Networking",true);
-            Course course2 = new Course(3,400,"CSC 423","Concept of Programming", true);
-            Course course3 = new Course(3,400,"CSC 424","Computer Network/ Communication", true);
-            Course course4 = new Course(6,400,"CSC 429","Project", true);
-            Course course5 = new Course(2,400,"CSC 441","Human Computer Interaction", true);
-            Course course6 = new Course(2,400,"CSC 422","Computational Biology & Interdisciplinary Topics", true);
-            Course course7 = new Course(2,400,"CSC 443","Modelling and Simulation", false);
-            Course course8 = new Course(2,400,"CSC 444","Computer System Performance Evaluation", false);
-            Course course9 = new Course(2,400,"CSC 445","Queueing System", false);
-            Course course10 = new Course(2,400,"CSC 446","Entrepreneurial Development Studies", false);
-            Course course11 = new Course(2,400,"CSC 447","Formal Model of Computation", false);
-            Course course12 = new Course(1,400,"EDS 421","Entrepreneurial Development Studies VIII", true);
-            Course course13 = new Course(1,400,"TMC 421","Total Man Concept VIII", true);
-            Course course14 = new Course(1,400,"TMC 422","TMC Sports",true);
+
+            Course course1 = new Course(2,400,"CIS 421","Computer Security", true,"CIS 421", SemesterEnum.OMEGA);
+            Course course2 = new Course(3,400,"CSC 423","Concept of Programming", true,"CIS 423",SemesterEnum.OMEGA);
+            Course course3 = new Course(3,400,"CSC 424","Computer Network/ Communication", true, "csc 424", SemesterEnum.OMEGA);
+            Course course4 = new Course(6,400,"CSC 429","Project", true, "CSC 429", SemesterEnum.OMEGA);
+            Course course5 = new Course(2,400,"CSC 441","Human Computer Interaction", true, "CSC 441", SemesterEnum.OMEGA);
+            Course course6 = new Course(2,400,"CSC 422","Computational Biology & Interdisciplinary Topics", true, "CSC 422", SemesterEnum.OMEGA);
+            Course course7 = new Course(2,400,"CSC 443","Modelling and Simulation", false,"CSC 443", SemesterEnum.OMEGA);
+            Course course8 = new Course(2,400,"CSC 444","Computer System Performance Evaluation", false,"CSC 444", SemesterEnum.OMEGA);
+            Course course9 = new Course(2,400,"CSC 445","Queueing System", false, "CSC 445", SemesterEnum.OMEGA);
+            Course course10 = new Course(2,400,"CSC 446","Entrepreneurial Development Studies", false, "CSC 446", SemesterEnum.OMEGA);
+            Course course11 = new Course(2,400,"CSC 447","Formal Model of Computation", false, "CSC 447", SemesterEnum.OMEGA);
+            Course course12 = new Course(1,400,"EDS 421","Entrepreneurial Development Studies VIII", true, "EDS 421",SemesterEnum.OMEGA);
+            Course course13 = new Course(1,400,"TMC 421","Total Man Concept VIII", true,"TMC 421", SemesterEnum.OMEGA);
+            Course course14 = new Course(1,400,"TMC 422","TMC Sports",true,"TMC 422", SemesterEnum.OMEGA);
 
 
             coursesList.add(course1);
@@ -173,7 +175,7 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
 
     private void addMisCourses() {
         List<Course> miscoursesList = new ArrayList<>();
-        Course miscourse1 = new Course(3, 400,"CSC424","Data Communication Network",true,"ALPHA");
+        Course miscourse1 = new Course(3,400,"CSC 424","Data Communication Network",true);
         Course miscourse2 = new Course(3,400,"MIS421","Decision Support System",true);
         Course miscourse3 = new Course(3,400,"MIS423","Management Theory",true);
         Course miscourse4 = new Course(2,400,"MIS 422","Production & Operation Management",true);
