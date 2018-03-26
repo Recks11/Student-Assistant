@@ -3,13 +3,11 @@ package com.emmanuelirem.studentassistant.controllers;
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Student;
 import com.emmanuelirem.studentassistant.models.helper.ListHelper;
-import com.emmanuelirem.studentassistant.models.university.DepartmentsEnum;
+import com.emmanuelirem.studentassistant.models.enums.DepartmentsEnum;
 import com.emmanuelirem.studentassistant.models.university.Program;
-import com.emmanuelirem.studentassistant.repository.*;
+
 import java.lang.String;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.emmanuelirem.studentassistant.services.CourseService;

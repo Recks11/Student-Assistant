@@ -14,6 +14,7 @@ public class Student {
     private long id;
     private String firstName;
     private String lastName;
+    private String emailAddress;
     private String registrationNumber;
     private String hallOfResidence;
     private String roomNumber;
@@ -29,6 +30,9 @@ public class Student {
 
     @ManyToMany(mappedBy = "students")
     private List<Course> courses = new ArrayList<>();
+
+    @OneToMany
+    private List<Message> messages = new ArrayList<>();
 
     public Student() {
     }
@@ -66,6 +70,14 @@ public class Student {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getRegistrationNumber() {
@@ -120,9 +132,10 @@ public class Student {
         if(courses == null) {
             courses = new ArrayList<>();
         }
-
-        courses.add(course);
-        course.addStudent(this);
+        if(!courses.contains(course)){
+            courses.add(course);
+            course.addStudent(this);
+        }
     }
 
     public void removeCourse(Course course){
@@ -132,6 +145,23 @@ public class Student {
         if(courses.contains(course)){
             courses.remove(course);
         }
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+
+    public void addMessage(Message message) {
+        messages.add(message);
+    }
+
+    public void removeMessage(Message message){
+        if(messages.contains(message))
+            messages.remove(message);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.emmanuelirem.studentassistant.services.impl;
 
 import com.emmanuelirem.studentassistant.models.Course;
+import com.emmanuelirem.studentassistant.models.Lecturer;
 import com.emmanuelirem.studentassistant.models.university.Program;
 import com.emmanuelirem.studentassistant.repository.CourseRepository;
 import com.emmanuelirem.studentassistant.services.CourseService;
@@ -22,11 +23,26 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
+    public void saveOrUpdate(Course course){
+        courseRepository.save(course);
+    }
+
+    @Override
+    public List<Course> findCoursesWithLecturer(Lecturer lecturer) {
+        return courseRepository.findCoursesByLecturersContains(lecturer);
+    }
+
+    @Override
     public Course findCourseById(long id) {
         if(courseRepository.findById(id).isPresent())
             return courseRepository.findById(id).get();
         else
             return null;
+    }
+
+    @Override
+    public Course findCourseContainingLecturer(Lecturer lecturer) {
+        return courseRepository.findCourseByLecturersContains(lecturer);
     }
 
     @Override

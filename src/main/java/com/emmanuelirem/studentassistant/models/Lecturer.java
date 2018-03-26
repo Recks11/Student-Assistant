@@ -1,7 +1,9 @@
 package com.emmanuelirem.studentassistant.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,7 +14,7 @@ public class Lecturer {
     private long id;
     private String firstName;
     private String lastName;
-    private String emailAddress;
+    private String schoolEmailAddress;
     private String username;
     private String password;
 
@@ -24,16 +26,27 @@ public class Lecturer {
     )
     private Set<Course> courses = new HashSet<>();
 
+    @OneToMany
+    private List<Message> messages = new ArrayList<>();
+
     public Lecturer() {
     }
 
-    public Lecturer(String firstName, String lastName, String emailAddress, String username, String password, Set<Course> courses) {
+    public Lecturer(String firstName, String lastName, String schoolEmailAddress, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.emailAddress = emailAddress;
+        this.schoolEmailAddress = schoolEmailAddress;
         this.username = username;
         this.password = password;
-        this.courses = courses;
+    }
+
+    public Lecturer(String firstName, String lastName, String schoolEmailAddress, String username, String password, Set<Course> courses) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.schoolEmailAddress = schoolEmailAddress;
+        this.username = username;
+        this.password = password;
+        this.setCourses(courses);
     }
 
     public long getId() {
@@ -60,12 +73,12 @@ public class Lecturer {
         this.lastName = lastName;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
+    public String getSchoolEmailAddress() {
+        return schoolEmailAddress;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public void setSchoolEmailAddress(String schoolEmailAddress) {
+        this.schoolEmailAddress = schoolEmailAddress;
     }
 
     public String getUsername() {
@@ -89,15 +102,46 @@ public class Lecturer {
     }
 
     public void setCourses(Set<Course> courses) {
-        this.courses = courses;
+        if(!courses.isEmpty()){
+            courses.forEach(this::addCourse);
+        }
     }
 
     public void addCourse(Course course) {
         if(courses == null) {
             courses = new HashSet<>();
         }
-        course.addLecturer(this);
-        courses.add(course);
+
+        if(!courses.contains(course)){
+            courses.add(course);
+            course.addLecturer(this);
+        }
+    }
+
+    public void removeCourse(Course course) {
+            if(courses.contains(course)){
+                courses.remove(course);
+            }
+            if(course.getLecturers().contains(this)){
+                course.removeLecturer(this);
+            }
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+
+    public void addMessage(Message message) {
+        messages.add(message);
+    }
+
+    public void removeMessage(Message message){
+        if(messages.contains(message))
+            messages.remove(message);
     }
 
     @Override
@@ -106,7 +150,7 @@ public class Lecturer {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", emailAddress='" + emailAddress + '\'' +
+                ", schoolEmailAddress='" + schoolEmailAddress + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", courses=" + courses +

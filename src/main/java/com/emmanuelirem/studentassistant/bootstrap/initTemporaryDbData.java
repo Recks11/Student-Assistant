@@ -2,6 +2,9 @@ package com.emmanuelirem.studentassistant.bootstrap;
 
 
 import com.emmanuelirem.studentassistant.models.Course;
+import com.emmanuelirem.studentassistant.models.enums.CollegeEnum;
+import com.emmanuelirem.studentassistant.models.enums.DepartmentsEnum;
+import com.emmanuelirem.studentassistant.models.enums.ProgramEnum;
 import com.emmanuelirem.studentassistant.models.security.Roles;
 import com.emmanuelirem.studentassistant.models.security.Users;
 import com.emmanuelirem.studentassistant.models.Student;

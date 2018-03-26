@@ -20,6 +20,7 @@ public class Course {
     private String code;
     private String title;
     private boolean compulsory;
+    private String password;
 
     @ManyToMany(mappedBy = "courses")
     private List<Program> programs = new ArrayList<>();
@@ -124,8 +125,20 @@ public class Course {
         if(lecturers == null) {
             lecturers = new HashSet<>();
         }
-        lecturer.getCourses().add(this);
-        lecturers.add(lecturer);
+        if (!lecturer.getCourses().contains(this)) {
+            lecturer.addCourse(this);
+        }
+        if(!lecturers.contains(lecturer)){
+            lecturers.add(lecturer);
+        }
+    }
+
+    public void removeLecturer(Lecturer lecturer){
+        if(lecturers.contains(lecturer)){
+            lecturers.remove(lecturer);
+        }
+        if(lecturer.getCourses().contains(this))
+            lecturer.removeCourse(this);
     }
 
     public void setLecturers(Set<Lecturer> lecturers) {
@@ -144,9 +157,10 @@ public class Course {
         if(students == null) {
             students = new ArrayList<>();
         }
-
-        students.add(student);
-        student.getCourses().add(this);
+        if(!students.contains(student)) {
+            students.add(student);
+            student.getCourses().add(this);
+        }
     }
 
     public void removeStudent(Student student){
@@ -163,6 +177,14 @@ public class Course {
 
     public void setCompulsory(boolean compulsory) {
         this.compulsory = compulsory;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

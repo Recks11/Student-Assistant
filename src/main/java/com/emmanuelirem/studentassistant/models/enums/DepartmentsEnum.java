@@ -1,4 +1,4 @@
-package com.emmanuelirem.studentassistant.models.university;
+package com.emmanuelirem.studentassistant.models.enums;
 
 public enum DepartmentsEnum {
 
