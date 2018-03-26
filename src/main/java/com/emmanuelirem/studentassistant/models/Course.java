@@ -46,14 +46,7 @@ public class Course {
     public Course() {
     }
 
-    public Course(int units, int level, String code, String title, boolean compulsory) {
-        this.units = units;
-        this.level = level;
-        this.code = code;
-        this.title = title;
-        this.compulsory = compulsory;
 
-    }
 
     public Course(int units, int level, String code, String title, boolean compulsory, String password, SemesterEnum semester) {
         this.units = units;
