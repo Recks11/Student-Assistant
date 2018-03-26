@@ -22,7 +22,8 @@ public class Course {
     private String title;
     private boolean compulsory;
     private String password;
-//    @Enumerated(EnumType.STRING)
+
+    @Enumerated(EnumType.STRING)// This line tells Hibernate that this enumeration should be saved in the database as a string
     private SemesterEnum semester;
 
     @ManyToMany(mappedBy = "courses")
@@ -46,6 +47,7 @@ public class Course {
 
     public Course() {
     }
+
 
 
 
