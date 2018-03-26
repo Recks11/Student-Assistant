@@ -22,6 +22,7 @@ public class Course {
     private String title;
     private boolean compulsory;
     private String password;
+//    @Enumerated(EnumType.STRING)
     private SemesterEnum semester;
 
     @ManyToMany(mappedBy = "courses")
@@ -195,6 +196,14 @@ public class Course {
         this.password = password;
     }
 
+    public SemesterEnum getSemester() {
+        return semester;
+    }
+
+    public void setSemester(SemesterEnum semester) {
+        this.semester = semester;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -203,7 +212,9 @@ public class Course {
                 ", level=" + level +
                 ", code='" + code + '\'' +
                 ", title='" + title + '\'' +
-                ", compulsory='" + compulsory + '\'' +
+                ", compulsory=" + compulsory +
+                ", password='" + password + '\'' +
+                ", semester=" + semester +
                 '}';
     }
 }
