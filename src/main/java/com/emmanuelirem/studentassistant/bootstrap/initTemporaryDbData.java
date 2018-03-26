@@ -50,9 +50,12 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         addRandomStudents();
         addUniversityCoursesDepartmentsAndColleges();
         addCourses();
+        addMisCourses();
+
     }
 
-        private void addRandomStudents() {
+
+    private void addRandomStudents() {
             //create 5 random users in memory
             LinkedList<Student> newStudents = new LinkedList<>();
             newStudents.add(new Student("Rex","Ijiekhuamen","13cg015928","Daniel","B301","12345",null, new ArrayList<Course>()));
@@ -143,6 +146,7 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
             Course course13 = new Course(1,400,"TMC 421","Total Man Concept VIII", true);
             Course course14 = new Course(1,400,"TMC 422","TMC Sports",true);
 
+
             coursesList.add(course1);
             coursesList.add(course2);
             coursesList.add(course3);
@@ -166,4 +170,47 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
 
 
     }
+
+    private void addMisCourses() {
+        List<Course> miscoursesList = new ArrayList<>();
+        Course miscourse1 = new Course(3,400,"CSC 424","Data Communication Network",true);
+        Course miscourse2 = new Course(3,400,"MIS421","Decision Support System",true);
+        Course miscourse3 = new Course(3,400,"MIS423","Management Theory",true);
+        Course miscourse4 = new Course(2,400,"MIS 422","Production & Operation Management",true);
+        Course miscourse5 = new Course(6,400,"MIS 429","Project",true);
+        Course miscourse6 = new Course(3,400,"BUS 326","International Business",true);
+        Course miscourse7 = new Course(3,400,"CBS 221","Statistics for Business & Social Science",false);
+        Course miscourse8 = new Course(2,400,"CSC443","Modelling & Simulation",false);
+        Course miscourse9 = new Course(2,400,"CSC 444","Computer System Performance Evaluation ",false);
+        Course miscourse10 = new Course(2,400,"CSC 446","Distributed Computing System",false);
+        Course miscourse11 = new Course(2,400,"MIS 425","System Security Management",false);
+        Course miscourse12 = new Course(2,400,"MIS 426","Supply Chain & Logistics Management",false);
+        Course miscourse13 = new Course(1,400,"EDS421","Entrepreneurial Development Studies VIII",true);
+        Course miscourse14 = new Course(1,400,"TMC 421","Total Man Concept VIII",true);
+        Course miscourse15 = new Course(0,400,"TMC 422","Total Man Concept - Sports",true);
+
+        miscoursesList.add(miscourse1);
+        miscoursesList.add(miscourse2);
+        miscoursesList.add(miscourse3);
+        miscoursesList.add(miscourse4);
+        miscoursesList.add(miscourse5);
+        miscoursesList.add(miscourse6);
+        miscoursesList.add(miscourse7);
+        miscoursesList.add(miscourse8);
+        miscoursesList.add(miscourse9);
+        miscoursesList.add(miscourse10);
+        miscoursesList.add(miscourse11);
+        miscoursesList.add(miscourse12);
+        miscoursesList.add(miscourse13);
+        miscoursesList.add(miscourse14);
+        miscoursesList.add(miscourse15);
+
+        Program managementInfosystems = programRepository.findProgramByName(ProgramEnum.Management_and_Information_Science.name().replace('_',' ')); //get mis program
+
+        managementInfosystems.addCourses(miscoursesList);
+
+        courseRepository.saveAll(miscoursesList);
+
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.emmanuelirem.studentassistant.models;
 
+import com.emmanuelirem.studentassistant.models.enums.SemesterEnum;
 import com.emmanuelirem.studentassistant.models.university.Program;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class Course {
     private String title;
     private boolean compulsory;
     private String password;
+    private SemesterEnum semester;
 
     @ManyToMany(mappedBy = "courses")
     private List<Program> programs = new ArrayList<>();
@@ -50,6 +52,17 @@ public class Course {
         this.code = code;
         this.title = title;
         this.compulsory = compulsory;
+
+    }
+
+    public Course(int units, int level, String code, String title, boolean compulsory, String password, SemesterEnum semester) {
+        this.units = units;
+        this.level = level;
+        this.code = code;
+        this.title = title;
+        this.compulsory = compulsory;
+        this.password = password;
+        this.semester = semester;
     }
 
     public long getId() {
@@ -99,6 +112,8 @@ public class Course {
     public void setPrograms(List<Program> programs) {
         this.programs = programs;
     }
+
+
 
     public void addProgram(Program program) {
         if(programs==null) {
