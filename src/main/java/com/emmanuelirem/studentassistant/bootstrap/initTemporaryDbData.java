@@ -131,7 +131,7 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         private void addCourses() {
             List<Course> coursesList = new ArrayList<>();
 
-            Course course1 = new Course(2,400,"CIS 421","Computer Security", true);
+            Course course1 = new Course(2,400,"CSC424","Data Communications Networking",true);
             Course course2 = new Course(3,400,"CSC 423","Concept of Programming", true);
             Course course3 = new Course(3,400,"CSC 424","Computer Network/ Communication", true);
             Course course4 = new Course(6,400,"CSC 429","Project", true);
@@ -173,7 +173,7 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
 
     private void addMisCourses() {
         List<Course> miscoursesList = new ArrayList<>();
-        Course miscourse1 = new Course(3,400,"CSC 424","Data Communication Network",true);
+        Course miscourse1 = new Course(3, 400,"CSC424","Data Communication Network",true,"ALPHA");
         Course miscourse2 = new Course(3,400,"MIS421","Decision Support System",true);
         Course miscourse3 = new Course(3,400,"MIS423","Management Theory",true);
         Course miscourse4 = new Course(2,400,"MIS 422","Production & Operation Management",true);
