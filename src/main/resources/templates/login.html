@@ -9,6 +9,7 @@
 </head>
 <style>
     .register-button{
+        text-decoration: none !important;
         position: absolute;
         top: 5px;
         right: 10px;
@@ -34,10 +35,9 @@
                     </div>
                     <div class="submit-btn">
                         <button type="submit" value="login" class="underline-blue"> Login </button>
-                        <a href="/register" class="register-button" style="text-decoration: none"> Register </a>
+                        <a href="/register" class="register-button"> Register </a>
                     </div>
                 </form>
-
                 <div th:if="${param.error}" class="alert alert-error">
                     <div id="status"  class="text-center" style="padding-top:5px; text-align: center">
                         Invalid Credentials
@@ -48,7 +48,7 @@
                         you have been logged out
                     </div>
                 </div>
-                <div th:if="${param.register}" class="alert alert-success">
+                <div th:if="${param.success}" class="alert alert-success">
                     <div id="status"  class="text-center" style="padding-top:5px; text-align: center">
                         Registration Successful
                     </div>

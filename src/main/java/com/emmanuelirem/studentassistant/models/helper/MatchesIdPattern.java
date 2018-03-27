@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Target( { ElementType.METHOD, ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MatchesIdPattern {
-    String message() default "ID Not Valid";
+    String message() default "😱 ID Not Valid";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

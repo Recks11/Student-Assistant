@@ -54,9 +54,10 @@ public class StudentServiceImpl implements StudentService{
 
         Users newUser = new Users();
         Roles userRole = new Roles();
-        newUser.setRegistrationNumber(student.getRegistrationNumber());
+        newUser.setRegistrationNumber(student.getRegistrationNumber().toLowerCase());
         newUser.setPassword(encoderService.passwordEncoder().encode(student.getPassword()));
         newUser.setEnabled(true);
+        student.setRegistrationNumber(student.getRegistrationNumber().toLowerCase());
 
         userRole.setRegistrationNumber(student.getRegistrationNumber());
         userRole.setRole("ROLE_STUDENT");
@@ -64,7 +65,7 @@ public class StudentServiceImpl implements StudentService{
         usersService.save(newUser);
         rolesService.save(userRole);
 
-        student.setEmailAddress(student.getFirstName()+"."+student.getLastName()+"@stu.cu.edu.ng");
+        student.setEmailAddress(student.getFirstName().toLowerCase()+"."+student.getLastName().toLowerCase()+"@stu.cu.edu.ng");
         studentRepository.save(student);
     }
 

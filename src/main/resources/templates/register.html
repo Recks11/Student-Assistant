@@ -67,6 +67,8 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" th:classappend="${#fields.hasErrors('password')?'is-invalid':'is-valid'}" class="form-control" id="password" th:field="*{password}" placeholder="Password" required>
+                    <div th:if="${#fields.hasErrors('password')}" class="invalid-feedback" th:errors="*{password}">Example invalid feedback text</div>
+
                 </div>
                 <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
             </form>

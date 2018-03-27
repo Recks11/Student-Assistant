@@ -20,7 +20,7 @@ public class CourseTest {
     @Before
     public void setup() {
         course = new Course(2, 400, "CIS 421", "Computer Security", true,"CIS 421", SemesterEnum.OMEGA);
-        lecturer = new Lecturer("Azubike", "Azu", "azu@gmail.com", "azulolo", "12345");
+        lecturer = new Lecturer("Azubike", "Azu", "azulolo", "12345");
         student = new Student("Rex", "Ijiekhuamen", "13cg015928", "Daniel", "B301", "12345", null, new ArrayList<>());
         course.addLecturer(lecturer);
         course.addStudent(student);
@@ -55,7 +55,7 @@ public class CourseTest {
     @Test
     public void addLecturer() {
         System.out.println("add Lecturer");
-        Lecturer newLecturer = new Lecturer("Ade","Ife","temo@gmail.con","temo","1223");
+        Lecturer newLecturer = new Lecturer("Ade","Ife","temo","1223");
         course.addLecturer(newLecturer);
         assertTrue(course.getLecturers().contains(newLecturer));
         assertTrue(newLecturer.getCourses().contains(course));
@@ -64,7 +64,7 @@ public class CourseTest {
     @Test
     public void removeLecturer() {
         System.out.println("remove Lecturer");
-        Lecturer newLecturer = new Lecturer("AdeSecond","Ife","temo@gmail.con","temo","1223");
+        Lecturer newLecturer = new Lecturer("AdeSecond","Ife","temo","1223");
         course.addLecturer(newLecturer);
 
         assertTrue(course.getLecturers().contains(newLecturer));

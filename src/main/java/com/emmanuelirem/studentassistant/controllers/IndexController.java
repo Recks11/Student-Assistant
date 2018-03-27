@@ -8,6 +8,6 @@ public class IndexController {
 
     @GetMapping("/")
     public String landingPage() {
-        return "index";
+        return "lecturerHome";
     }
 }

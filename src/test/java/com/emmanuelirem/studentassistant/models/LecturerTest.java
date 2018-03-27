@@ -21,14 +21,14 @@ public class LecturerTest {
     public void setup(){
         course = new Course(2,400,"CIS 421","Computer Security", true,"CIS 421", SemesterEnum.OMEGA);
         secondCourse = new Course(3,400,"CIS 422","Computer Imformation Systems", true, "CIS 422", SemesterEnum.OMEGA);
-        lecturer = new Lecturer("Azubike","Azu","azu@gmail.com","azulolo","12345");
+        lecturer = new Lecturer("Azubike","Azu","azulolo","12345");
         student = new Student("Rex","Ijiekhuamen","13cg015928","Daniel","B301","12345",null, new ArrayList<>());
     }
 
     @Test
     public void setCourses() {
         Set<Course> courseSet = new HashSet<>();
-        Lecturer testLecturer = new Lecturer("Azubike","Azu","azu@gmail.com","azulolo","12345", courseSet);
+        Lecturer testLecturer = new Lecturer("Azubike","Azu","azulolo","12345", courseSet);
         assertNotNull(testLecturer.getCourses()); //lecturer initialises and courses are not null
 
         courseSet.add(course);

@@ -55,7 +55,7 @@ public class RegisterController {
             try{
                 Lecturer lecturer = lecturerService.fromStudent(student);
                 lecturerService.save(lecturer);
-                return "redirect:/login";
+                return "redirect:/login?success";
             } catch (Exception e) {
                 e.getMessage();
                 return "register";

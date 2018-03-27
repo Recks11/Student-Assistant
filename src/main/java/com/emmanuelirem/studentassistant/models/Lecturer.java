@@ -3,6 +3,8 @@ package com.emmanuelirem.studentassistant.models;
 import com.emmanuelirem.studentassistant.models.helper.MatchesIdPattern;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +19,11 @@ public class Lecturer {
     private String firstName;
     private String lastName;
     private String schoolEmailAddress;
+
+//    @NotNull
+//    @Size(min = 11, max = 11, message = "Please check that phone number is 10 digits")
+    private ArrayList<String> personalPhoneNumber;
+
     @MatchesIdPattern
     private String username;
     private String password;
@@ -35,21 +42,27 @@ public class Lecturer {
     public Lecturer() {
     }
 
-    public Lecturer(String firstName, String lastName, String schoolEmailAddress, String username, String password) {
+    public Lecturer(String firstName, String lastName, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.schoolEmailAddress = schoolEmailAddress;
         this.username = username;
         this.password = password;
     }
 
-    public Lecturer(String firstName, String lastName, String schoolEmailAddress, String username, String password, Set<Course> courses) {
+    public Lecturer(String firstName, String lastName, String username, String password, Set<Course> courses) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.schoolEmailAddress = schoolEmailAddress;
         this.username = username;
         this.password = password;
         this.setCourses(courses);
+    }
+
+    public Lecturer(String firstName, String lastName, ArrayList<String> personalPhoneNumber, String username, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.personalPhoneNumber = personalPhoneNumber;
+        this.username = username;
+        this.password = password;
     }
 
     public long getId() {
@@ -122,12 +135,12 @@ public class Lecturer {
     }
 
     public void removeCourse(Course course) {
-            if(courses.contains(course)){
-                courses.remove(course);
-            }
-            if(course.getLecturers().contains(this)){
-                course.removeLecturer(this);
-            }
+        if(courses.contains(course)){
+            courses.remove(course);
+        }
+        if(course.getLecturers().contains(this)){
+            course.removeLecturer(this);
+        }
     }
 
     public List<Message> getMessages() {
@@ -145,6 +158,19 @@ public class Lecturer {
     public void removeMessage(Message message){
         if(messages.contains(message))
             messages.remove(message);
+    }
+
+    public ArrayList<String> getPersonalPhoneNumber() {
+        return personalPhoneNumber;
+    }
+
+    public void setPersonalPhoneNumber(ArrayList<String> personalPhoneNumber) {
+        this.personalPhoneNumber = personalPhoneNumber;
+    }
+
+    public void addPhone(String number) {
+        if(!personalPhoneNumber.contains(number))
+            personalPhoneNumber.add(number);
     }
 
     @Override
