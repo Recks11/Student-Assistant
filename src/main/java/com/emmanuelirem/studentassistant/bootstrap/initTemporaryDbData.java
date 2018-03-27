@@ -147,6 +147,17 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
             Course course12 = new Course(1,400,"EDS 421","Entrepreneurial Development Studies VIII", true, "EDS 421",SemesterEnum.OMEGA);
             Course course13 = new Course(1,400,"TMC 421","Total Man Concept VIII", true,"TMC 421", SemesterEnum.OMEGA);
             Course course14 = new Course(1,400,"TMC 422","TMC Sports",true,"TMC 422", SemesterEnum.OMEGA);
+            Course course15 = new Course( 3, 400, "CSC 411", "Software Engineering", true, "CSC 411", SemesterEnum.ALPHA);
+            Course course16 = new Course( 3, 400, "CSC 413", "Algorithms & Complexity Analysis", true, "CSC 413", SemesterEnum.ALPHA);
+            Course course17 = new Course( 3, 400, "CSC 415", "Artificial Intelligence", true, "CSC 415", SemesterEnum.ALPHA);
+            Course course18 = new Course( 3, 400, "CSC 431", "Computaional Science & Numerical Method", true, "CSC 431", SemesterEnum.ALPHA);
+            Course course19 = new Course( 2, 400, "CSC 432", "File Processing", true, "CSC432", SemesterEnum.ALPHA);
+            Course course20 = new Course( 3, 400, "CSC 433", "Computer Graphics & Animation", false, "CSC 433", SemesterEnum.ALPHA);
+            Course course21 = new Course( 2, 400, "MIS 415", "Project Management", false, "MIS 415", SemesterEnum.ALPHA);
+            Course course22 = new Course( 1, 400, "EDS 411", "Entrepreneurial & Development Studies VII", true, "EDS 411", SemesterEnum.ALPHA);
+            Course course23 = new Course( 1, 400, "TMC 411", "Total Man Concept", true, "TMC 411", SemesterEnum.ALPHA);
+            Course course24 = new Course( 0, 400, "TMC 412", "Total Man Concept - Sports", true, "TMC 412", SemesterEnum.ALPHA);
+
 
 
             coursesList.add(course1);
@@ -163,6 +174,17 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
             coursesList.add(course12);
             coursesList.add(course13);
             coursesList.add(course14);
+            coursesList.add(course15);
+            coursesList.add(course16);
+            coursesList.add(course17);
+            coursesList.add(course18);
+            coursesList.add(course19);
+            coursesList.add(course20);
+            coursesList.add(course21);
+            coursesList.add(course22);
+            coursesList.add(course23);
+            coursesList.add(course24);
+
 
             Program computerScience = programRepository.findProgramByName(ProgramEnum.Computer_Science.name().replace('_',' '));//get computer science program
 
@@ -175,21 +197,40 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
 
     private void addMisCourses() {
         List<Course> miscoursesList = new ArrayList<>();
-        Course miscourse1 = new Course(3,400,"CSC 424","Data Communication Network",true);
-        Course miscourse2 = new Course(3,400,"MIS421","Decision Support System",true);
-        Course miscourse3 = new Course(3,400,"MIS423","Management Theory",true);
-        Course miscourse4 = new Course(2,400,"MIS 422","Production & Operation Management",true);
-        Course miscourse5 = new Course(6,400,"MIS 429","Project",true);
-        Course miscourse6 = new Course(3,400,"BUS 326","International Business",true);
-        Course miscourse7 = new Course(3,400,"CBS 221","Statistics for Business & Social Science",false);
-        Course miscourse8 = new Course(2,400,"CSC443","Modelling & Simulation",false);
-        Course miscourse9 = new Course(2,400,"CSC 444","Computer System Performance Evaluation ",false);
-        Course miscourse10 = new Course(2,400,"CSC 446","Distributed Computing System",false);
-        Course miscourse11 = new Course(2,400,"MIS 425","System Security Management",false);
-        Course miscourse12 = new Course(2,400,"MIS 426","Supply Chain & Logistics Management",false);
-        Course miscourse13 = new Course(1,400,"EDS421","Entrepreneurial Development Studies VIII",true);
-        Course miscourse14 = new Course(1,400,"TMC 421","Total Man Concept VIII",true);
-        Course miscourse15 = new Course(0,400,"TMC 422","Total Man Concept - Sports",true);
+
+        Course miscourse1 = new Course( 2,400,"CSC 424", "Computer Network/Communication", true, "CSC 424", SemesterEnum.OMEGA);
+        Course miscourse2 = new Course( 3, 400, "CSC 411", "Software Engineering", true,"CSC 411", SemesterEnum.ALPHA );
+        Course miscourse3 = new Course( 3, 400, "MIS 421", "Decision Support System", true, "MIS 421", SemesterEnum.OMEGA);
+        Course miscourse4 = new Course( 3,400,"CSC 415","Artificial Intelligence",true,"MIS 421",SemesterEnum.ALPHA);
+        Course miscourse5 = new Course( 2, 400, "MIS 422", "Production & Operation Management", true, "MIS 422", SemesterEnum.OMEGA);
+        Course miscourse6 = new Course( 2, 400, "CSC 423", "File Processing", true, "CSC 423", SemesterEnum.ALPHA);
+        Course miscourse7 = new Course( 2, 400, "MIS 412", "Knowledge Management", true, "MIS 312", SemesterEnum.ALPHA);
+        Course miscourse8 = new Course( 2, 400, "MIS 415", "Project Management", true, "MIS 415", SemesterEnum.ALPHA);
+        Course miscourse9 = new Course( 3, 400, "MIS 418", "E-Commerce Technology", true, "MIS 418", SemesterEnum.ALPHA);
+        Course miscourse10 = new Course( 2, 400, "MIS 413", "System Accounting", false, "MIS 413", SemesterEnum.ALPHA);
+        Course miscourse11 = new Course(2, 400, "MIS 414", "Financial Information System", false, "MIS 414", SemesterEnum.ALPHA);
+        Course miscourse12 = new Course( 1, 400, "EDS 411", "Entrepreneurial and Development Studies VII", true, "EDS 411", SemesterEnum.ALPHA);
+        Course miscourse13 = new Course( 1, 400, "TMC 411", "Tottal Man Concept VII", true, "TMC 411", SemesterEnum.ALPHA);
+        Course miscourse14 = new Course( 0, 400, "TMC 412", "Total Man Concept - Sports", true, "TMC412", SemesterEnum.ALPHA);
+        Course miscourse15 = new Course( 2, 400, "MIS 422", "Production & Operation Management", true, "MIS 422", SemesterEnum.OMEGA);
+        Course miscourse16 = new Course( 3, 400, "MIS 423", "Management Theory", true, "MIS 423", SemesterEnum.OMEGA);
+        Course miscourse17 = new Course( 6, 400, "MIS 429", "Project", true, "MIS 429", SemesterEnum.OMEGA);
+        Course miscourse18 = new Course( 3, 300, "BUS 326", "International Business", true, "BUS 326", SemesterEnum.OMEGA);
+        Course miscourse19 = new Course( 3, 200, "CBS 221", "Statistics For Business and Social Science", false, "CBS 221", SemesterEnum.OMEGA);
+        Course miscourse20 = new Course( 2, 400, "CSC 444", "Computer System Performance Evaluation", false, "CSC 444", SemesterEnum.OMEGA);
+        Course miscourse21 = new Course( 2, 400, "CSC 446", "Distributed Computing System", false, "CSC 446", SemesterEnum.OMEGA);
+        Course miscourse22 = new Course( 2, 400, "MIS 425", "System Security Management", false, "MIS 425", SemesterEnum.OMEGA);
+        Course miscourse23 = new Course( 2, 400, "MIS 426", "Supply Chain & Logistics Management", false, "MIS 426", SemesterEnum.OMEGA);
+        Course miscourse24 = new Course( 1, 400, "EDS 421", "Entrepreneurial & Development Studies VIII", true, "EDS 421", SemesterEnum.OMEGA);
+        Course miscourse25 = new Course( 1, 400, "TMC 421", "Total Man Concept VIII", true, "TMC 421", SemesterEnum.OMEGA);
+        Course miscourse26 = new Course( 0, 400, "TMC 422", "Total Man Concept - Sports", true, "TMC 422", SemesterEnum.OMEGA);
+
+
+
+
+
+
+
 
         miscoursesList.add(miscourse1);
         miscoursesList.add(miscourse2);
@@ -206,6 +247,17 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         miscoursesList.add(miscourse13);
         miscoursesList.add(miscourse14);
         miscoursesList.add(miscourse15);
+        miscoursesList.add(miscourse16);
+        miscoursesList.add(miscourse17);
+        miscoursesList.add(miscourse18);
+        miscoursesList.add(miscourse19);
+        miscoursesList.add(miscourse20);
+        miscoursesList.add(miscourse21);
+        miscoursesList.add(miscourse22);
+        miscoursesList.add(miscourse23);
+        miscoursesList.add(miscourse24);
+        miscoursesList.add(miscourse25);
+        miscoursesList.add(miscourse26);
 
         Program managementInfosystems = programRepository.findProgramByName(ProgramEnum.Management_and_Information_Science.name().replace('_',' ')); //get mis program
 
