@@ -147,7 +147,7 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
             Course course12 = new Course(1,400,"EDS 421","Entrepreneurial Development Studies VIII", true, "EDS 421",SemesterEnum.OMEGA);
             Course course13 = new Course(1,400,"TMC 421","Total Man Concept VIII", true,"TMC 421", SemesterEnum.OMEGA);
             Course course14 = new Course(1,400,"TMC 422","TMC Sports",true,"TMC 422", SemesterEnum.OMEGA);
-            Course course15 = new Course( 3, 400, "CSC 411", "Software Engineering", true, "CSC 411", SemesterEnum.ALPHA);
+            Course course15 = new Course( 3, 400, "CSC 411","Software Engineering", true, "CSC 411", SemesterEnum.ALPHA);
             Course course16 = new Course( 3, 400, "CSC 413", "Algorithms & Complexity Analysis", true, "CSC 413", SemesterEnum.ALPHA);
             Course course17 = new Course( 3, 400, "CSC 415", "Artificial Intelligence", true, "CSC 415", SemesterEnum.ALPHA);
             Course course18 = new Course( 3, 400, "CSC 431", "Computaional Science & Numerical Method", true, "CSC 431", SemesterEnum.ALPHA);
@@ -221,7 +221,7 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         Course miscourse21 = new Course( 2, 400, "CSC 446", "Distributed Computing System", false, "CSC 446", SemesterEnum.OMEGA);
         Course miscourse22 = new Course( 2, 400, "MIS 425", "System Security Management", false, "MIS 425", SemesterEnum.OMEGA);
         Course miscourse23 = new Course( 2, 400, "MIS 426", "Supply Chain & Logistics Management", false, "MIS 426", SemesterEnum.OMEGA);
-        Course miscourse24 = new Course( 1, 400, "EDS 421", "Entrepreneurial & Development Studies VIII", true, "EDS 421", SemesterEnum.OMEGA);
+        Course miscourse24 = new Course( 1, 400, "EDS 421","Entrepreneurial & Development Studies VIII", true, "EDS 421", SemesterEnum.OMEGA);
         Course miscourse25 = new Course( 1, 400, "TMC 421","Total Man Concept VIII", true, "TMC 421", SemesterEnum.OMEGA);
         Course miscourse26 = new Course( 0, 400, "TMC 422","Total Man Concept - Sports", true, "TMC 422", SemesterEnum.OMEGA);
 
