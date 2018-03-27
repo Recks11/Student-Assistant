@@ -15,8 +15,13 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
+    final
+    private DataSource dataSource;
+
     @Autowired
-    DataSource dataSource;
+    public SecurityConfig(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
@@ -33,6 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/register/**").anonymous()
                 .anyRequest().authenticated()
+                .antMatchers("/lecturer/**")
+                .hasAuthority("LECTURER")
+                .antMatchers("/student/**")
+                .hasAuthority("STUDENT")
+                .antMatchers("/Api/**")
+                .authenticated()
                 .and()
                 .formLogin()
                 .successHandler( new MySimpleUrlAuthenticationSuccessHandler())

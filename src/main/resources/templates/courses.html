@@ -81,10 +81,10 @@
 
 
 
-<div th:if="${(student.getProgram()!=null && !student.getCourses().isEmpty()) || addCourse==true}" class="container">
+<div th:if="${(student.getProgram()!=null && !student.getCourses().isEmpty()) || addCourse==true}" class="container-fluid">
     <div class="row">
         <div class="col-12 text-center added-courses"
-             th:classappend="${listOfCoursesToBeRegistered!=null && !listOfCoursesToBeRegistered.isEmpty()?'col-sm-5' : 'col-sm-12'}">
+             th:classappend="${listOfCoursesToBeRegistered!=null && !listOfCoursesToBeRegistered.isEmpty()?'col-md-5' : 'col-md-12'}">
             <div class="card">
                 <div class="card-header">
                     Added Courses
@@ -104,19 +104,27 @@
                 </ul>
             </div>
         </div>
-        <div class="col-12 col-sm-7" th:if="${listOfCoursesToBeRegistered!=null && !listOfCoursesToBeRegistered.isEmpty()}">
+        <div class="col-12 col-md-7" th:if="${listOfCoursesToBeRegistered!=null && !listOfCoursesToBeRegistered.isEmpty()}">
             <h3 class="text-center"> REGISTER COURSES </h3>
             <form th:action="@{/student/courses}" th:object="${listOfSelectedCourses}" method="post">
-                <div th:each="courseVariable : ${listOfCoursesToBeRegistered}" class="form-check">
+                <div th:each="courseVariable : ${listOfCoursesToBeRegistered}" class="form-check d-flex justify-content-between">
+                    <div class="add-course" style="line-height: 1.9;">
                     <input class="form-check-input"
                            type="checkbox"
                            th:value="${courseVariable.id}"
                            th:id="${courseVariable.getCode()}"
                            th:field="*{coursesList}"
                            th:checked="${courseVariable.compulsory}"/>
-                    <label class="form-check-label" th:for="${courseVariable.code}" th:text="${courseVariable.code+' '+'-'+' '+courseVariable.title}" style="width: 100%;">
+                    <label class="form-check-label autosize"
+                           th:for="${courseVariable.code}"
+                           th:text="${courseVariable.code+' '+'-'+' '+courseVariable.title}" style="width: 100%;line-height: 2;">
 
                     </label>
+                    </div>
+                    <span class="badge badge-pill response-badge"
+                          th:classappend="${courseVariable.semester==T(com.emmanuelirem.studentassistant.models.enums.SemesterEnum).ALPHA?'badge-danger':'badge-primary'}">
+                        <strong th:text="${courseVariable.semester}"></strong>
+                    </span>
                 </div>
                 <button type="submit" value="Submit" class="btn btn-info submit">Add</button>
             </form>

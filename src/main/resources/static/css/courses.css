@@ -1,3 +1,7 @@
+html,body{
+    width:100vw;
+
+}
 .form-check {
     position: relative;
     display: block;
@@ -9,6 +13,25 @@
 }
 .submit{
     margin-top: 10px;
+}
+input[type="checkbox"]{
+    margin-top: 10px;
+}
+.response-badge {
+    line-height: 2.1;
+}
+
+@media screen and (max-width: 1280px){
+    .autosize, .add-course {
+        white-space: nowrap !important;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        width: 400px;
+    }
+    .form-check {
+        padding-right: 10px;
+        height: 55px;
+    }
 }
 @media screen and (max-width: 575px){
     html,body{
@@ -25,5 +48,18 @@
     }
     .added-courses{
         margin-top: 8px;
+    }
+    .autosize {
+        font-size: 12px;
+        width:380px;
+    }
+    input[type="checkbox"]{
+        margin-top: 6px;
+    }
+    .form-check{
+        height: 49px;
+    }
+    .response-badge {
+        line-height: 1.6 !important;
     }
 }

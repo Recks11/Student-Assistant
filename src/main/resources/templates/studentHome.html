@@ -3,7 +3,6 @@
 <head th:replace="~{fragments/imports::shared_header(~{::title},~{::link})}">
     <title>Student Assistant Home</title>
     <link rel="stylesheet" type="text/css" href="/css/index.css">
-    <link rel="stylesheet" type="text/css" href="/css/responsive-calendar.css">
 </head>
 <body>
 <th:block th:insert="~{fragments/navbar}"/>
@@ -77,30 +76,12 @@
 
                 <div class="card">
                     <div class="card-header text-center">
-                        <iframe src="https://calendar.google.com/calendar/embed?src=emmanuel.irem%40stu.cu.edu.ng&ctz=Africa%2FLagos" style="border: 0" width="600" height="600" frameborder="0" scrolling="no"></iframe>
-                        Calendar
+                       Calendar
                     </div>
                     <!-- Responsive calendar - START -->
                     <div th:if="${loggedInStudent.program!=null}" class="responsive-calendar">
-                        <div class="controls d-flex justify-content-between" th:classappend="${loggedInStudent.program.department.college.name.name()=='College_of_Science_and_Technology' ? 'cst' : 'cds'}">
-                            <a  data-go="prev"><div class="btn" style="-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;">Prev</div></a>
-                            <h4><span data-head-year></span> <span data-head-month></span></h4>
-                            <a  data-go="next"><div class="btn" style="-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;">Next</div></a>
-                        </div>
-                        <br/>
-                        <div class="day-headers">
-                            <div class="day header">Mon</div>
-                            <div class="day header">Tue</div>
-                            <div class="day header">Wed</div>
-                            <div class="day header">Thu</div>
-                            <div class="day header">Fri</div>
-                            <div class="day header">Sat</div>
-                            <div class="day header">Sun</div>
-                        </div>
-
-                        <div class="days" data-group="days"
-                             th:classappend="${loggedInStudent.program.department.college.name.name()=='College_of_Science_and_Technology' ? 'cst' : 'cds'}">
-
+                        <div th:classappend="${loggedInStudent.program.department.college.name.name()=='College_of_Science_and_Technology' ? 'cst' : 'cds'}"  style="height: 400px; width: 100%">
+                            <iframe src="https://calendar.google.com/calendar/embed?src=emmanuel.irem%40stu.cu.edu.ng&ctz=Africa%2FLagos" style="border: 0" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
                         </div>
                     </div>
                     <!-- Responsive calendar - END -->
@@ -110,14 +91,8 @@
     </div>
 </section>
 
-<script src="/js/responsive-calendar.min.js"></script>
+<!--<script src="/js/responsive-calendar.min.js"></script>-->
 <script type="text/javascript">
-    $(document).ready(function () {
-        var calendar = $(".responsive-calendar");
-
-        calendar.responsiveCalendar({
-        })
-    });
 </script>
 </body>
 </html>
