@@ -94,8 +94,8 @@
                     <li  th:each="course : ${listOfRegisteredCourses}"
                          class="list-group-item d-flex justify-content-between align-items-center">
 
-                        <span class="hide-overflow" th:text="${course.code+' '+'-'+' '+course.title}"></span>
-                        <span class="badge badge-danger badge-pill">
+                        <span class="hide-overflow" th:text="${(course.compulsory==true?'[C] ':'[E] ')+course.code+' '+'-'+' '+course.title}"></span>
+                        <span class="badge badge-pill" th:classappend="${course.semester==T(com.emmanuelirem.studentassistant.models.enums.SemesterEnum).ALPHA?'badge-danger':'badge-primary'}">
                             <a href="/student/courses" th:href="@{'/student/courses/remove/'+${course.id}}">
                                 <strong style="color: white;">X</strong>
                             </a>
@@ -117,7 +117,8 @@
                            th:checked="${courseVariable.compulsory}"/>
                     <label class="form-check-label"
                            th:for="${courseVariable.code}"
-                           th:text="${courseVariable.code+' '+'-'+' '+courseVariable.title}" style="width: 100%;line-height: 2;">
+                           th:text="${courseVariable.code+' '+(courseVariable.compulsory==true?'- [C]':'- [E]')+' '+'-'+' '+courseVariable.title}"
+                           style="width: 100%;line-height: 2;">
 
                     </label>
                     </span>
