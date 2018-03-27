@@ -2,10 +2,15 @@ package com.emmanuelirem.studentassistant.services.impl;
 
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Student;
+import com.emmanuelirem.studentassistant.models.security.Roles;
+import com.emmanuelirem.studentassistant.models.security.Users;
 import com.emmanuelirem.studentassistant.models.university.Program;
 import com.emmanuelirem.studentassistant.repository.CourseRepository;
+import com.emmanuelirem.studentassistant.repository.RolesService;
 import com.emmanuelirem.studentassistant.repository.StudentRepository;
+import com.emmanuelirem.studentassistant.repository.UsersService;
 import com.emmanuelirem.studentassistant.services.CourseService;
+import com.emmanuelirem.studentassistant.services.EncoderService;
 import com.emmanuelirem.studentassistant.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,11 +27,16 @@ public class StudentServiceImpl implements StudentService{
 
     private final CourseService courseService;
     private final StudentRepository studentRepository;
+    private UsersService usersService;
+    private RolesService rolesService;
+    private final EncoderService encoderService;
 
-    @Autowired
-    public StudentServiceImpl(CourseService courseService, StudentRepository studentRepository) {
+    public StudentServiceImpl(CourseService courseService, StudentRepository studentRepository, UsersService usersService, RolesService rolesService, EncoderService encoderService) {
         this.courseService = courseService;
         this.studentRepository = studentRepository;
+        this.usersService = usersService;
+        this.rolesService = rolesService;
+        this.encoderService = encoderService;
     }
 
     @Override
@@ -41,7 +51,24 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     public void save(Student student) {
+
+        Users newUser = new Users();
+        Roles userRole = new Roles();
+        newUser.setRegistrationNumber(student.getRegistrationNumber());
+        newUser.setPassword(encoderService.passwordEncoder().encode(student.getPassword()));
+        newUser.setEnabled(true);
+
+        userRole.setRegistrationNumber(student.getRegistrationNumber());
+        userRole.setRole("ROLE_STUDENT");
+
+        usersService.save(newUser);
+        rolesService.save(userRole);
+
         student.setEmailAddress(student.getFirstName()+"."+student.getLastName()+"@stu.cu.edu.ng");
+        studentRepository.save(student);
+    }
+
+    public void update(Student student){
         studentRepository.save(student);
     }
 

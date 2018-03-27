@@ -1,8 +1,12 @@
 package com.emmanuelirem.studentassistant.models;
 
+import com.emmanuelirem.studentassistant.models.helper.MatchesIdPattern;
 import com.emmanuelirem.studentassistant.models.university.Program;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +19,10 @@ public class Student {
     private String firstName;
     private String lastName;
     private String emailAddress;
+
+    @NotBlank(message = "Registration number must be entered")
+    @Size(min=6,max=10,message = "Registration number not valid")
+    @MatchesIdPattern
     private String registrationNumber;
     private String hallOfResidence;
     private String roomNumber;

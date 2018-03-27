@@ -1,5 +1,6 @@
 package com.emmanuelirem.studentassistant.models;
 
+import com.emmanuelirem.studentassistant.models.enums.SemesterEnum;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +19,7 @@ public class CourseTest {
 
     @Before
     public void setup() {
-        course = new Course(2, 400, "CIS 421", "Computer Security", true);
+        course = new Course(2, 400, "CIS 421", "Computer Security", true,"CIS 421", SemesterEnum.OMEGA);
         lecturer = new Lecturer("Azubike", "Azu", "azu@gmail.com", "azulolo", "12345");
         student = new Student("Rex", "Ijiekhuamen", "13cg015928", "Daniel", "B301", "12345", null, new ArrayList<>());
         course.addLecturer(lecturer);
@@ -120,7 +121,7 @@ public class CourseTest {
         List<Course> emptyCourseList = new ArrayList<>();
         List<Student> emptyStudentList = new ArrayList<>();
 
-        Course tempCourse = new Course(3, 400, "CIS 441", "Computer Games Security", true);
+        Course tempCourse = new Course(3, 400, "CIS 441", "Computer Games Security", true, "CIS 441", SemesterEnum.OMEGA);
         Student tempStudent = new Student("Damilola", "Oluwayemi", "GREATNESS", "Daniel", "B301", "12345", null, new ArrayList<>());
 
 
