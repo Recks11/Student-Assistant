@@ -45,27 +45,28 @@
             <form th:action="@{/register}" th:object="${student}" method="post">
                 <div class="form-group">
                     <label for="firstName">First Name</label>
-                    <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="First Name">
+                    <input type="text" class="form-control" th:classappend="${#fields.hasErrors('firstName')?'is-invalid':'is-valid'}" id="firstName" th:field="*{firstName}" placeholder="First Name" required>
                 </div>
                 <div class="form-group">
                     <label for="lastName">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Last Name">
+                    <input type="text" class="form-control" th:classappend="${#fields.hasErrors('lastName')?'is-invalid':'is-valid'}" id="lastName" th:field="*{lastName}" placeholder="Last Name" required>
                 </div>
                 <div class="form-group">
                     <label for="hallOfResidence">Hall Of Residence</label>
-                    <input type="text" class="form-control" id="hallOfResidence" th:field="*{hallOfResidence}" placeholder="Hall">
+                    <input type="text" class="form-control" th:classappend="${#fields.hasErrors('hallOfResidence')?'is-invalid':'is-valid'}" id="hallOfResidence" th:field="*{hallOfResidence}" placeholder="Hall" required>
                 </div>
                 <div class="form-group">
                     <label for="firstName">Room Number</label>
-                    <input type="text" class="form-control" id="roomNumber" th:field="*{roomNumber}" placeholder="Room NO.">
+                    <input type="text" class="form-control" th:classappend="${#fields.hasErrors('roomNumber')?'is-invalid':'is-valid'}" id="roomNumber" th:field="*{roomNumber}" placeholder="Room NO." required>
                 </div>
                 <div class="form-group">
                     <label for="username">Registration Number</label>
-                    <input type="text" class="form-control" id="username" th:field="*{registrationNumber}" placeholder="Reg Number">
+                    <input type="text" class="form-control" th:classappend="${#fields.hasErrors('registrationNumber')?'is-invalid':'is-valid'}" id="username" th:field="*{registrationNumber}" placeholder="Reg Number" required>
+                    <div th:if="${#fields.hasErrors('registrationNumber')}" class="invalid-feedback" th:errors="*{registrationNumber}">Example invalid feedback text</div>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Password">
+                    <input type="password" th:classappend="${#fields.hasErrors('password')?'is-invalid':'is-valid'}" class="form-control" id="password" th:field="*{password}" placeholder="Password" required>
                 </div>
                 <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
             </form>

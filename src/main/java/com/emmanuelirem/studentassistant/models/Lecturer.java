@@ -1,5 +1,7 @@
 package com.emmanuelirem.studentassistant.models;
 
+import com.emmanuelirem.studentassistant.models.helper.MatchesIdPattern;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,6 +17,7 @@ public class Lecturer {
     private String firstName;
     private String lastName;
     private String schoolEmailAddress;
+    @MatchesIdPattern
     private String username;
     private String password;
 

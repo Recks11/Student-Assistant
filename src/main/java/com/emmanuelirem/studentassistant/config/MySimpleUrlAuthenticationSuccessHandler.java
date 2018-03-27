@@ -56,7 +56,7 @@ public class MySimpleUrlAuthenticationSuccessHandler
         label:
         for (GrantedAuthority grantedAuthority : authorities) {
             switch (grantedAuthority.getAuthority()) {
-                case "ROLE_USER":
+                case "ROLE_STUDENT":
                     isUser = true;
                     break label;
                 case "ROLE_ADMIN":

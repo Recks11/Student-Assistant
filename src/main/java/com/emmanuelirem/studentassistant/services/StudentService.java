@@ -11,6 +11,7 @@ public interface StudentService {
     Student findByRegistrationNumber(String registrationNumber);
     List<Course> findUnregisteredCoursesForStudent(Student Student);
     void save(Student student);
+    void update(Student student);
     void saveAll(List<Student> studentList);
     Student getLoggedInStudentFromRequest(HttpServletRequest request);
 }

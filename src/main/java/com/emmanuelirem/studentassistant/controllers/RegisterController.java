@@ -1,33 +1,34 @@
 package com.emmanuelirem.studentassistant.controllers;
 
-import com.emmanuelirem.studentassistant.models.security.Roles;
-import com.emmanuelirem.studentassistant.models.security.Users;
+import com.emmanuelirem.studentassistant.models.Lecturer;
 import com.emmanuelirem.studentassistant.models.Student;
 import com.emmanuelirem.studentassistant.repository.RolesService;
-import com.emmanuelirem.studentassistant.repository.StudentRepository;
 import com.emmanuelirem.studentassistant.repository.UsersService;
 import com.emmanuelirem.studentassistant.services.EncoderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.emmanuelirem.studentassistant.services.LecturerService;
+import com.emmanuelirem.studentassistant.services.RegexService;
+import com.emmanuelirem.studentassistant.services.StudentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 @Controller
 public class RegisterController {
 
-    private final EncoderService encoderService;
+    private final RegexService regexService;
+    private final StudentService studentService;
+    private final LecturerService lecturerService;
 
-    private StudentRepository studentRepository;
-
-    private final UsersService usersService;
-    private final RolesService rolesService;
-    @Autowired
-    public RegisterController(StudentRepository studentRepository, EncoderService encoderService,
-                              UsersService usersService, RolesService rolesService){
-        this.studentRepository = studentRepository;
-        this.encoderService = encoderService;
-        this.usersService = usersService;
-        this.rolesService = rolesService;
+    public RegisterController(StudentService studentService,
+                              RegexService regexService, LecturerService lecturerService) {
+        this.studentService = studentService;
+        this.regexService = regexService;
+        this.lecturerService = lecturerService;
     }
 
     @GetMapping("/register")
@@ -38,25 +39,31 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String registerStudent(@ModelAttribute Student student){
+    public String registerStudent(@Valid @ModelAttribute Student student, BindingResult result){
 
-        try{
-            Users newUser = new Users();
-            Roles userRole = new Roles();
-            newUser.setRegistrationNumber(student.getRegistrationNumber());
-            newUser.setPassword(encoderService.passwordEncoder().encode(student.getPassword()));
-            newUser.setEnabled(true);
-
-            userRole.setRegistrationNumber(student.getRegistrationNumber());
-            userRole.setRole("ROLE_USER");
-
-            usersService.save(newUser);
-            rolesService.save(userRole);
-
-            studentRepository.save(student);
-        } catch (Exception e) {
-            System.out.println(e);
+        if (regexService.matchesStudentRegNumber(student.getRegistrationNumber())){
+            try{
+                studentService.save(student);
+                return "redirect:/login";
+            } catch (Exception e) {
+                e.getMessage();
+                return "register";
+            }
         }
-        return "redirect:/login";
+
+        if (regexService.matchesLecturerId(student.getRegistrationNumber())){
+            try{
+                Lecturer lecturer = lecturerService.fromStudent(student);
+                lecturerService.save(lecturer);
+                return "redirect:/login";
+            } catch (Exception e) {
+                e.getMessage();
+                return "register";
+            }
+        }
+
+
+
+        return "register";
     }
 }
