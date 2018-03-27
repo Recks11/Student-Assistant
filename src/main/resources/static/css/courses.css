@@ -22,17 +22,17 @@ input[type="checkbox"]{
 }
 
 @media screen and (max-width: 1280px){
-    .autosize, .add-course {
+    .hide-overflow {
         white-space: nowrap !important;
         overflow: hidden;
         text-overflow:ellipsis;
-        width: 400px;
     }
     .form-check {
         padding-right: 10px;
         height: 55px;
     }
 }
+
 @media screen and (max-width: 575px){
     html,body{
         margin-top: 0;
@@ -49,17 +49,21 @@ input[type="checkbox"]{
     .added-courses{
         margin-top: 8px;
     }
-    .autosize {
+    .hide-overflow, .form-check > span {
         font-size: 12px;
-        width:380px;
+    }
+    .form-check{
+        height: 48px;
+    }
+    .response-badge {
+        padding-top: 0;
+        padding-bottom: 0;
+        height: 24px;
+    }
+    .add-course{
+        height: 24px;
     }
     input[type="checkbox"]{
         margin-top: 6px;
-    }
-    .form-check{
-        height: 49px;
-    }
-    .response-badge {
-        line-height: 1.6 !important;
     }
 }

@@ -94,7 +94,7 @@
                     <li  th:each="course : ${listOfRegisteredCourses}"
                          class="list-group-item d-flex justify-content-between align-items-center">
 
-                        <span th:text="${course.code+' '+'-'+' '+course.title}"></span>
+                        <span class="hide-overflow" th:text="${course.code+' '+'-'+' '+course.title}"></span>
                         <span class="badge badge-danger badge-pill">
                             <a href="/student/courses" th:href="@{'/student/courses/remove/'+${course.id}}">
                                 <strong style="color: white;">X</strong>
@@ -108,22 +108,22 @@
             <h3 class="text-center"> REGISTER COURSES </h3>
             <form th:action="@{/student/courses}" th:object="${listOfSelectedCourses}" method="post">
                 <div th:each="courseVariable : ${listOfCoursesToBeRegistered}" class="form-check d-flex justify-content-between">
-                    <div class="add-course" style="line-height: 1.9;">
+                    <span class="add-course hide-overflow">
                     <input class="form-check-input"
                            type="checkbox"
                            th:value="${courseVariable.id}"
                            th:id="${courseVariable.getCode()}"
                            th:field="*{coursesList}"
                            th:checked="${courseVariable.compulsory}"/>
-                    <label class="form-check-label autosize"
+                    <label class="form-check-label"
                            th:for="${courseVariable.code}"
                            th:text="${courseVariable.code+' '+'-'+' '+courseVariable.title}" style="width: 100%;line-height: 2;">
 
                     </label>
-                    </div>
+                    </span>
                     <span class="badge badge-pill response-badge"
-                          th:classappend="${courseVariable.semester==T(com.emmanuelirem.studentassistant.models.enums.SemesterEnum).ALPHA?'badge-danger':'badge-primary'}">
-                        <strong th:text="${courseVariable.semester}"></strong>
+                          th:classappend="${courseVariable.semester==T(com.emmanuelirem.studentassistant.models.enums.SemesterEnum).ALPHA?'badge-danger':'badge-primary'}"
+                          th:text="${courseVariable.semester}">
                     </span>
                 </div>
                 <button type="submit" value="Submit" class="btn btn-info submit">Add</button>
