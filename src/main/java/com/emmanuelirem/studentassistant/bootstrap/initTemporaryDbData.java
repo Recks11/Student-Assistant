@@ -210,7 +210,7 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         Course miscourse10 = new Course( 2, 400, "MIS 413", "System Accounting", false, "MIS 413", SemesterEnum.ALPHA);
         Course miscourse11 = new Course(2, 400, "MIS 414", "Financial Information System", false, "MIS 414", SemesterEnum.ALPHA);
         Course miscourse12 = new Course( 1, 400, "EDS 411", "Entrepreneurial and Development Studies VII", true, "EDS 411", SemesterEnum.ALPHA);
-        Course miscourse13 = new Course( 1, 400, "TMC 411", "Tottal Man Concept VII", true, "TMC 411", SemesterEnum.ALPHA);
+        Course miscourse13 = new Course( 1, 400, "TMC 411", "Total Man Concept VII", true, "TMC 411", SemesterEnum.ALPHA);
         Course miscourse14 = new Course( 0, 400, "TMC 412", "Total Man Concept - Sports", true, "TMC412", SemesterEnum.ALPHA);
         Course miscourse15 = new Course( 2, 400, "MIS 422", "Production & Operation Management", true, "MIS 422", SemesterEnum.OMEGA);
         Course miscourse16 = new Course( 3, 400, "MIS 423", "Management Theory", true, "MIS 423", SemesterEnum.OMEGA);
