@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/imports::shared_header(~{::title},~{::link})">
+    <meta charset="UTF-8"/>
+    <title>Lecturer - view course</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<th:block th:insert="~{fragments/lecturerNavbar}"/>
+<div class="container-fluid">
+    <div class="alert" role="alert" th:classappend="${course.students.size()==0?'alert-danger':'alert-success'}">
+        <h4 class="alert-heading" th:text="${course.code+' '+course.title}"> </h4>
+        <p th:text="${ 'There are '+course.students.size()+' students registered for this course'}"> </p>
+        <hr>
+        <p class="mb-0" th:text="${ 'This is an '+course.semester+' semester course'}"> </p>
+    </div>
+</div>
+<br/>
+<div>
+    <p>TABLE OF STUDENTS GOES HERE</p>
+</div>
+</body>
+</html>

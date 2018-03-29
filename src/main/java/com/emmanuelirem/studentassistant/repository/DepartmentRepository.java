@@ -7,4 +7,5 @@ import org.springframework.data.repository.Repository;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long>, Repository<Department, Long> {
 
+    Department findDepartmentByName(String name);
 }

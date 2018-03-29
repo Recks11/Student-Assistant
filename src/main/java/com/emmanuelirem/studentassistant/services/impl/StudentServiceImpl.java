@@ -50,6 +50,10 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    public List<Student> findStudentsOfferingCourse(Course course) {
+        return studentRepository.findStudentsByCoursesContains(course);
+    }
+    @Override
     public void save(Student student) {
 
         Users newUser = new Users();

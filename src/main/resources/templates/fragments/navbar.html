@@ -22,7 +22,7 @@
                 <ul class="navbar-nav mr-auto">
                     <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false" th:text="${#request.getUserPrincipal().getName()}">
+                           aria-haspopup="true" aria-expanded="false" th:text="${loggedInStudent.firstName + ' ' +loggedInStudent.lastName+' '}">
 
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

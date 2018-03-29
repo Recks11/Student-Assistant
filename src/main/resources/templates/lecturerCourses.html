@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/imports::shared_header(~{::title},~{::link})">
+    <meta charset="UTF-8"/>
+    <title>Lecturer - courses</title>
+    <link rel="stylesheet" type="text/css" href="/css/lecturerCourses.css">
+</head>
+<body style="margin-top: 20px;">
+<th:block th:insert="~{fragments/lecturerNavbar}"/>
+
+<div>
+    <!-- Modal -->
+    <div class="modal fade" id="departmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="departmentModalTitle">Add Program</h5>
+                </div>
+                <div class="modal-body">
+                    <h3>Please Select your Department</h3>
+                    <p style="color: red;">!!This will happen only once!!</p>
+                    <form id="departmentForm" th:action="@{/lecturer/department/}" th:object="${department}" method="post">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect2">Department:</label>
+                            <select class="form-control" id="exampleFormControlSelect2" th:field="*{name}">
+                                <option th:each="item : ${departments}" th:text="${item.name}" th:value="${item.name} "></option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <script>
+                    var submitForm = function(){
+                        $('#departmentForm').submit();
+                    };
+                </script>
+                <div class="modal-footer">
+                    <a role="button" class="btn btn-secondary" href="/lecturer/">Cancel</a>
+                    <button type="button" class="btn btn-primary" onclick="submitForm()">Select</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" th:if="${!lecturer.departments.isEmpty()}">
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-12" th:each="program: ${programs}" th:classappend="${programs.size()>1?'col-md-'+12/programs.size():'col-md-12'}">
+            <div class="card">
+                <div class="card-header" th:text="${program.name}">
+                    program
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" th:each="course: ${program.courses}" th:if="${lecturer.courses.contains(course)}">
+                        <span class="hide-overflow" th:text="${(course.compulsory==true?'[C] ':'[E] ')+course.code+' '+'-'+' '+course.title}"></span>
+                        <span class="badge badge-pill" th:classappend="${course.semester==T(com.emmanuelirem.studentassistant.models.enums.SemesterEnum).ALPHA?'badge-danger':'badge-primary'}">
+                            <a href="/student/courses" th:href="@{'/student/courses/remove/'+${course.id}}">
+                                <strong style="color: white;">X</strong>
+                            </a>
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center"> Add Courses Below</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12" th:each="program: ${programs}" th:classappend="${programs.size()>1?'col-md-'+12/programs.size():'col-md-12'}">
+            <div class="card">
+                <div class="card-header" th:text="${program.name}">
+                    program
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" th:each="course: ${program.courses}" th:if="${!lecturer.courses.contains(course)}">
+                        <span class="hide-overflow" th:text="${(course.compulsory==true?'[C] ':'[E] ')+course.code+' '+'-'+' '+course.title}"></span>
+                        <span class="badge badge-pill" th:classappend="${course.semester==T(com.emmanuelirem.studentassistant.models.enums.SemesterEnum).ALPHA?'badge-danger':'badge-primary'}">
+                            <a href="/student/courses" th:href="@{'/lecturer/courses/add/'+${course.id}}">
+                                <strong style="color: white;">ADD</strong>
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:if="${lecturer.departments.isEmpty()}">
+    $(document).ready(function (){
+        $('#departmentModal').modal('show');
+    })
+</script>
+</body>
+</html>

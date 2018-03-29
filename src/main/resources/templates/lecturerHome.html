@@ -40,13 +40,22 @@
     <!-- Page Content -->
     <div id="page-content-wrapper">
         <div class="container-fluid">
-            <div class="alert alert-success" role="alert">
+            <div class="alert alert-success" role="alert" >
                 <h4 class="alert-heading">Welcome Lecturer!</h4>
-                <p>Aww yeah the lecturer page Works!!.</p>
+                <p th:if="${!lecturer.departments.isEmpty()}" th:text="${ 'you lecture in '+ lecturer.departments.size()+' department(s)'}"> </p>
                 <hr>
-                <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                <p class="mb-0">You can go to the courses page to add courses you teach</p>
             </div>
-            <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle"> Oya Click Me 😏</a>
+            <!--<a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle"> Oya Click Me 😏</a>-->
+        </div>
+
+        <div class="container-fluid">
+            <div class="alert" role="alert" th:each="course: ${lecturer.courses}" th:classappend="${course.students.size()==0?'alert-danger':'alert-success'}">
+               <a th:href="@{'/lecturer/courses/view/'+${course.id}}"> <h4 class="alert-heading" th:text="${course.code+' '+course.title}"> </h4> </a>
+                <p th:text="${ 'There are '+course.students.size()+' students registered for this course'}"> </p>
+                <hr>
+                <p class="mb-0" th:text="${ 'This is an '+course.semester+' semester course'}"> </p>
+            </div>
         </div>
     </div>
     <!-- /#page-content-wrapper -->

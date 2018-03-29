@@ -42,10 +42,10 @@ public class CourseTest {
     @Test
     public void getLecturers() {
         System.out.println("running get Lecturers");
-        Set<Lecturer> controlLecturerSet = new HashSet<>();
+        List<Lecturer> controlLecturerSet = new ArrayList<>();
         controlLecturerSet.add(lecturer);
 
-        Set<Lecturer> courseLecturers = course.getLecturers();
+        List<Lecturer> courseLecturers = course.getLecturers();
 
         assertNotNull(courseLecturers);
         assertEquals(courseLecturers, controlLecturerSet);

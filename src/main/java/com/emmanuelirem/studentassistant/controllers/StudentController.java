@@ -121,9 +121,9 @@ public class StudentController {
         return "redirect:/student/courses";
     }
 
-    @ModelAttribute
-    public void addStudent(Model model, Principal principal){
-        model.addAttribute("loggedInStudent",studentService.findByRegistrationNumber(principal.getName()));
+    @ModelAttribute("loggedInStudent")
+    public Student addStudentToModel(Principal principal){
+        return studentService.findByRegistrationNumber(principal.getName());
     }
 
 }

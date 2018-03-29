@@ -1,6 +1,7 @@
 package com.emmanuelirem.studentassistant.models;
 
 import com.emmanuelirem.studentassistant.models.helper.MatchesIdPattern;
+import com.emmanuelirem.studentassistant.models.university.Department;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -28,13 +29,16 @@ public class Lecturer {
     private String username;
     private String password;
 
+    @OneToMany
+    private List<Department> departments = new ArrayList<>();
+
     @ManyToMany
     @JoinTable(
             name = "lecturer_course",
             joinColumns=@JoinColumn(name = "lecturer_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
-    private Set<Course> courses = new HashSet<>();
+    private List<Course> courses = new ArrayList<>();
 
     @OneToMany
     private List<Message> messages = new ArrayList<>();
@@ -113,8 +117,26 @@ public class Lecturer {
         this.password = password;
     }
 
-    public Set<Course> getCourses() {
+    public List<Course> getCourses() {
         return courses;
+    }
+
+    public List<Department> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<Department> departments) {
+        this.departments = departments;
+    }
+
+    public void addDepartment(Department department){
+        if(!this.departments.contains(department))
+            departments.add(department);
+    }
+
+    public void removeDepartment(Department department){
+        if(this.departments.contains(department))
+            departments.remove(department);
     }
 
     public void setCourses(Set<Course> courses) {
@@ -125,7 +147,7 @@ public class Lecturer {
 
     public void addCourse(Course course) {
         if(courses == null) {
-            courses = new HashSet<>();
+            courses = new ArrayList<>();
         }
 
         if(!courses.contains(course)){

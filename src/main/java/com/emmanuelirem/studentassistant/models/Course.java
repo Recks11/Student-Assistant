@@ -29,13 +29,8 @@ public class Course {
     @ManyToMany(mappedBy = "courses")
     private List<Program> programs = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "lecturer_course",
-            joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns=@JoinColumn(name = "lecturer_id")
-    )
-    private Set<Lecturer> lecturers = new HashSet<>();
+    @ManyToMany(mappedBy = "courses")
+    private List<Lecturer> lecturers = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -128,13 +123,13 @@ public class Course {
             programs.remove(program);
     }
 
-    public Set<Lecturer> getLecturers() {
+    public List<Lecturer> getLecturers() {
         return lecturers;
     }
 
     public void addLecturer(Lecturer lecturer) {
         if(lecturers == null) {
-            lecturers = new HashSet<>();
+            lecturers = new ArrayList<>();
         }
         if (!lecturer.getCourses().contains(this)) {
             lecturer.addCourse(this);
@@ -152,7 +147,7 @@ public class Course {
             lecturer.removeCourse(this);
     }
 
-    public void setLecturers(Set<Lecturer> lecturers) {
+    public void setLecturers(List<Lecturer> lecturers) {
         this.lecturers = lecturers;
     }
 
