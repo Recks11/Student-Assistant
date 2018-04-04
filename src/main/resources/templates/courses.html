@@ -96,7 +96,7 @@
 
                         <span class="hide-overflow" th:text="${(course.compulsory==true?'[C] ':'[E] ')+course.code+' '+'-'+' '+course.title}"></span>
                         <span class="badge badge-pill" th:classappend="${course.semester==T(com.emmanuelirem.studentassistant.models.enums.SemesterEnum).ALPHA?'badge-danger':'badge-primary'}">
-                            <a  th:href="@{'/student/courses/remove/'+${course.id}}">
+                            <a  th:href="@{'/student/course/remove/'+${course.id}}">
                                 <strong style="color: white;">X</strong>
                             </a>
                         </span>

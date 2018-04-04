@@ -30,7 +30,7 @@ public class Lecturer {
     private String username;
     private String password;
 
-    @OneToMany
+    @ManyToMany
     private List<Department> departments = new ArrayList<>();
 
     @ManyToMany
