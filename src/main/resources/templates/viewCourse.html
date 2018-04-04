@@ -17,7 +17,30 @@
 </div>
 <br/>
 <div>
-    <p>TABLE OF STUDENTS GOES HERE</p>
+   <div class="container">
+       <div>
+           <table class="table">
+               <thead>
+               <tr>
+                   <th scope="col">#</th>
+                   <th scope="col">Name</th>
+                   <th scope="col">email</th>
+                   <th scope="col">office</th>
+                   <th scope="col">program</th>
+               </tr>
+               </thead>
+               <tbody>
+               <tr th:each="student : ${course.students}">
+                   <th scope="row" th:text="${course.students.indexOf(student)}"></th>
+                   <td th:text="${student.firstName + ' ' + student.lastName}">Mark</td>
+                   <td ><a th:href="${'mailto:'+ student.emailAddress.toLowerCase()}" th:text="${student.emailAddress}"></a></td>
+                   <td th:text="${student.hallOfResidence + ' '+ student.roomNumber}"></td>
+                   <td th:text="${student.program}"></td>
+               </tr>
+               </tbody>
+           </table>
+       </div>
+   </div>
 </div>
 </body>
 </html>

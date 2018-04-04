@@ -53,7 +53,7 @@
                     <li class="list-group-item d-flex justify-content-between align-items-center" th:each="course: ${program.courses}" th:if="${lecturer.courses.contains(course)}">
                         <span class="hide-overflow" th:text="${(course.compulsory==true?'[C] ':'[E] ')+course.code+' '+'-'+' '+course.title}"></span>
                         <span class="badge badge-pill" th:classappend="${course.semester==T(com.emmanuelirem.studentassistant.models.enums.SemesterEnum).ALPHA?'badge-danger':'badge-primary'}">
-                            <a href="/student/courses" th:href="@{'/student/courses/remove/'+${course.id}}">
+                            <a href="/lecturer/courses" th:href="@{'/lecturer/courses/remove/'+${course.id}}">
                                 <strong style="color: white;">X</strong>
                             </a>
                         </span>

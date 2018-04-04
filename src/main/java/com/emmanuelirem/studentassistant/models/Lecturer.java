@@ -20,6 +20,7 @@ public class Lecturer {
     private String firstName;
     private String lastName;
     private String schoolEmailAddress;
+    private String office;
 
 //    @NotNull
 //    @Size(min = 11, max = 11, message = "Please check that phone number is 10 digits")
@@ -43,14 +44,17 @@ public class Lecturer {
     @OneToMany
     private List<Message> messages = new ArrayList<>();
 
+    private boolean inOffice = false;
+
     public Lecturer() {
     }
 
-    public Lecturer(String firstName, String lastName, String username, String password) {
+    public Lecturer(String firstName, String lastName, String username, String password, String office) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.office = office;
     }
 
     public Lecturer(String firstName, String lastName, String username, String password, Set<Course> courses) {
@@ -145,6 +149,14 @@ public class Lecturer {
         }
     }
 
+    public String getOffice() {
+        return office;
+    }
+
+    public void setOffice(String office) {
+        this.office = office;
+    }
+
     public void addCourse(Course course) {
         if(courses == null) {
             courses = new ArrayList<>();
@@ -195,6 +207,14 @@ public class Lecturer {
             personalPhoneNumber.add(number);
     }
 
+    public boolean isInOffice() {
+        return inOffice;
+    }
+
+    public void setInOffice(boolean inOffice) {
+        this.inOffice = inOffice;
+    }
+
     @Override
     public String toString() {
         return "Lecturer{" +
@@ -202,9 +222,9 @@ public class Lecturer {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", schoolEmailAddress='" + schoolEmailAddress + '\'' +
+                ", office='" + office + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", courses=" + courses +
                 '}';
     }
 }

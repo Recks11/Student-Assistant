@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/imports::shared_header(~{::title},~{::link})">
+    <meta charset="UTF-8"/>
+    <title>Student - view course</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<th:block th:insert="~{fragments/navbar}"/>
+<div class="container-fluid">
+    <div class="alert" role="alert" th:classappend="${course.lecturers.size()==0?'alert-danger':'alert-success'}">
+        <h4 class="alert-heading" th:text="${course.code+' '+course.title}"> </h4>
+        <p th:text="${ 'There are '+course.lecturers.size()+' lecturers for this course'}"> </p>
+        <hr>
+        <p class="mb-0" th:text="${ 'This is an '+course.semester+' semester course'}"> </p>
+    </div>
+</div>
+<br/>
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">email</th>
+            <th scope="col">office</th>
+            <th scope="col">location</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lecturer : ${course.lecturers}">
+            <th scope="row" th:text="${course.lecturers.indexOf(lecturer)}"></th>
+            <td th:text="${lecturer.firstName + ' ' + lecturer.lastName}">Mark</td>
+            <td ><a th:href="${'mailto:'+ lecturer.schoolEmailAddress.toLowerCase()}" th:text="${lecturer.schoolEmailAddress}"></a></td>
+            <td th:text="${lecturer.office}"></td>
+            <td th:text="${lecturer.inOffice==true?'in Office':'not in office'}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

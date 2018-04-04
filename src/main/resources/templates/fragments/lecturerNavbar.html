@@ -20,9 +20,20 @@
 
             <div>
                 <ul class="navbar-nav mr-auto">
+                    <!-- NAVBAR ITEMS -->
                     <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false" th:text="${lecturer.firstName + ' ' +lecturer.lastName+' '}">
+                           aria-haspopup="true" aria-expanded="false" th:text="${lecturer.inOffice==true?'In Office':'Not Available'}"> <!-- LECTURER STATUS -->
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/lecturer/inOffice">in Office</a>
+                            <a class="dropdown-item" href="/lecturer/notAvailable">unavailable</a>
+                        </div>
+                    </li>
+
+                    <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false" th:text="${lecturer.firstName + ' ' +lecturer.lastName+' '}"><!-- NAME -->
 
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -30,15 +41,18 @@
                             <a class="dropdown-item" href="/logout">logout</a>
                         </div>
                     </li>
+
                     <li class="nav-item">
                         <a class="notification-icon" href="#">
                             <svg class="notification-svg" xmlns="http://www.w3.org/2000/svg"  height="40" viewBox="0 0 48 48">
                                 <path fill="none" d="M0 0h48v48H0z"></path>
                                 <path fill="white" d="M40 8H8c-2.21 0-3.98 1.79-3.98 4L4 36c0 2.21 1.79 4 4 4h32c2.21 0 4-1.79 4-4V12c0-2.21-1.79-4-4-4zm0 28H8V16l16 10 16-10v20zM24 22L8 12h32L24 22z"></path>
                             </svg>
-                            <span>10</span>
+                            <span>10</span> <!-- NUMBER OF NOTIFICATIONS -->
                         </a>
                     </li>
+
+                    <!--<li> </li> TO ADD ITEM REMOVE COMMENT AND WRITE SOMETHING IN HERE -->
                 </ul>
             </div>
         </div>

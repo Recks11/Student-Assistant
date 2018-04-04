@@ -11,10 +11,7 @@ import com.emmanuelirem.studentassistant.services.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -25,14 +22,18 @@ import java.util.List;
 @RequestMapping("/lecturer/courses")
 public class LecturerCourseController {
 
+    private final CourseService courseService;
+    private final LecturerService lecturerService;
+    private final DepartmentRepository departmentRepository;
+    private final ProgramService programService;
+
     @Autowired
-    private CourseService courseService;
-    @Autowired
-    private LecturerService lecturerService;
-    @Autowired
-    private DepartmentRepository departmentRepository;
-    @Autowired
-    private ProgramService programService;
+    public LecturerCourseController(CourseService courseService, LecturerService lecturerService, DepartmentRepository departmentRepository, ProgramService programService) {
+        this.courseService = courseService;
+        this.lecturerService = lecturerService;
+        this.departmentRepository = departmentRepository;
+        this.programService = programService;
+    }
 
 
     @GetMapping("/")

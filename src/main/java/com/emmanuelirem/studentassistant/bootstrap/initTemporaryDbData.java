@@ -58,9 +58,12 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         addMisCourses();
 
     }
+
     private void addLecturer(){
-        Lecturer lecturer =  new Lecturer("Random","Lecturer","cu00001","12345");
+        Lecturer lecturer =  new Lecturer("janedoe","oluwa","cu00001","12345","CST B301");
+        Lecturer lecturer2 =  new Lecturer("Deez","nuts","cu00002","12345","CST B302");
         lecturerService.save(lecturer);
+        lecturerService.save(lecturer2);
     }
 
 

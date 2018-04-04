@@ -4,11 +4,8 @@ import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Lecturer;
 import com.emmanuelirem.studentassistant.models.Student;
 import com.emmanuelirem.studentassistant.models.university.Department;
-import com.emmanuelirem.studentassistant.models.university.Program;
 import com.emmanuelirem.studentassistant.repository.DepartmentRepository;
-import com.emmanuelirem.studentassistant.services.CourseService;
 import com.emmanuelirem.studentassistant.services.LecturerService;
-import com.emmanuelirem.studentassistant.services.ProgramService;
 import com.emmanuelirem.studentassistant.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,12 +47,34 @@ public class LecturerController {
     }
 
     @GetMapping("/account")
-    public String viewAccount(){
-
-
+    public String viewAccount(Model model, HttpServletRequest request){
+        Lecturer lecturer = lecturerService.getLecturerFromRequest(request);
+        model.addAttribute("lecturer", lecturer);
         return "lecturerAccountPage";
     }
 
+    @PostMapping("/account")
+    public String updateAccount(HttpServletRequest request, @ModelAttribute("lecturer") Lecturer lecturer){
+        Lecturer actualLecturer = lecturerService.getLecturerFromRequest(request);
+        actualLecturer.setOffice(lecturer.getOffice());
+        lecturerService.update(actualLecturer);
+        return "redirect:/lecturer/account";
+    }
+
+    @GetMapping("/inOffice")
+    public String setInOffice(HttpServletRequest request){
+        Lecturer lecturer = lecturerService.getLecturerFromRequest(request);
+        lecturer.setInOffice(true);
+        lecturerService.update(lecturer);
+        return "redirect:/lecturer/";
+    }
+    @GetMapping("/notAvailable")
+    public String setNotAvailable(HttpServletRequest request){
+        Lecturer lecturer = lecturerService.getLecturerFromRequest(request);
+        lecturer.setInOffice(false);
+        lecturerService.update(lecturer);
+        return "redirect:/lecturer/";
+    }
     @PostMapping("/department")
     public String addDepartment(@ModelAttribute("department") Department department, HttpServletRequest request){
 
