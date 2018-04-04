@@ -12,20 +12,23 @@
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
+            <!--<li>-->
+                <!--<a href="#">Dashboard</a>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<a href="#">Notify</a>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<a href="#">Messages</a>-->
+            <!--</li>-->
             <li>
-                <a href="#">Dashboard</a>
+                <a href="/lecturer/inOffice">in office</a>
             </li>
             <li>
-                <a href="#">Notify</a>
+                <a href="/lecturer/notAvailable">set unavailable</a>
             </li>
             <li>
-                <a href="#">Messages</a>
-            </li>
-            <li>
-                <a href="#">View Courses</a>
-            </li>
-            <li>
-                <a href="#">View Students</a>
+                <a href="/logout">set unavailable</a>
             </li>
         </ul>
     </div>
@@ -40,8 +43,8 @@
                 <p th:if="${lecturer.departments.isEmpty()}">Student Assitant</p>
                 <hr>
                 <p class="mb-0">Interact    with your students in a whole new way today</p>
+                <a href="#menu-toggle" class="btn btn-sm btn-secondary" id="menu-toggle"> accessibility</a>
             </div>
-            <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle"> Expand</a>
         </div>
 
         <div class="container-fluid">
