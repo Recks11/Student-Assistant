@@ -15,7 +15,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/student/course")
-@SessionAttributes("loggedInStudent")
 public class StudentCourseController {
 
     private final StudentService studentService;

@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/student")
-@SessionAttributes("loggedInStudent")
 public class StudentController {
 
     private final StudentService studentService;
