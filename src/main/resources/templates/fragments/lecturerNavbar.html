@@ -19,7 +19,7 @@
             </ul>
 
             <div>
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto" th:if="${lecturer!=null}">
                     <!-- NAVBAR ITEMS -->
                     <li sec:authorize="isAuthenticated()" class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"

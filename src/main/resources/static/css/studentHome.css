@@ -1,0 +1,5 @@
+.hide-overflow {
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow:ellipsis;
+}

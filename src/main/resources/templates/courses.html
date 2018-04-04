@@ -70,7 +70,7 @@
                 </div>
                 <div class="modal-footer">
                     <a role="button" class="btn btn-secondary" href="/student/">No</a>
-                    <a role="button" class="btn btn-primary"  href="/student/courses?add-courses=true">Yes</a>
+                    <a role="button" class="btn btn-primary"  href="/student/course/register?add-courses=true">Yes</a>
                 </div>
             </div>
         </div>
@@ -96,7 +96,7 @@
 
                         <span class="hide-overflow" th:text="${(course.compulsory==true?'[C] ':'[E] ')+course.code+' '+'-'+' '+course.title}"></span>
                         <span class="badge badge-pill" th:classappend="${course.semester==T(com.emmanuelirem.studentassistant.models.enums.SemesterEnum).ALPHA?'badge-danger':'badge-primary'}">
-                            <a href="/student/courses" th:href="@{'/student/courses/remove/'+${course.id}}">
+                            <a  th:href="@{'/student/courses/remove/'+${course.id}}">
                                 <strong style="color: white;">X</strong>
                             </a>
                         </span>
@@ -106,7 +106,7 @@
         </div>
         <div class="col-12 col-md-7" th:if="${listOfCoursesToBeRegistered!=null && !listOfCoursesToBeRegistered.isEmpty()}">
             <h3 class="text-center"> REGISTER COURSES </h3>
-            <form th:action="@{/student/courses}" th:object="${listOfSelectedCourses}" method="post">
+            <form th:action="@{/student/course/addSelected}" th:object="${listOfSelectedCourses}" method="post">
                 <div th:each="courseVariable : ${listOfCoursesToBeRegistered}" class="form-check d-flex justify-content-between">
                     <span class="add-course hide-overflow">
                     <input class="form-check-input"

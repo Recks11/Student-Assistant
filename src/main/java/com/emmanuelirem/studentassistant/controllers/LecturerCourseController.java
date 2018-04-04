@@ -60,7 +60,7 @@ public class LecturerCourseController {
 
         if(lecturer.getCourses().contains(course)){
             model.addAttribute("course", course);
-            return "viewCourse";
+            return "LecturerViewCourse";
         }
         return "redirect:/lecturer/";
     }

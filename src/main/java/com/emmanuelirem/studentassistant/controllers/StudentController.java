@@ -50,42 +50,6 @@ public class StudentController {
         return "studentHome";
     }
 
-    @GetMapping("/courses")
-    public String getCourses(Model model,
-                             HttpServletRequest request,
-                             @RequestParam(name = "add-courses", required = false, defaultValue = "false") boolean addCourses) {
-
-
-
-        //student class used to check student status for form
-        Student student = studentService.getLoggedInStudentFromRequest(request);
-
-        //if student doesn't have a program
-        if(student.getProgram()==null) {
-
-            String studentProgram = DepartmentsEnum.Computer_and_Information_Sciences.name().replace('_',' ');
-            model.addAttribute("programs", programService.findProgramsByDepartment_Name(studentProgram));
-        }
-
-
-        //if student has a program add course list and list of students courses to model
-        if (student.getProgram() != null) {
-            List<Course> listOfCoursesToBeRegistered = studentService.findUnregisteredCoursesForStudent(student);
-            List<Course> listOfRegisteredCourses = student.getCourses();
-
-            model.addAttribute("listOfCoursesToBeRegistered", listOfCoursesToBeRegistered);
-            model.addAttribute("listOfRegisteredCourses", listOfRegisteredCourses);
-        }
-
-
-
-        model.addAttribute("addCourse", addCourses);//add-course variable = true
-        model.addAttribute("student", student);
-        model.addAttribute("program", new Program());
-        model.addAttribute("listOfSelectedCourses", new ListHelper());
-
-        return "courses";
-    }
 
     @PostMapping("/program")
     public String addDepartment(HttpServletRequest request, @ModelAttribute("program") Program program) {
@@ -95,31 +59,9 @@ public class StudentController {
         student.setProgram(studentProgram);
         studentService.save(student);
 
-        return "redirect:/student/courses";
+        return "redirect:/student/course/register";
     }
 
-    @PostMapping("/courses")
-    public String registerCourses(HttpServletRequest request,
-                                  @ModelAttribute("listOfSelectedCourses") ListHelper courseList) {
-
-        Student student = studentService.findByRegistrationNumber(request.getUserPrincipal().getName());
-
-        courseList.getCoursesList().forEach(student::addCourse);
-        studentService.save(student);
-
-        return "redirect:/student/courses";
-    }
-
-    @GetMapping("/courses/remove/{id}")
-    public String removeCourse(HttpServletRequest request,@PathVariable("id") Long id) {
-
-        Student student = studentService.getLoggedInStudentFromRequest(request);
-        Course course = courseService.findCourseById(id);
-        if (course !=  null)
-            student.removeCourse(course);
-        studentService.save(student);
-        return "redirect:/student/courses";
-    }
 
     @ModelAttribute("loggedInStudent")
     public Student addStudentToModel(Principal principal){

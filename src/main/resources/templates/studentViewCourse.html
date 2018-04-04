@@ -29,7 +29,7 @@
         </thead>
         <tbody>
         <tr th:each="lecturer : ${course.lecturers}">
-            <th scope="row" th:text="${course.lecturers.indexOf(lecturer)}"></th>
+            <th scope="row" th:text="${course.lecturers.indexOf(lecturer)+1}"></th>
             <td th:text="${lecturer.firstName + ' ' + lecturer.lastName}">Mark</td>
             <td ><a th:href="${'mailto:'+ lecturer.schoolEmailAddress.toLowerCase()}" th:text="${lecturer.schoolEmailAddress}"></a></td>
             <td th:text="${lecturer.office}"></td>
