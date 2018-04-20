@@ -37,7 +37,9 @@ public class LecturerController {
     public String openLecturerHome(Model model, @ModelAttribute("lecturer") Lecturer lecturer){
         if(!lecturer.getCourses().isEmpty()){
             List<Student> studentList = new ArrayList<>();
-            lecturer.getCourses().forEach(course -> studentList.addAll(studentService.findStudentsOfferingCourse(course)));
+            lecturer.getCourses().forEach(
+                    course -> studentList.addAll(studentService.findStudentsOfferingCourse(course))
+            );
                 if(!studentList.isEmpty()){
                     model.addAttribute("students", studentList);
                 }

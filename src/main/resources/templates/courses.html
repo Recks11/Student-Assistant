@@ -113,7 +113,7 @@
                            type="checkbox"
                            th:value="${courseVariable.id}"
                            th:id="${courseVariable.getCode()}"
-                           th:field="*{coursesList}"
+                           th:field="*{item}"
                            th:checked="${courseVariable.compulsory}"/>
                     <label class="form-check-label"
                            th:for="${courseVariable.code}"

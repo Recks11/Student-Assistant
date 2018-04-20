@@ -2,6 +2,7 @@ package com.emmanuelirem.studentassistant.services.impl;
 
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Student;
+import com.emmanuelirem.studentassistant.models.helper.ListHelper;
 import com.emmanuelirem.studentassistant.models.security.Roles;
 import com.emmanuelirem.studentassistant.models.security.Users;
 import com.emmanuelirem.studentassistant.models.university.Program;
@@ -79,6 +80,25 @@ public class StudentServiceImpl implements StudentService{
 
     public void saveAll(List<Student> studentList){
         studentList.forEach(this::save);
+    }
+
+    @Override
+    public void registerCourse(Course course, Student student) {
+        student.addCourse(course);
+        this.update(student);
+    }
+
+    @Override
+    public void registerCourses(List<Course> courses, Student student){
+        courses.forEach(student::addCourse);
+        this.update(student);
+    }
+
+    @Override
+    public void removeCourse(Student student, Course course) {
+        if (course!= null)
+            student.removeCourse(course);
+        this.update(student);
     }
 
     @Override

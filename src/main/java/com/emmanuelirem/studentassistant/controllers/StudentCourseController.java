@@ -36,9 +36,6 @@ public class StudentCourseController {
     public String getCourses(Model model,
                              HttpServletRequest request,
                              @RequestParam(name = "add-courses", required = false, defaultValue = "false") boolean addCourses) {
-
-
-
         //student class used to check student status for form
         Student student = studentService.getLoggedInStudentFromRequest(request);
 
@@ -64,7 +61,7 @@ public class StudentCourseController {
         model.addAttribute("addCourse", addCourses);//add-course variable = true
         model.addAttribute("student", student);
         model.addAttribute("program", new Program());
-        model.addAttribute("listOfSelectedCourses", new ListHelper());
+        model.addAttribute("listOfSelectedCourses", new ListHelper<Integer>());
 
         return "courses";
     }
@@ -92,12 +89,11 @@ public class StudentCourseController {
 
     @PostMapping("/addSelected")
     public String registerCourses(HttpServletRequest request,
-                                  @ModelAttribute("listOfSelectedCourses") ListHelper courseList) {
+                                  @ModelAttribute("listOfSelectedCourses") ListHelper<Long> courseIdList) {
 
-        Student student = studentService.findByRegistrationNumber(request.getUserPrincipal().getName());
-
-        courseList.getCoursesList().forEach(student::addCourse);
-        studentService.save(student);
+        Student student = studentService.getLoggedInStudentFromRequest(request);
+        List<Course> courses = courseService.findCoursesByIds(courseIdList.getLongValue());
+        studentService.registerCourses(courses, student);
 
         return "redirect:/student/course/register";
     }
@@ -107,9 +103,7 @@ public class StudentCourseController {
 
         Student student = studentService.getLoggedInStudentFromRequest(request);
         Course course = courseService.findCourseById(id);
-        if (course !=  null)
-            student.removeCourse(course);
-        studentService.save(student);
+        studentService.removeCourse(student, course);
         return "redirect:/student/course/register";
     }
 

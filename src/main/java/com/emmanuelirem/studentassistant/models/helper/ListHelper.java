@@ -1,22 +1,37 @@
 package com.emmanuelirem.studentassistant.models.helper;
 
-import com.emmanuelirem.studentassistant.models.Course;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListHelper {
+public class ListHelper<T> {
 
-    private List<Course> coursesList = new ArrayList<>();
+    private List<T> item = new ArrayList<>();
 
-    public ListHelper() {
+
+    public ListHelper() {}
+
+    public List<T> getItem() {
+        return item;
+    }
+    public List<Long> getLongValue(){
+        List<Long> longVar = new ArrayList<>();
+
+        this.getItem().forEach(item -> {
+            try{
+                longVar.add((long) Integer.parseInt((String) item));
+            } catch (Exception e){
+                System.out.println(e);
+            }
+        });
+
+        return longVar;
     }
 
-    public List<Course> getCoursesList() {
-        return coursesList;
+    public void setItem(List<T> list) {
+        list.forEach(listItem -> {
+            item.add(listItem);
+        });
     }
 
-    public void setCoursesList(List<Course> coursesList) {
-        this.coursesList = coursesList;
-    }
 }

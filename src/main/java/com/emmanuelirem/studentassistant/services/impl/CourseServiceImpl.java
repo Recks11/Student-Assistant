@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,5 +49,15 @@ public class CourseServiceImpl implements CourseService{
     @Override
     public List<Course> findCoursesContainingProgram(Program program) {
         return courseRepository.findCoursesByProgramsContains(program);
+    }
+
+    @Override
+    public List<Course> findCoursesByIds(List<Long> idList) {
+
+        List<Course> courses = new ArrayList<>();
+        idList.forEach(id -> {
+            courses.add(this.findCourseById(id));
+        });
+        return courses;
     }
 }

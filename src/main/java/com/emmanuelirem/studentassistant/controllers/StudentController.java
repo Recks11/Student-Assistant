@@ -41,8 +41,8 @@ public class StudentController {
     @GetMapping("/")
     public String home(HttpServletRequest request, Model model) {
 
-        List<Course> registeredCourses = studentService.getLoggedInStudentFromRequest(request)
-                .getCourses();
+        List<Course> registeredCourses =
+                studentService.getLoggedInStudentFromRequest(request).getCourses();
 
         registeredCourses.sort(sortService);
 

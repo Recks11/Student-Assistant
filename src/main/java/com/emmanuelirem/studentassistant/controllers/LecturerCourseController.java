@@ -69,22 +69,18 @@ public class LecturerCourseController {
     public String addCourse(@PathVariable("id") long id, HttpServletRequest request){
 
         Course course = courseService.findCourseById(id);
-        if(course!=null){
-            Lecturer lecturer = lecturerService.getLecturerFromRequest(request);
-            lecturer.addCourse(course);
-            lecturerService.update(lecturer);
-        }
+        Lecturer lecturer = lecturerService.getLecturerFromRequest(request);
+
+        lecturerService.addCourseToLecturer(lecturer, course);
         return "redirect:/lecturer/courses/";
     }
     @GetMapping("/remove/{id}")
     public String removeCourse(@PathVariable("id") long id, HttpServletRequest request){
 
         Course course = courseService.findCourseById(id);
-        if(course!=null){
-            Lecturer lecturer = lecturerService.getLecturerFromRequest(request);
-            lecturer.removeCourse(course);
-            lecturerService.update(lecturer);
-        }
+        Lecturer lecturer = lecturerService.getLecturerFromRequest(request);
+
+        lecturerService.removeCourseFromLecturer(lecturer, course);
         return "redirect:/lecturer/courses/";
     }
 

@@ -17,4 +17,6 @@ public interface CourseService {
     List<Course> findCoursesContainingProgram(Program program);
 
     List<Course> findCoursesWithLecturer(Lecturer lecturer);
+
+    List<Course> findCoursesByIds(List<Long> idList);
 }

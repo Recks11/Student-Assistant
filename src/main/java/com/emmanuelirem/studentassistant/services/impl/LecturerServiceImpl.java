@@ -72,9 +72,9 @@ public class LecturerServiceImpl implements LecturerService{
 
     @Override// TODO remove debug
     public void addCourseToLecturer(Lecturer lecturer, Course course) {
-        if(!lecturer.getCourses().contains(course)){
+        if(course!= null && !lecturer.getCourses().contains(course)){
             lecturer.addCourse(course);
-            this.save(lecturer);
+            this.update(lecturer);
         } else {
             System.out.println("Lecturer doesn't lecture course");
         }
@@ -82,9 +82,11 @@ public class LecturerServiceImpl implements LecturerService{
 
     @Override
     public void removeCourseFromLecturer(Lecturer lecturer, Course course) {
-        if(lecturer.getCourses().contains(course)){
+        if(course != null && lecturer.getCourses().contains(course)){
             lecturer.removeCourse(course);
-            this.save(lecturer);
+            this.update(lecturer);
+        } else {
+            System.out.println("course it either null or lecturer does not lecture course");
         }
     }
 
