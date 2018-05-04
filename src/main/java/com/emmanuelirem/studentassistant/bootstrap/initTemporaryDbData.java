@@ -7,12 +7,9 @@ import com.emmanuelirem.studentassistant.models.enums.CollegeEnum;
 import com.emmanuelirem.studentassistant.models.enums.DepartmentsEnum;
 import com.emmanuelirem.studentassistant.models.enums.ProgramEnum;
 import com.emmanuelirem.studentassistant.models.enums.SemesterEnum;
-import com.emmanuelirem.studentassistant.models.security.Roles;
-import com.emmanuelirem.studentassistant.models.security.Users;
 import com.emmanuelirem.studentassistant.models.Student;
 import com.emmanuelirem.studentassistant.models.university.*;
 import com.emmanuelirem.studentassistant.repository.*;
-import com.emmanuelirem.studentassistant.services.EncoderService;
 import com.emmanuelirem.studentassistant.services.LecturerService;
 import com.emmanuelirem.studentassistant.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +23,14 @@ import java.util.*;
 @Component
 public class initTemporaryDbData implements ApplicationListener<ContextRefreshedEvent> {
 
-    private EncoderService encoderService;
     private StudentService studentService;
     private ProgramRepository programRepository;
-    private UsersService usersService;
-    private RolesService rolesService;
     private final CourseRepository courseRepository;
     private final LecturerService lecturerService;
     @Autowired
     public initTemporaryDbData(StudentService studentService,
-                               UsersService usersService, RolesService rolesService,
-                               EncoderService encoderService,
                                ProgramRepository programRepository, CourseRepository courseRepository, LecturerService lecturerService) {
         this.studentService = studentService;
-        this.usersService = usersService;
-        this.rolesService = rolesService;
-        this.encoderService = encoderService;
         this.programRepository = programRepository;
         this.courseRepository = courseRepository;
         this.lecturerService = lecturerService;

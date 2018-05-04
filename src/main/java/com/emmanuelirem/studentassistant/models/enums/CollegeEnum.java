@@ -1,6 +1,5 @@
 package com.emmanuelirem.studentassistant.models.enums;
 
-import java.util.Arrays;
 
 public enum CollegeEnum {
 

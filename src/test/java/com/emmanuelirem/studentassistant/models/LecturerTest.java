@@ -4,7 +4,6 @@ import com.emmanuelirem.studentassistant.models.enums.SemesterEnum;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,14 +14,12 @@ public class LecturerTest {
     private Course course;
     private Course secondCourse;
     private Lecturer lecturer; // to be used later
-    private Student student; //to be used later
 
     @Before
     public void setup(){
         course = new Course(2,400,"CIS 421","Computer Security", true,"CIS 421", SemesterEnum.OMEGA);
         secondCourse = new Course(3,400,"CIS 422","Computer Imformation Systems", true, "CIS 422", SemesterEnum.OMEGA);
         lecturer = new Lecturer("Azubike","Azu","azulolo","12345","B401");
-        student = new Student("Rex","Ijiekhuamen","13cg015928","Daniel","B301","12345",null, new ArrayList<>());
     }
 
     @Test

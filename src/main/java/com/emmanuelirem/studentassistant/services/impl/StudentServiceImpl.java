@@ -2,18 +2,15 @@ package com.emmanuelirem.studentassistant.services.impl;
 
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Student;
-import com.emmanuelirem.studentassistant.models.helper.ListHelper;
 import com.emmanuelirem.studentassistant.models.security.Roles;
 import com.emmanuelirem.studentassistant.models.security.Users;
 import com.emmanuelirem.studentassistant.models.university.Program;
-import com.emmanuelirem.studentassistant.repository.CourseRepository;
 import com.emmanuelirem.studentassistant.repository.RolesService;
 import com.emmanuelirem.studentassistant.repository.StudentRepository;
 import com.emmanuelirem.studentassistant.repository.UsersService;
 import com.emmanuelirem.studentassistant.services.CourseService;
 import com.emmanuelirem.studentassistant.services.EncoderService;
 import com.emmanuelirem.studentassistant.services.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,0 +1,22 @@
+{
+    "run": [
+        {
+            "name": "studentassistant",
+            "projectName": "studentassistant",
+            "workingDirectory": "/Users/rex/IdeaProjects/Student-Assistant",
+            "args": [],
+            "vmargs": [],
+            "preLaunchTask": ""
+        }
+    ],
+    "debug": [
+        {
+            "name": "studentassistant",
+            "projectName": "studentassistant",
+            "workingDirectory": "/Users/rex/IdeaProjects/Student-Assistant",
+            "args": [],
+            "vmargs": [],
+            "preLaunchTask": ""
+        }
+    ]
+}

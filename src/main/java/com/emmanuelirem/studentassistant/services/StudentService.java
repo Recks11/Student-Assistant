@@ -2,7 +2,6 @@ package com.emmanuelirem.studentassistant.services;
 
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Student;
-import com.emmanuelirem.studentassistant.models.helper.ListHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

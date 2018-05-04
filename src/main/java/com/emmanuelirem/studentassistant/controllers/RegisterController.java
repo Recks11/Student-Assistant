@@ -2,9 +2,6 @@ package com.emmanuelirem.studentassistant.controllers;
 
 import com.emmanuelirem.studentassistant.models.Lecturer;
 import com.emmanuelirem.studentassistant.models.Student;
-import com.emmanuelirem.studentassistant.repository.RolesService;
-import com.emmanuelirem.studentassistant.repository.UsersService;
-import com.emmanuelirem.studentassistant.services.EncoderService;
 import com.emmanuelirem.studentassistant.services.LecturerService;
 import com.emmanuelirem.studentassistant.services.RegexService;
 import com.emmanuelirem.studentassistant.services.StudentService;

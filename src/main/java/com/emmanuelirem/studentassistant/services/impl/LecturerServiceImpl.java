@@ -28,6 +28,7 @@ public class LecturerServiceImpl implements LecturerService{
     private RolesService rolesService;
     private final EncoderService encoderService;
 
+
     public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService, UsersService usersService, RolesService rolesService, EncoderService encoderService) {
         this.lecturerRepository = lecturerRepository;
         this.courseService = courseService;
@@ -70,7 +71,7 @@ public class LecturerServiceImpl implements LecturerService{
         lecturerRepository.save(lecturer);
     }
 
-    @Override// TODO remove debug
+    @Override
     public void addCourseToLecturer(Lecturer lecturer, Course course) {
         if(course!= null && !lecturer.getCourses().contains(course)){
             lecturer.addCourse(course);

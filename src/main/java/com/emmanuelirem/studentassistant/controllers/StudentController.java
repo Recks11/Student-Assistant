@@ -2,15 +2,12 @@ package com.emmanuelirem.studentassistant.controllers;
 
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Student;
-import com.emmanuelirem.studentassistant.models.helper.ListHelper;
-import com.emmanuelirem.studentassistant.models.enums.DepartmentsEnum;
 import com.emmanuelirem.studentassistant.models.university.Program;
 
 import java.lang.String;
 import java.security.Principal;
 import java.util.List;
 
-import com.emmanuelirem.studentassistant.services.CourseService;
 import com.emmanuelirem.studentassistant.services.ProgramService;
 import com.emmanuelirem.studentassistant.services.SortService;
 import com.emmanuelirem.studentassistant.services.StudentService;
@@ -27,14 +24,12 @@ public class StudentController {
 
     private final StudentService studentService;
     private final ProgramService programService;
-    private final CourseService courseService;
     private final SortService sortService;
 
     @Autowired
-    public StudentController(StudentService studentService, ProgramService programService, CourseService courseService, SortService sortService) {
+    public StudentController(StudentService studentService, ProgramService programService, SortService sortService) {
         this.studentService = studentService;
         this.programService = programService;
-        this.courseService = courseService;
         this.sortService = sortService;
     }
 
