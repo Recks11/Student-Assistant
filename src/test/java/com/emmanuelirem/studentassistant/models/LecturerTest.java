@@ -4,8 +4,8 @@ import com.emmanuelirem.studentassistant.models.enums.SemesterEnum;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +24,7 @@ public class LecturerTest {
 
     @Test
     public void setCourses() {
-        Set<Course> courseSet = new HashSet<>();
+        List<Course> courseSet = new ArrayList<>();
         Lecturer testLecturer = new Lecturer("Azubike","Azu","azulolo","12345", courseSet);
         assertNotNull(testLecturer.getCourses()); //lecturer initialises and courses are not null
 
@@ -45,7 +45,7 @@ public class LecturerTest {
 
     @Test
     public void addCourse() {
-        Set<Course> tempCourseSet = new HashSet<>();
+        List<Course> tempCourseSet = new ArrayList<>();
         tempCourseSet.add(course);
 
         lecturer.addCourse(course);
@@ -56,7 +56,7 @@ public class LecturerTest {
 
     @Test
     public void removeCourse() {
-        Set<Course> tempCourseSet = new HashSet<>();
+        List<Course> tempCourseSet = new ArrayList<>();
         lecturer.addCourse(course);
 
         assertTrue(course.getLecturers().contains(lecturer));

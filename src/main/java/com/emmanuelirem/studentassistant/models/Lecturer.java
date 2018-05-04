@@ -6,7 +6,6 @@ import com.emmanuelirem.studentassistant.models.university.Department;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Lecturer {
@@ -54,12 +53,12 @@ public class Lecturer {
         this.office = office;
     }
 
-    public Lecturer(String firstName, String lastName, String username, String password, Set<Course> courses) {
+    public Lecturer(String firstName, String lastName, String username, String password, List<Course> courses) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        this.setCourses(courses);
+        this.courses.addAll(courses);
     }
 
     public Lecturer(String firstName, String lastName, ArrayList<String> personalPhoneNumber, String username, String password) {
@@ -140,12 +139,6 @@ public class Lecturer {
             departments.remove(department);
     }
 
-    public void setCourses(Set<Course> courses) {
-        if(!courses.isEmpty()){
-            courses.forEach(this::addCourse);
-        }
-    }
-
     public String getOffice() {
         return office;
     }
@@ -171,6 +164,12 @@ public class Lecturer {
         }
         if(course.getLecturers().contains(this)){
             course.removeLecturer(this);
+        }
+    }
+
+    public void setCourses(List<Course> courses) {
+        if(!courses.isEmpty()){
+            courses.forEach(this::addCourse);
         }
     }
 

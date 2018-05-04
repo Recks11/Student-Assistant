@@ -122,24 +122,24 @@ public class Course {
     }
 
     public List<Lecturer> getLecturers() {
-        return lecturers;
+        return this.lecturers;
     }
 
     public void addLecturer(Lecturer lecturer) {
-        if(lecturers == null) {
-            lecturers = new ArrayList<>();
+        if(this.lecturers == null) {
+            this.lecturers = new ArrayList<>();
         }
         if (!lecturer.getCourses().contains(this)) {
             lecturer.addCourse(this);
         }
-        if(!lecturers.contains(lecturer)){
-            lecturers.add(lecturer);
+        if(!this.lecturers.contains(lecturer)){
+            this.lecturers.add(lecturer);
         }
     }
 
     public void removeLecturer(Lecturer lecturer){
-        if(lecturers.contains(lecturer)){
-            lecturers.remove(lecturer);
+        if(this.lecturers.contains(lecturer)){
+            this.lecturers.remove(lecturer);
         }
         if(lecturer.getCourses().contains(this))
             lecturer.removeCourse(this);
