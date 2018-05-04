@@ -3,7 +3,7 @@ target/
 
 ### STS ###
 .apt_generated
-.sts4-cach
+.sts4-cache
 .classpath
 .factorypath
 .project
