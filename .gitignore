@@ -3,6 +3,7 @@ target/
 
 ### STS ###
 .apt_generated
+.sts4-cach
 .classpath
 .factorypath
 .project
@@ -24,5 +25,5 @@ nbdist/
 .nb-gradle/
 
 ## Vs CODE generated ##
-.sts4-cache
 .vscode
+.vscode/
