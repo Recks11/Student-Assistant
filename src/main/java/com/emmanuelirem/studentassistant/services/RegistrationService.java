@@ -1,10 +1,11 @@
 package com.emmanuelirem.studentassistant.services;
 
 import com.emmanuelirem.studentassistant.models.Student;
+import reactor.core.publisher.Mono;
 
 public interface RegistrationService {
 
-    void registerStudent(Student student);
+    Mono<Void> registerStudent(Student student);
 
-    void registerLecturerfromStudent(Student student);
+    Mono<Void> registerLecturerfromStudent(Student student);
 }

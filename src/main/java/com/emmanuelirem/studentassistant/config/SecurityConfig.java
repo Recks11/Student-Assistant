@@ -1,65 +1,48 @@
 package com.emmanuelirem.studentassistant.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.emmanuelirem.studentassistant.services.UsersService;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 
-import javax.sql.DataSource;
+@EnableWebFluxSecurity
+@Configuration
+public class SecurityConfig {
 
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Bean
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 
-
-    final
-    private DataSource dataSource;
-
-    @Autowired
-    public SecurityConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    @Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select registration_number,password, enabled from users where registration_number=?")
-                .authoritiesByUsernameQuery("select registration_number, role from user_roles where registration_number=?");
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/webjars/**", "/css/**","/js/**","/h2-console/**","/","/register/**","/login**")
+        return http
+                .authorizeExchange()
+                .pathMatchers("/auth/")
                 .permitAll()
-                .antMatchers("/register/**").anonymous()
-                .anyRequest().authenticated()
-                .antMatchers("/lecturer/**")
-                .hasAuthority("LECTURER")
-                .antMatchers("/student/**")
+                .pathMatchers("/api", "/logout")
+                .authenticated()
+                .pathMatchers("/student")
                 .hasAuthority("STUDENT")
-                .antMatchers("/Api/**")
+                .pathMatchers("/lecturer")
+                .hasAuthority("LECTURER")
+                .anyExchange()
                 .authenticated()
                 .and()
-                .formLogin()
-                .successHandler( new MySimpleUrlAuthenticationSuccessHandler())
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
-        http.exceptionHandling().accessDeniedPage("/403");
+                .build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
+    @Bean
+    public ReactiveUserDetailsService userDetailsService(UsersService users) {
+        return username -> users.findByUsername(username).cast(UserDetails.class);
+    }
 }

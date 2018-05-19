@@ -1,23 +1,18 @@
 package com.emmanuelirem.studentassistant.models.university;
 
 import com.emmanuelirem.studentassistant.models.enums.CollegeEnum;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
-@Entity
+@Document
 public class College {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private String id = UUID.randomUUID().toString();
 
-    @Enumerated(EnumType.STRING)
     private CollegeEnum name;
-
-    @OneToMany( mappedBy = "college", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
-    private List<Department> departments = new ArrayList<>();
 
     public College() {
     }
@@ -26,11 +21,11 @@ public class College {
         this.name = name;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -42,25 +37,6 @@ public class College {
         this.name = name;
     }
 
-    public List<Department> getDepartment() {
-        return new ArrayList<>(departments);
-    }
-
-
-    public void addDepartment(Department department) {
-        if (departments == null) {
-            departments = new ArrayList<>();
-        }
-        departments.add(department);
-        department.setCollege(this);
-    }
-
-    public void removeDepartment(Department department){
-
-        departments.remove(department);
-        department.setCollege(null);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,12 +46,6 @@ public class College {
 
         return id == college.id;
     }
-
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
-
     @Override
     public String toString() {
         return "College{" +

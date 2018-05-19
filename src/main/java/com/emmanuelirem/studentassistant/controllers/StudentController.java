@@ -2,23 +2,22 @@ package com.emmanuelirem.studentassistant.controllers;
 
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Student;
+import com.emmanuelirem.studentassistant.models.helper.ListHelper;
+import com.emmanuelirem.studentassistant.models.security.Users;
 import com.emmanuelirem.studentassistant.models.university.Program;
-
-import java.lang.String;
-import java.security.Principal;
-import java.util.List;
-
 import com.emmanuelirem.studentassistant.services.ProgramService;
 import com.emmanuelirem.studentassistant.services.SortService;
 import com.emmanuelirem.studentassistant.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
-@Controller
+@RestController
 @RequestMapping("/student")
 public class StudentController {
 
@@ -33,34 +32,43 @@ public class StudentController {
         this.sortService = sortService;
     }
 
-    @GetMapping("/")
-    public String home(HttpServletRequest request, Model model) {
-
-        List<Course> registeredCourses =
-                studentService.getLoggedInStudentFromRequest(request).getCourses();
-
-        registeredCourses.sort(sortService);
-
-        model.addAttribute("registeredCourses", registeredCourses);
-        return "studentHome";
+    @GetMapping
+    public Mono<Student> addStudentToModel(@AuthenticationPrincipal Mono<Users> principal){
+        return principal.flatMap(p -> studentService.findByRegistrationNumber(p.getUsername()));
     }
 
-
-    @PostMapping("/program")
-    public String addDepartment(HttpServletRequest request, @ModelAttribute("program") Program program) {
-
-        Student student = studentService.getLoggedInStudentFromRequest(request);
-        Program studentProgram = programService.findProgramByName(program.getName());
-        student.setProgram(studentProgram);
-        studentService.save(student);
-
-        return "redirect:/student/course/register";
+    @GetMapping("/{id}/courses")
+    public Flux<Course> getRegisteredCourses(@PathVariable String id) {
+        return studentService.findById(id).flatMapIterable(Student::getCourses);
     }
 
-
-    @ModelAttribute("loggedInStudent")
-    public Student addStudentToModel(Principal principal){
-        return studentService.findByRegistrationNumber(principal.getName());
+    @PostMapping("/{id}/courses")
+    public Flux<Course> addCourses(@PathVariable String id, @RequestBody ListHelper<Course> courseList) {
+        return studentService.findById(id).flatMapIterable(
+                student -> {
+                    courseList.getItem().forEach(student::addCourse);
+                    studentService.save(student);
+                    return student.getCourses();
+                });
     }
+
+    @GetMapping("/{id}/program")
+    public Mono<Program> getProgram (@PathVariable String id){
+        return studentService.findById(id).flatMap(
+                student -> Mono.just(student.getProgram())
+        );
+    }
+
+    @PostMapping("/{id}/program")
+    public Mono<Student> addDepartment(@PathVariable String id, @RequestBody Program program) {
+
+        return studentService.findById(id).flatMap(
+                student -> {
+                    student.setProgram(program);
+                    return studentService.update(student);
+                }
+        );
+    }
+
 
 }

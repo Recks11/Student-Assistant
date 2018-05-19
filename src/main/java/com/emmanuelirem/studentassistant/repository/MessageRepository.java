@@ -2,24 +2,23 @@ package com.emmanuelirem.studentassistant.repository;
 
 
 import com.emmanuelirem.studentassistant.models.Message;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
+public interface MessageRepository extends ReactiveMongoRepository<Message, String>{
 
-public interface MessageRepository extends JpaRepository<Message, Long>, CrudRepository<Message,Long>{
+    Flux<Message> findMessageByRecipient(String personId);
 
-    Message findMessageByRecipient(String personId);
+    Flux<Message> findMessageBySender(String personId);
 
-    List<Message> findMessageBySender(String personId);
+    Mono<Void> deleteMessagesById(String id);
 
-    void deleteMessagesById(long id);
+    Mono<Void> deleteMessagesBySender(String sender);
 
-    void deleteMessagesBySender(String sender);
+    Mono<Void> deleteMessagesBySenderAndRecipient(String sender, String recipient);
 
-    void deleteMessagesBySenderAndRecipient(String sender, String recipient);
-
-    void deleteAllByReadAndRecipient(boolean read, String recipient);
+    Mono<Void> deleteAllByReadAndRecipient(boolean read, String recipient);
 
 
 }

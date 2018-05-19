@@ -1,10 +1,10 @@
 package com.emmanuelirem.studentassistant.repository;
 
 import com.emmanuelirem.studentassistant.models.university.Department;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Mono;
 
-public interface DepartmentRepository extends JpaRepository<Department, Long>, Repository<Department, Long> {
+public interface DepartmentRepository extends ReactiveMongoRepository<Department, String> {
 
-    Department findDepartmentByName(String name);
+    Mono<Department> findDepartmentByName(String name);
 }

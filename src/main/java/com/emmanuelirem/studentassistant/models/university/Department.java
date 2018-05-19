@@ -1,24 +1,21 @@
 package com.emmanuelirem.studentassistant.models.university;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+import java.util.UUID;
+
+@Document
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private String id = UUID.randomUUID().toString();
 
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    @JoinColumn(name = "college_id")
+    @DBRef
     private College college;
-
-    @OneToMany(mappedBy = "department", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
-    private List<Program> programs = new ArrayList<>();
 
     public Department() {
     }
@@ -27,11 +24,11 @@ public class Department {
         this.name = name;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -48,29 +45,14 @@ public class Department {
     }
 
     public void setCollege(College college) {
-        if (sameAsFormer(college)){
-                return;
+        if (sameAsFormer(college)) {
+            return;
         }
         this.college = college;
     }
 
-    public List<Program> getPrograms() {
-        return programs;
-    }
-
-    public void setPrograms(List<Program> programs) {
-        this.programs = programs;
-    }
-
-    public void addProgram(Program program) {
-        if (programs == null) {
-            programs = new ArrayList<>();
-        }
-        programs.add(program);
-        program.setDepartment(this);
-    }
     private boolean sameAsFormer(College newCollege) {
-        return college==null? newCollege == null : college.equals(newCollege);
+        return college == null ? newCollege == null : college.equals(newCollege);
     }
 
 

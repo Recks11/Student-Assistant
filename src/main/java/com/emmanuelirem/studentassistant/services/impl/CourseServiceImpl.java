@@ -7,13 +7,12 @@ import com.emmanuelirem.studentassistant.repository.CourseRepository;
 import com.emmanuelirem.studentassistant.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 public class CourseServiceImpl implements CourseService{
 
     private final CourseRepository courseRepository;
@@ -24,40 +23,38 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public void saveOrUpdate(Course course){
-        courseRepository.save(course);
+    public Mono<Course> saveOrUpdate(Course course){
+        return courseRepository.save(course);
     }
 
     @Override
-    public List<Course> findCoursesWithLecturer(Lecturer lecturer) {
+    public Flux<Course> findCoursesWithLecturer(Lecturer lecturer) {
         return courseRepository.findCoursesByLecturersContains(lecturer);
     }
 
     @Override
-    public Course findCourseById(long id) {
-        if(courseRepository.findById(id).isPresent())
-            return courseRepository.findById(id).get();
-        else
-            return null;
+    public Mono<Course> findCourseById(String id) {
+        return courseRepository.findById(id);
     }
 
     @Override
-    public Course findCourseContainingLecturer(Lecturer lecturer) {
+    public Mono<Course> findCourseContainingLecturer(Lecturer lecturer) {
         return courseRepository.findCourseByLecturersContains(lecturer);
     }
 
     @Override
-    public List<Course> findCoursesContainingProgram(Program program) {
+    public Flux<Course> findCoursesContainingProgram(Program program) {
         return courseRepository.findCoursesByProgramsContains(program);
     }
 
     @Override
-    public List<Course> findCoursesByIds(List<Long> idList) {
+    public Flux<Course> findCoursesByIds(List<String> idList) {
+        return courseRepository.findAllById(idList);
+    }
 
-        List<Course> courses = new ArrayList<>();
-        idList.forEach(id -> {
-            courses.add(this.findCourseById(id));
-        });
-        return courses;
+    @Override
+    public Mono<Course> setOrUpdateCoursePassword(Course course, String password) {
+        course.setPassword(password);
+        return this.saveOrUpdate(course);
     }
 }

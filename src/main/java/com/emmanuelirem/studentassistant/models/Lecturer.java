@@ -2,42 +2,35 @@ package com.emmanuelirem.studentassistant.models;
 
 import com.emmanuelirem.studentassistant.models.helper.MatchesIdPattern;
 import com.emmanuelirem.studentassistant.models.university.Department;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@Entity
+@Document
 public class Lecturer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private String id = UUID.randomUUID().toString();
     private String firstName;
     private String lastName;
     private String schoolEmailAddress;
     private String office;
 
-//    @NotNull
-//    @Size(min = 11, max = 11, message = "Please check that phone number is 10 digits")
     private ArrayList<String> personalPhoneNumber;
 
     @MatchesIdPattern
     private String username;
     private String password;
 
-    @ManyToMany
+    @DBRef
     private List<Department> departments = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "lecturer_course",
-            joinColumns=@JoinColumn(name = "lecturer_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
+    @DBRef
     private List<Course> courses = new ArrayList<>();
-
-    @OneToMany
+    @DBRef
     private List<Message> messages = new ArrayList<>();
 
     private boolean inOffice = false;
@@ -69,11 +62,11 @@ public class Lecturer {
         this.password = password;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

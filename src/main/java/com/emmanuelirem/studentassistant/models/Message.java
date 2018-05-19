@@ -1,23 +1,22 @@
 package com.emmanuelirem.studentassistant.models;
 
-import javax.persistence.*;
-import java.util.Date;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+import java.util.Date;
+import java.util.UUID;
+
+@Document
 public class Message {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private String id = UUID.randomUUID().toString();
     private String sender;
     private String recipient;
     private String messageHeader;
     private String messageBody;
 
-    @Temporal(TemporalType.TIMESTAMP)
     private Date timeSent;
-
-    @Temporal(TemporalType.TIMESTAMP)
     private Date timeRead;
 
     private boolean read;
@@ -35,11 +34,11 @@ public class Message {
         this.read = read;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -8,13 +8,13 @@ import com.emmanuelirem.studentassistant.services.StudentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
-@Controller
+@RestController
+@RequestMapping("/auth/register/")
 public class RegisterController {
 
     private final RegexService regexService;
@@ -28,39 +28,13 @@ public class RegisterController {
         this.lecturerService = lecturerService;
     }
 
-    @GetMapping("/register")
-    public String showRegistrationPage(Model model){
-
-        model.addAttribute("student", new Student());
-        return "register";
+    @PostMapping("/student")
+    public Mono<Student> registerStudent(@Valid @ModelAttribute Student student){
+        return studentService.save(student);
     }
 
-    @PostMapping("/register")
-    public String registerStudent(@Valid @ModelAttribute Student student, BindingResult result){
-
-        if (regexService.matchesStudentRegNumber(student.getRegistrationNumber())){
-            try{
-                studentService.save(student);
-                return "redirect:/login";
-            } catch (Exception e) {
-                e.getMessage();
-                return "register";
-            }
-        }
-
-        if (regexService.matchesLecturerId(student.getRegistrationNumber())){
-            try{
-                Lecturer lecturer = lecturerService.fromStudent(student);
-                lecturerService.save(lecturer);
-                return "redirect:/login?success";
-            } catch (Exception e) {
-                e.getMessage();
-                return "register";
-            }
-        }
-
-
-
-        return "register";
+    @PostMapping("/lecturer")
+    public Mono<Lecturer> registerLecturer(@Valid @ModelAttribute Student student){
+        return lecturerService.fromStudent(student).flatMap(lecturerService::save);
     }
 }

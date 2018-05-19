@@ -5,6 +5,8 @@ import com.emmanuelirem.studentassistant.repository.ProgramRepository;
 import com.emmanuelirem.studentassistant.services.ProgramService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -19,12 +21,12 @@ public class ProgramServiceImpl implements ProgramService{
     }
 
     @Override
-    public List<Program> findProgramsByDepartment_Name(String name) {
+    public Flux<Program> findProgramsByDepartment_Name(String name) {
         return programRepository.findProgramsByDepartment_Name(name);
     }
 
     @Override
-    public Program findProgramByName(String name) {
+    public Mono<Program> findProgramByName(String name) {
         return programRepository.findProgramByName(name);
     }
 }

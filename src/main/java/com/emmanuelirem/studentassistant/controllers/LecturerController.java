@@ -4,101 +4,74 @@ import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Lecturer;
 import com.emmanuelirem.studentassistant.models.Student;
 import com.emmanuelirem.studentassistant.models.university.Department;
-import com.emmanuelirem.studentassistant.repository.DepartmentRepository;
+import com.emmanuelirem.studentassistant.services.CourseService;
 import com.emmanuelirem.studentassistant.services.LecturerService;
 import com.emmanuelirem.studentassistant.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
-@Controller
-@RequestMapping("/lecturer")
+@RestController
+@RequestMapping("/api/v1/lecturer")
 public class LecturerController {
 
 
     private LecturerService lecturerService;
     private final StudentService studentService;
-    private final DepartmentRepository departmentRepository;
+    private final CourseService courseService;
 
     @Autowired
-    public LecturerController(LecturerService lecturerService, StudentService studentService, DepartmentRepository departmentRepository) {
+    public LecturerController(LecturerService lecturerService, StudentService studentService, CourseService courseService) {
         this.lecturerService = lecturerService;
         this.studentService = studentService;
-        this.departmentRepository = departmentRepository;
-    }
-
-    @GetMapping("/")
-    public String openLecturerHome(Model model, @ModelAttribute("lecturer") Lecturer lecturer){
-        if(!lecturer.getCourses().isEmpty()){
-            List<Student> studentList = new ArrayList<>();
-            lecturer.getCourses().forEach(
-                    course -> studentList.addAll(studentService.findStudentsOfferingCourse(course))
-            );
-                if(!studentList.isEmpty()){
-                    model.addAttribute("students", studentList);
-                }
-        }
-
-        return "lecturerHome";
+        this.courseService = courseService;
     }
 
     @GetMapping("/account")
-    public String viewAccount(Model model, HttpServletRequest request){
-        Lecturer lecturer = lecturerService.getLecturerFromRequest(request);
-        model.addAttribute("lecturer", lecturer);
-        return "lecturerAccountPage";
+    public Mono<Lecturer> viewAccount(WebRequest request){
+        return lecturerService.getLecturerFromRequest(request);
     }
 
     @PostMapping("/account")
-    public String updateAccount(HttpServletRequest request, @ModelAttribute("lecturer") Lecturer lecturer){
-        Lecturer actualLecturer = lecturerService.getLecturerFromRequest(request);
-        actualLecturer.setOffice(lecturer.getOffice());
-        lecturerService.update(actualLecturer);
-        return "redirect:/lecturer/account";
+    public Mono<Lecturer> updateAccount(WebRequest request, @RequestBody Lecturer lecturer){
+        return lecturerService.getLecturerFromRequest(request).flatMap(
+                lecturer1 -> {
+                    lecturer1 = lecturer;
+                    return lecturerService.update(lecturer1);
+                }
+        );
+
     }
 
-    @GetMapping("/inOffice")
-    public String setInOffice(HttpServletRequest request){
-        Lecturer lecturer = lecturerService.getLecturerFromRequest(request);
-        lecturer.setInOffice(true);
-        lecturerService.update(lecturer);
-        return "redirect:/lecturer/";
+    @GetMapping("/status/inOffice")
+    public Mono<Lecturer> setInOffice(WebRequest request){
+        return lecturerService.getLecturerFromRequest(request).flatMap(
+                lecturer -> {
+                    lecturer.setInOffice(true);
+                    return lecturerService.update(lecturer);
+                }
+        );
     }
-    @GetMapping("/notAvailable")
-    public String setNotAvailable(HttpServletRequest request){
-        Lecturer lecturer = lecturerService.getLecturerFromRequest(request);
-        lecturer.setInOffice(false);
-        lecturerService.update(lecturer);
-        return "redirect:/lecturer/";
+    @GetMapping("/status/notAvailable")
+    public Mono<Lecturer> setNotAvailable(WebRequest request){
+        return lecturerService.getLecturerFromRequest(request).flatMap(
+                lecturer -> {
+                    lecturer.setInOffice(false);
+                    return lecturerService.update(lecturer);
+                }
+        );
     }
     @PostMapping("/department")
-    public String addDepartment(@ModelAttribute("department") Department department, HttpServletRequest request){
+    public Mono<Lecturer> addDepartment(@RequestBody Department department, WebRequest request){
 
-        Lecturer lecturer = this.lecturerService.getLecturerFromRequest(request);
-        Department selectedDepartment = departmentRepository.findDepartmentByName(department.getName());
-        lecturer.addDepartment(selectedDepartment);
-        lecturerService.update(lecturer);
-        return "redirect:/lecturer/courses/";
-    }
-
-    @ModelAttribute("listOfCoursesByLecturer")
-    public List<Course> addCoursesListToModel(Principal principal){
-        Lecturer lecturer = lecturerService.getLecturerByIdentifier(principal.getName());
-        List<Course> listOfCoursesByLecturer = lecturerService.getCoursesWithLecturer(lecturer);
-        if(listOfCoursesByLecturer != null)
-            return listOfCoursesByLecturer;
-        else
-            return new ArrayList<>();
-    }
-
-    @ModelAttribute("lecturer")
-    public Lecturer getCurrentLecturer(Principal principal){
-        return lecturerService.getLecturerByIdentifier(principal.getName());
+        return lecturerService.getLecturerFromRequest(request)
+                .flatMap(lecturer -> {
+                    lecturer.addDepartment(department);
+                    return lecturerService.update(lecturer);
+                });
     }
 }

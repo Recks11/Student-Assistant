@@ -2,17 +2,19 @@ package com.emmanuelirem.studentassistant.models;
 
 import com.emmanuelirem.studentassistant.models.enums.SemesterEnum;
 import com.emmanuelirem.studentassistant.models.university.Program;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@Entity
+@Document
 public class Course {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private String id = UUID.randomUUID().toString();
 
     private int units;
     private int level;
@@ -20,22 +22,12 @@ public class Course {
     private String title;
     private boolean compulsory;
     private String password;
-
-    @Enumerated(EnumType.STRING)// This line tells Hibernate that this enumeration should be saved in the database as a string
     private SemesterEnum semester;
-
-    @ManyToMany(mappedBy = "courses")
+    @DBRef(lazy = true)
     private List<Program> programs = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "courses")
+    @DBRef
     private List<Lecturer> lecturers = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "course_students",
-            joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "student_id")
-    )
+    @DBRef(lazy = true)
     private List<Student> students = new ArrayList<>();
 
     public Course() {
@@ -54,11 +46,11 @@ public class Course {
         this.semester = semester;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -114,11 +106,7 @@ public class Course {
     }
 
     public void removeProgram(Program program){
-        if(program.getCourses().contains(this))
-            program.getCourses().remove(this);
-
-        if(programs.contains(program))
-            programs.remove(program);
+        programs.remove(program);
     }
 
     public List<Lecturer> getLecturers() {
@@ -138,9 +126,7 @@ public class Course {
     }
 
     public void removeLecturer(Lecturer lecturer){
-        if(this.lecturers.contains(lecturer)){
-            this.lecturers.remove(lecturer);
-        }
+        this.lecturers.remove(lecturer);
         if(lecturer.getCourses().contains(this))
             lecturer.removeCourse(this);
     }

@@ -3,19 +3,17 @@ package com.emmanuelirem.studentassistant.services.impl;
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Lecturer;
 import com.emmanuelirem.studentassistant.models.Student;
-import com.emmanuelirem.studentassistant.models.security.Roles;
 import com.emmanuelirem.studentassistant.models.security.Users;
 import com.emmanuelirem.studentassistant.repository.LecturerRepository;
-import com.emmanuelirem.studentassistant.repository.RolesService;
-import com.emmanuelirem.studentassistant.repository.UsersService;
 import com.emmanuelirem.studentassistant.services.CourseService;
 import com.emmanuelirem.studentassistant.services.EncoderService;
 import com.emmanuelirem.studentassistant.services.LecturerService;
+import com.emmanuelirem.studentassistant.services.UsersService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import org.springframework.web.context.request.WebRequest;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 @Transactional
@@ -23,92 +21,82 @@ public class LecturerServiceImpl implements LecturerService{
 
     private LecturerRepository lecturerRepository;
     private CourseService courseService;
-
     private UsersService usersService;
-    private RolesService rolesService;
     private final EncoderService encoderService;
 
 
-    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService, UsersService usersService, RolesService rolesService, EncoderService encoderService) {
+    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService, UsersService usersService, EncoderService encoderService) {
         this.lecturerRepository = lecturerRepository;
         this.courseService = courseService;
         this.usersService = usersService;
-        this.rolesService = rolesService;
         this.encoderService = encoderService;
     }
 
 
     @Override
-    public Lecturer fromStudent(Student student) {
+    public Mono<Lecturer> fromStudent(Student student) {
         Lecturer lecturer = new Lecturer();
         lecturer.setFirstName(student.getFirstName());
         lecturer.setLastName(student.getLastName());
         lecturer.setUsername(student.getRegistrationNumber());
         lecturer.setPassword(student.getPassword());
-        return lecturer;
+        return Mono.just(lecturer);
     }
 
     @Override
-    public void save(Lecturer lecturer) {
-        Users newUser = new Users();
-        Roles userRole = new Roles();
-        newUser.setRegistrationNumber(lecturer.getUsername());
-        newUser.setPassword(encoderService.passwordEncoder().encode(lecturer.getPassword()));
-        newUser.setEnabled(true);
-
-        userRole.setRegistrationNumber(lecturer.getUsername());
-        userRole.setRole("ROLE_LECTURER");
-
-        usersService.save(newUser);
-        rolesService.save(userRole);
-
+    public Mono<Lecturer> save(Lecturer lecturer) {
         lecturer.setSchoolEmailAddress(lecturer.getFirstName()+"."+lecturer.getLastName()+"@covenantuniversity.edu.ng");
-        lecturerRepository.save(lecturer);
+        return lecturerRepository.save(lecturer).map(newLecturer -> {
+            Users user = new Users();
+            user.setUsername(lecturer.getUsername().toLowerCase());
+            user.setPassword(encoderService.passwordEncoder().encode(lecturer.getPassword()));
+            user.setEnabled(true);
+            user.setLocked(false);
+            user.setAuthorities(new String[]{"ROLE_LECTURER"});
+            user.setExpired(false);
+            user.setCredentialNotExpired(true);
+            usersService.save(user).subscribe();
+            return newLecturer;
+        });
     }
 
     @Override
-    public void update(Lecturer lecturer) {
-        lecturerRepository.save(lecturer);
+    public Mono<Lecturer> update(Lecturer lecturer) {
+        return lecturerRepository.save(lecturer);
     }
 
     @Override
-    public void addCourseToLecturer(Lecturer lecturer, Course course) {
+    public Mono<Lecturer> addCourseToLecturer(Lecturer lecturer, Course course) {
         if(course!= null && !lecturer.getCourses().contains(course)){
             lecturer.addCourse(course);
-            this.update(lecturer);
+            return this.update(lecturer);
         } else {
-            System.out.println("Lecturer doesn't lecture course");
+            return Mono.empty();
         }
     }
 
     @Override
-    public void removeCourseFromLecturer(Lecturer lecturer, Course course) {
+    public Mono<Lecturer> removeCourseFromLecturer(Lecturer lecturer, Course course) {
         if(course != null && lecturer.getCourses().contains(course)){
             lecturer.removeCourse(course);
-            this.update(lecturer);
+            return this.update(lecturer);
         } else {
-            System.out.println("course it either null or lecturer does not lecture course");
+            return Mono.empty();
         }
     }
 
     @Override
-    public List<Course> getCoursesWithLecturer(Lecturer lecturer) {
+    public Flux<Course> getCoursesWithLecturer(Lecturer lecturer) {
         return courseService.findCoursesWithLecturer(lecturer);
     }
 
     @Override
-    public Lecturer getLecturerByIdentifier(String name) {
+    public Mono<Lecturer> getLecturerByIdentifier(String name) {
         return lecturerRepository.findLecturerByUsername(name);
     }
 
     @Override
-    public Lecturer getLecturerFromRequest(HttpServletRequest request) {
+    public Mono<Lecturer> getLecturerFromRequest(WebRequest request) {
         return lecturerRepository.findLecturerByUsername(request.getUserPrincipal().getName());
-    }
-
-    @Override
-    public void setOrUpdateCoursePassword(Course course, String password) {
-        course.setPassword(password);
-        courseService.saveOrUpdate(course);
     }
 }

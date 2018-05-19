@@ -3,27 +3,25 @@ package com.emmanuelirem.studentassistant.services;
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Lecturer;
 import com.emmanuelirem.studentassistant.models.Student;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import org.springframework.web.context.request.WebRequest;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface LecturerService {
 
-    Lecturer fromStudent(Student student);
+    Mono<Lecturer> fromStudent(Student student);
 
-    void save(Lecturer lecturer);
+    Mono<Lecturer> save(Lecturer lecturer);
 
-    void update(Lecturer lecturer);
+    Mono<Lecturer> update(Lecturer lecturer);
 
-    void addCourseToLecturer(Lecturer lecturer, Course course);
+    Mono<Lecturer> addCourseToLecturer(Lecturer lecturer, Course course);
 
-    void removeCourseFromLecturer(Lecturer lecturer, Course course);
+    Mono<Lecturer> removeCourseFromLecturer(Lecturer lecturer, Course course);
 
-    List<Course> getCoursesWithLecturer(Lecturer lecturer);
+    Flux<Course> getCoursesWithLecturer(Lecturer lecturer);
 
-    Lecturer getLecturerByIdentifier(String name);
+    Mono<Lecturer>  getLecturerByIdentifier(String name);
 
-    Lecturer getLecturerFromRequest(HttpServletRequest request);
-
-    void setOrUpdateCoursePassword(Course course, String password);
+    Mono<Lecturer> getLecturerFromRequest(WebRequest request);
 }

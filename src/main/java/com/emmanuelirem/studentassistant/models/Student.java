@@ -2,21 +2,23 @@ package com.emmanuelirem.studentassistant.models;
 
 import com.emmanuelirem.studentassistant.models.helper.MatchesIdPattern;
 import com.emmanuelirem.studentassistant.models.university.Program;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@Entity
+@Document
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private String id = UUID.randomUUID().toString();
     private String firstName;
     private String lastName;
     private String emailAddress;
@@ -29,21 +31,15 @@ public class Student {
     private String roomNumber;
 
     @NotNull
-    @Min(value = 5, message = "your password isn't legit enough 💯")
+    @Min(value = 5, message = "your password isn't good")
     private String password;
 
-    @ManyToOne
-    @JoinTable(
-            name = "student_program",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "program_id")
-    )
+    @DBRef
     private Program program;
 
-    @ManyToMany(mappedBy = "students")
+    @DBRef
     private List<Course> courses = new ArrayList<>();
-
-    @OneToMany
+    @DBRef(lazy = true)
     private List<Message> messages = new ArrayList<>();
 
     public Student() {
@@ -60,11 +56,11 @@ public class Student {
         this.courses = courses;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -184,11 +180,6 @@ public class Student {
         Student student = (Student) o;
 
         return id == student.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
     }
 
     @Override

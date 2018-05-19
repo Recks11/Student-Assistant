@@ -6,8 +6,8 @@ import com.emmanuelirem.studentassistant.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 @Transactional
@@ -21,37 +21,37 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public void sendMessage(Message message) {
-        messageRepository.save(message);
+    public Mono<Message> sendMessage(Message message) {
+        return messageRepository.save(message);
     }
 
     @Override
-    public Message getMessageSentToPerson(String personId) {
+    public Flux<Message> getMessageSentToPerson(String personId) {
         return messageRepository.findMessageByRecipient(personId);
     }
 
     @Override
-    public List<Message> getMessagesSentByPerson(String personId) {
+    public Flux<Message> getMessagesSentByPerson(String personId) {
         return messageRepository.findMessageBySender(personId);
     }
 
     @Override
-    public void deleteMessageById(long id) {
-        messageRepository.deleteMessagesById(id);
+    public Mono<Void> deleteMessageById(String id) {
+        return messageRepository.deleteMessagesById(id);
     }
 
     @Override
-    public void deleteAllMessagesByUser(String username) {
-        messageRepository.deleteMessagesBySender(username);
+    public Mono<Void> deleteAllMessagesByUser(String username) {
+        return messageRepository.deleteMessagesBySender(username);
     }
 
     @Override
-    public void deleteAllMessagesToUser(String username, String recipient) {
-        messageRepository.deleteMessagesBySenderAndRecipient(username,recipient);
+    public Mono<Void> deleteAllMessagesToUser(String username, String recipient) {
+        return messageRepository.deleteMessagesBySenderAndRecipient(username,recipient);
     }
 
     @Override
-    public void deleteAllReadMessages(String recipient) {
-        messageRepository.deleteAllByReadAndRecipient(true, recipient);
+    public Mono<Void> deleteAllReadMessages(String recipient) {
+        return messageRepository.deleteAllByReadAndRecipient(true, recipient);
     }
 }

@@ -3,20 +3,24 @@ package com.emmanuelirem.studentassistant.services;
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Lecturer;
 import com.emmanuelirem.studentassistant.models.university.Program;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 public interface CourseService {
 
-    void saveOrUpdate(Course course);
+    Mono<Course> saveOrUpdate(Course course);
 
-    Course findCourseById(long id);
+    Mono<Course> findCourseById(String id);
 
-    Course findCourseContainingLecturer(Lecturer lecturer);
+    Mono<Course> findCourseContainingLecturer(Lecturer lecturer);
 
-    List<Course> findCoursesContainingProgram(Program program);
+    Flux<Course> findCoursesContainingProgram(Program program);
 
-    List<Course> findCoursesWithLecturer(Lecturer lecturer);
+    Flux<Course> findCoursesWithLecturer(Lecturer lecturer);
 
-    List<Course> findCoursesByIds(List<Long> idList);
+    Flux<Course> findCoursesByIds(List<String> idList);
+
+    Mono<Course> setOrUpdateCoursePassword(Course course, String password);
 }

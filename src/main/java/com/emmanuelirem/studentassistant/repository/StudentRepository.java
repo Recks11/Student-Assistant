@@ -2,15 +2,14 @@ package com.emmanuelirem.studentassistant.repository;
 
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Student;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
+public interface StudentRepository extends ReactiveMongoRepository<Student, String> {
 
-public interface StudentRepository extends Repository<Student, Long>, JpaRepository<Student, Long> {
+    Mono<Student> findByRegistrationNumber(String registrationNumber);
 
-    Student findByRegistrationNumber(String registrationNumber);
-
-    List<Student> findStudentsByCoursesContains(Course course);
+    Flux<Student> findStudentsByCoursesContains(Course course);
 
 }

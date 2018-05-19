@@ -2,115 +2,114 @@ package com.emmanuelirem.studentassistant.services.impl;
 
 import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Student;
-import com.emmanuelirem.studentassistant.models.security.Roles;
 import com.emmanuelirem.studentassistant.models.security.Users;
 import com.emmanuelirem.studentassistant.models.university.Program;
-import com.emmanuelirem.studentassistant.repository.RolesService;
 import com.emmanuelirem.studentassistant.repository.StudentRepository;
-import com.emmanuelirem.studentassistant.repository.UsersService;
 import com.emmanuelirem.studentassistant.services.CourseService;
 import com.emmanuelirem.studentassistant.services.EncoderService;
 import com.emmanuelirem.studentassistant.services.StudentService;
+import com.emmanuelirem.studentassistant.services.UsersService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.WebRequest;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
 public class StudentServiceImpl implements StudentService{
 
 
     private final CourseService courseService;
     private final StudentRepository studentRepository;
-    private UsersService usersService;
-    private RolesService rolesService;
     private final EncoderService encoderService;
+    private final UsersService usersService;
 
-    public StudentServiceImpl(CourseService courseService, StudentRepository studentRepository, UsersService usersService, RolesService rolesService, EncoderService encoderService) {
+    public StudentServiceImpl(CourseService courseService, StudentRepository studentRepository, UsersService usersService, EncoderService encoderService) {
         this.courseService = courseService;
         this.studentRepository = studentRepository;
-        this.usersService = usersService;
-        this.rolesService = rolesService;
         this.encoderService = encoderService;
+        this.usersService = usersService;
     }
 
     @Override
-    public Student findByRegistrationNumber(String registrationNumber) {
+    public Mono<Student> findByRegistrationNumber(String registrationNumber) {
         return studentRepository.findByRegistrationNumber(registrationNumber);
     }
 
     @Override
-    public Student getLoggedInStudentFromRequest(HttpServletRequest request) {
+    public Mono<Student> findById(String id) {
+        return studentRepository.findById(id);
+    }
+
+    @Override
+    public Mono<Student> getLoggedInStudentFromRequest(WebRequest request) {
         return studentRepository.findByRegistrationNumber(request.getUserPrincipal().getName());
     }
 
     @Override
-    public List<Student> findStudentsOfferingCourse(Course course) {
+    public Flux<Student> findStudentsOfferingCourse(Course course) {
         return studentRepository.findStudentsByCoursesContains(course);
     }
     @Override
-    public void save(Student student) {
-
-        Users newUser = new Users();
-        Roles userRole = new Roles();
-        newUser.setRegistrationNumber(student.getRegistrationNumber().toLowerCase());
-        newUser.setPassword(encoderService.passwordEncoder().encode(student.getPassword()));
-        newUser.setEnabled(true);
-        student.setRegistrationNumber(student.getRegistrationNumber().toLowerCase());
-
-        userRole.setRegistrationNumber(student.getRegistrationNumber());
-        userRole.setRole("ROLE_STUDENT");
-
-        usersService.save(newUser);
-        rolesService.save(userRole);
-
+    public Mono<Student> save(Student student) {
         student.setEmailAddress(student.getFirstName().toLowerCase()+"."+student.getLastName().toLowerCase()+"@stu.cu.edu.ng");
-        studentRepository.save(student);
+        return studentRepository.save(student).map(savedStudent -> {
+            Users user = new Users();
+            user.setUsername(student.getRegistrationNumber().toLowerCase());
+            user.setPassword(encoderService.passwordEncoder().encode(savedStudent.getPassword()));
+            user.setEnabled(true);
+            user.setLocked(false);
+            user.setAuthorities(new String[]{"ROLE_STUDENT"});
+            user.setExpired(false);
+            user.setCredentialNotExpired(true);
+
+            usersService.save(user).subscribe();
+
+            return savedStudent;
+        });
     }
 
-    public void update(Student student){
-        studentRepository.save(student);
+    public Mono<Student> update(Student student){
+        return studentRepository.save(student);
     }
 
-    public void saveAll(List<Student> studentList){
-        studentList.forEach(this::save);
+    public Flux<Student> saveAll(List<Student> studentList){
+        return studentRepository.saveAll(studentList);
     }
 
     @Override
-    public void registerCourse(Course course, Student student) {
+    public Mono<Student> registerCourse(Course course, Student student) {
         student.addCourse(course);
-        this.update(student);
+        return this.update(student);
     }
 
     @Override
-    public void registerCourses(List<Course> courses, Student student){
+    public Mono<Student> registerCourses(List<Course> courses, Student student){
         courses.forEach(student::addCourse);
-        this.update(student);
+        return this.update(student);
     }
 
     @Override
-    public void removeCourse(Student student, Course course) {
+    public Mono<Student> removeCourse(Student student, Course course) {
         if (course!= null)
             student.removeCourse(course);
-        this.update(student);
+        return this.update(student);
     }
 
     @Override
-    public List<Course> findUnregisteredCoursesForStudent(Student student) {
+    public Flux<Course> findUnregisteredCoursesForStudent(Student student) {
         Program program = student.getProgram();
-        List<Course> listOfProgramCourses = courseService.findCoursesContainingProgram(program);
+        Flux<Course> listOfProgramCourses = courseService.findCoursesContainingProgram(program);
         List<Course> listOfRegisteredCourses = student.getCourses();
         List<Course> listOfCoursesToBeRegistered = new ArrayList<>();
 
-        listOfProgramCourses.forEach(course -> {
+        listOfProgramCourses.toStream().forEach(course -> {
             if (!listOfRegisteredCourses.contains(course)) {
                 listOfCoursesToBeRegistered.add(course);
             }
         });
-
-        return listOfCoursesToBeRegistered;
+        return Flux.fromStream(listOfCoursesToBeRegistered.stream());
     }
 }

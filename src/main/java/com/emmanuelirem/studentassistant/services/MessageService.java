@@ -1,22 +1,22 @@
 package com.emmanuelirem.studentassistant.services;
 
 import com.emmanuelirem.studentassistant.models.Message;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface MessageService {
 
-    void sendMessage(Message message);
+    Mono<Message> sendMessage(Message message);
 
-    Message getMessageSentToPerson(String personId);
+    Flux<Message> getMessageSentToPerson(String personId);
 
-    List<Message> getMessagesSentByPerson(String personId);
+    Flux<Message> getMessagesSentByPerson(String personId);
 
-    void deleteMessageById(long id);
+    Mono<Void> deleteMessageById(String id);
 
-    void deleteAllMessagesByUser(String username);
+    Mono<Void> deleteAllMessagesByUser(String username);
 
-    void deleteAllMessagesToUser(String username, String recipient);
+    Mono<Void> deleteAllMessagesToUser(String username, String recipient);
 
-    void deleteAllReadMessages(String recipient);
+    Mono<Void> deleteAllReadMessages(String recipient);
 }
