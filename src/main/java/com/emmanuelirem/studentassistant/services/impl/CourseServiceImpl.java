@@ -43,11 +43,6 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Flux<Course> findCoursesContainingProgram(Program program) {
-        return courseRepository.findCoursesByProgramsContains(program);
-    }
-
-    @Override
     public Flux<Course> findCoursesByIds(List<String> idList) {
         return courseRepository.findAllById(idList);
     }
@@ -56,5 +51,10 @@ public class CourseServiceImpl implements CourseService{
     public Mono<Course> setOrUpdateCoursePassword(Course course, String password) {
         course.setPassword(password);
         return this.saveOrUpdate(course);
+    }
+
+    @Override
+    public Flux<Course> findAll() {
+        return courseRepository.findAll();
     }
 }

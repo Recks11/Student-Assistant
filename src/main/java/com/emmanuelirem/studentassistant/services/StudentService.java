@@ -13,7 +13,7 @@ public interface StudentService {
     Mono<Student> getLoggedInStudentFromRequest(WebRequest request);
     Mono<Student> findById(String id);
     Mono<Student> findByRegistrationNumber(String registrationNumber);
-    Flux<Course> findUnregisteredCoursesForStudent(Student Student);
+    Flux<Course> findUnregisteredCoursesForStudent(String id, String programId);
     Flux<Student> findStudentsOfferingCourse(Course course);
     Mono<Student> save(Student student);
     Mono<Student> update(Student student);

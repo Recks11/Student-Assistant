@@ -5,10 +5,8 @@ import com.emmanuelirem.studentassistant.models.Lecturer;
 import com.emmanuelirem.studentassistant.models.Student;
 import com.emmanuelirem.studentassistant.models.security.Users;
 import com.emmanuelirem.studentassistant.repository.LecturerRepository;
-import com.emmanuelirem.studentassistant.services.CourseService;
-import com.emmanuelirem.studentassistant.services.EncoderService;
-import com.emmanuelirem.studentassistant.services.LecturerService;
-import com.emmanuelirem.studentassistant.services.UsersService;
+import com.emmanuelirem.studentassistant.services.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.WebRequest;
@@ -17,19 +15,22 @@ import reactor.core.publisher.Mono;
 
 @Service
 @Transactional
-public class LecturerServiceImpl implements LecturerService{
+public class LecturerServiceImpl implements LecturerService {
 
+    private final EncoderService encoderService;
+    private final RegexService regexService;
     private LecturerRepository lecturerRepository;
     private CourseService courseService;
     private UsersService usersService;
-    private final EncoderService encoderService;
 
 
-    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService, UsersService usersService, EncoderService encoderService) {
+    @Autowired
+    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService, UsersService usersService, EncoderService encoderService, RegexService regexService) {
         this.lecturerRepository = lecturerRepository;
         this.courseService = courseService;
         this.usersService = usersService;
         this.encoderService = encoderService;
+        this.regexService = regexService;
     }
 
 
@@ -45,8 +46,9 @@ public class LecturerServiceImpl implements LecturerService{
 
     @Override
     public Mono<Lecturer> save(Lecturer lecturer) {
-        lecturer.setSchoolEmailAddress(lecturer.getFirstName()+"."+lecturer.getLastName()+"@covenantuniversity.edu.ng");
-        return lecturerRepository.save(lecturer).map(newLecturer -> {
+
+        if (regexService.matchesLecturerId(lecturer.getUsername())) {
+            lecturer.setSchoolEmailAddress(lecturer.getFirstName() + "." + lecturer.getLastName() + "@covenantuniversity.edu.ng");
             Users user = new Users();
             user.setUsername(lecturer.getUsername().toLowerCase());
             user.setPassword(encoderService.passwordEncoder().encode(lecturer.getPassword()));
@@ -56,8 +58,14 @@ public class LecturerServiceImpl implements LecturerService{
             user.setExpired(false);
             user.setCredentialNotExpired(true);
             usersService.save(user).subscribe();
-            return newLecturer;
-        });
+
+            return lecturerRepository.save(lecturer)
+                    .then(usersService.save(user))
+                    .thenReturn(lecturer)
+                    .doOnError(Mono::error);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
@@ -66,8 +74,18 @@ public class LecturerServiceImpl implements LecturerService{
     }
 
     @Override
+    public Flux<Lecturer> getAll() {
+        return lecturerRepository.findAll();
+    }
+
+    @Override
+    public Mono<Lecturer> getLecturerById(String id) {
+        return lecturerRepository.findById(id);
+    }
+
+    @Override
     public Mono<Lecturer> addCourseToLecturer(Lecturer lecturer, Course course) {
-        if(course!= null && !lecturer.getCourses().contains(course)){
+        if (course != null && !lecturer.getCourses().contains(course)) {
             lecturer.addCourse(course);
             return this.update(lecturer);
         } else {
@@ -77,7 +95,7 @@ public class LecturerServiceImpl implements LecturerService{
 
     @Override
     public Mono<Lecturer> removeCourseFromLecturer(Lecturer lecturer, Course course) {
-        if(course != null && lecturer.getCourses().contains(course)){
+        if (course != null && lecturer.getCourses().contains(course)) {
             lecturer.removeCourse(course);
             return this.update(lecturer);
         } else {

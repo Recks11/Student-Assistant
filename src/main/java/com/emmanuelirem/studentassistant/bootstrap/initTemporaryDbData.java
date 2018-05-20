@@ -15,8 +15,7 @@ import com.emmanuelirem.studentassistant.repository.*;
 import com.emmanuelirem.studentassistant.services.LecturerService;
 import com.emmanuelirem.studentassistant.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -24,14 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class initTemporaryDbData implements ApplicationListener<ContextRefreshedEvent> {
-
-    @Autowired
-    private StudentRepository studentRepository;
-    @Autowired
-    private LecturerRepository lecturerRepository;
-    @Autowired
-    private UsersDetailsRepository usersDetailsRepository;
+public class initTemporaryDbData implements CommandLineRunner {
 
     private final CourseRepository courseRepository;
     private final StudentService studentService;
@@ -39,19 +31,25 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
     private final DepartmentRepository departmentRepository;
     private final CollegeRepository collegeRepository;
     private final ProgramRepository programRepository;
+    private final StudentRepository studentRepository;
+    private final LecturerRepository lecturerRepository;
+    private final UsersDetailsRepository usersDetailsRepository;
 
     @Autowired
-    public initTemporaryDbData(ProgramRepository programRepository, CourseRepository courseRepository, CollegeRepository collegeRepository, StudentService studentService, LecturerService lecturerService, DepartmentRepository departmentRepository) {
+    public initTemporaryDbData(ProgramRepository programRepository, CourseRepository courseRepository, CollegeRepository collegeRepository, StudentService studentService, LecturerService lecturerService, DepartmentRepository departmentRepository, StudentRepository studentRepository, LecturerRepository lecturerRepository, UsersDetailsRepository usersDetailsRepository) {
         this.programRepository = programRepository;
         this.courseRepository = courseRepository;
         this.collegeRepository = collegeRepository;
         this.studentService = studentService;
         this.lecturerService = lecturerService;
         this.departmentRepository = departmentRepository;
+        this.studentRepository = studentRepository;
+        this.lecturerRepository = lecturerRepository;
+        this.usersDetailsRepository = usersDetailsRepository;
     }
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+    public void run(String... args) throws Exception {
         //call methods here
         usersDetailsRepository.deleteAll().subscribe();
         programRepository.deleteAll().subscribe();
@@ -67,7 +65,6 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         addUniversityCoursesDepartmentsAndColleges();
         addCourses();
         addMisCourses();
-
     }
 
     private void addLecturer() {
@@ -85,8 +82,6 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         newStudents.add(new Student("Emmanuel", "Irem", "13cg015929", "Daniel", "A407", "12345", null, new ArrayList<>()));
         newStudents.add(new Student("Guy", "Random", "14CG083345", "Paul", "F401", "12345", null, new ArrayList<>()));
         newStudents.add(new Student("Girl", "Random", "15AD015928", "Esther", "B301", "12345", null, new ArrayList<>()));
-        newStudents.add(new Student("Girl", "Random", "cu01591", "Esther", "B301", "12345", null, new ArrayList<>()));
-        newStudents.add(new Student("Girl", "Random", "cu01594", "Esther", "B301", "12345", null, new ArrayList<>()));
         newStudents.forEach(student -> studentService.save(student).subscribe());
     }
 
@@ -197,16 +192,15 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         coursesList.add(course24);
 
 
+        courseRepository.saveAll(coursesList).subscribe();
+
         programRepository.findProgramByName(ProgramEnum.Computer_Science.name().replace('_', ' ')).map(
                 program -> {
-                    coursesList.forEach(ciscourse -> {
-                        ciscourse.addProgram(program);
-                        courseRepository.save(ciscourse).subscribe();
-                    });
-                    return program;
+                    program.setCourses(coursesList);
+                    System.out.println("saved");
+                    return programRepository.save(program).subscribe();
                 }
         ).subscribe();//get computer science program
-        courseRepository.saveAll(coursesList).subscribe();
 
 
     }
@@ -269,20 +263,17 @@ public class initTemporaryDbData implements ApplicationListener<ContextRefreshed
         miscoursesList.add(miscourse25);
         miscoursesList.add(miscourse26);
 
-        programRepository.findProgramByName(ProgramEnum.Management_and_Information_Science.name().replace('_', ' '))
-                .map(program -> {
-                            miscoursesList.forEach(course -> {
-                                course.addProgram(program);
-
-                            courseRepository.save(course).subscribe();
-                            });
-                            return program;
-                        }
-                ).subscribe();
-
-
         courseRepository.saveAll(miscoursesList).subscribe();
 
+        programRepository.findProgramByName(ProgramEnum.Management_and_Information_Science.name().replace('_', ' '))
+                .map(program -> {
+                    program.setCourses(miscoursesList);
+                    return programRepository.save(program).subscribe();
+                }).subscribe();
+
+
+
     }
+
 
 }

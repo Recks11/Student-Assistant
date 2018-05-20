@@ -29,4 +29,14 @@ public class ProgramServiceImpl implements ProgramService{
     public Mono<Program> findProgramByName(String name) {
         return programRepository.findProgramByName(name);
     }
+
+    @Override
+    public Flux<Program> findAll() {
+        return programRepository.findAll();
+    }
+
+    @Override
+    public Mono<Program> getById(String id) {
+        return programRepository.findById(id);
+    }
 }

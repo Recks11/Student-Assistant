@@ -23,8 +23,8 @@ public class Course {
     private boolean compulsory;
     private String password;
     private SemesterEnum semester;
-    @DBRef(lazy = true)
-    private List<Program> programs = new ArrayList<>();
+//    @DBRef(lazy = true)
+//    private List<Program> programs = new ArrayList<>();
     @DBRef
     private List<Lecturer> lecturers = new ArrayList<>();
     @DBRef(lazy = true)
@@ -86,28 +86,28 @@ public class Course {
         this.title = title;
     }
 
-    public List<Program> getPrograms() {
-        return programs;
-    }
-
-    public void setPrograms(List<Program> programs) {
-        this.programs = programs;
-    }
-
-
-
-    public void addProgram(Program program) {
-        if(programs==null) {
-            programs = new ArrayList<>();
-        }
-        if(programs.contains(program))
-            return;
-        programs.add(program);
-    }
-
-    public void removeProgram(Program program){
-        programs.remove(program);
-    }
+//    public List<Program> getPrograms() {
+//        return programs;
+//    }
+//
+//    public void setPrograms(List<Program> programs) {
+//        this.programs = programs;
+//    }
+//
+//
+//
+//    public void addProgram(Program program) {
+//        if(programs==null) {
+//            programs = new ArrayList<>();
+//        }
+//        if(programs.contains(program))
+//            return;
+//        programs.add(program);
+//    }
+//
+//    public void removeProgram(Program program){
+//        programs.remove(program);
+//    }
 
     public List<Lecturer> getLecturers() {
         return this.lecturers;

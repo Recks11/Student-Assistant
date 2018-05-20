@@ -16,11 +16,11 @@ public interface CourseService {
 
     Mono<Course> findCourseContainingLecturer(Lecturer lecturer);
 
-    Flux<Course> findCoursesContainingProgram(Program program);
-
     Flux<Course> findCoursesWithLecturer(Lecturer lecturer);
 
     Flux<Course> findCoursesByIds(List<String> idList);
 
     Mono<Course> setOrUpdateCoursePassword(Course course, String password);
+
+    Flux<Course> findAll();
 }

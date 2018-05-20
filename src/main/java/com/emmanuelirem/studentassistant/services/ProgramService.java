@@ -8,4 +8,6 @@ public interface ProgramService {
 
     Flux<Program> findProgramsByDepartment_Name(String name);
     Mono<Program> findProgramByName(String name);
+    Flux<Program> findAll();
+    Mono<Program> getById(String id);
 }

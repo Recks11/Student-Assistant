@@ -132,6 +132,15 @@ public class Student {
         return courses;
 }
 
+    public boolean containsAnyCourseInList(List<Course> courses) {
+        final boolean[] contained = {false};
+        courses.forEach(course -> {
+            if (this.courses.contains(course))
+                contained[0] = true;
+        });
+        return contained[0];
+    }
+
     public void setCourses(List<Course> courses) {
         this.courses = courses;
     }

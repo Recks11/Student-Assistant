@@ -10,8 +10,6 @@ import reactor.core.publisher.Mono;
 
 public interface CourseRepository extends ReactiveMongoRepository<Course, String>{
 
-    Flux<Course> findCoursesByProgramsContains(Program program);
-
     Flux<Course> findCoursesByLecturersContains(Lecturer lecturer);
 
     Mono<Course> findCourseByLecturersContains(Lecturer lecturer);

@@ -15,6 +15,10 @@ public interface LecturerService {
 
     Mono<Lecturer> update(Lecturer lecturer);
 
+    Flux<Lecturer> getAll();
+
+    Mono<Lecturer> getLecturerById(String id);
+
     Mono<Lecturer> addCourseToLecturer(Lecturer lecturer, Course course);
 
     Mono<Lecturer> removeCourseFromLecturer(Lecturer lecturer, Course course);
