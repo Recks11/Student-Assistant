@@ -27,3 +27,6 @@ nbdist/
 ## Vs CODE generated ##
 .vscode
 .vscode/
+
+## Vue ##
+client/node_modules/
