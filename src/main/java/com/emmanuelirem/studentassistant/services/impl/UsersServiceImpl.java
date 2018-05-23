@@ -21,7 +21,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Mono<Users> findByUsername(String username) {
-        return usersDetailsRepository.findByUsername(username).doOnError(throwable -> {
+        return usersDetailsRepository.findByUsername(username.toLowerCase()).doOnError(throwable -> {
             throw new UsernameNotFoundException("Cannot find user with name=" + username);
         });
     }
@@ -35,6 +35,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Mono<Users> save(Users users) {
+        users.setUsername(users.getUsername().toLowerCase());
         return usersDetailsRepository.save(users);
     }
 

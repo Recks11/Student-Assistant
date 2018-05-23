@@ -2,6 +2,8 @@ package com.emmanuelirem.studentassistant.models;
 
 import com.emmanuelirem.studentassistant.models.helper.MatchesIdPattern;
 import com.emmanuelirem.studentassistant.models.university.Department;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,20 +19,27 @@ public class Lecturer {
     private String id = UUID.randomUUID().toString();
     private String firstName;
     private String lastName;
+    @JsonProperty("email")
     private String schoolEmailAddress;
     private String office;
 
+    @JsonProperty("phoneNumbers")
     private ArrayList<String> personalPhoneNumber;
 
     @MatchesIdPattern
     private String username;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @DBRef
     private List<Department> departments = new ArrayList<>();
+
     @DBRef
     private List<Course> courses = new ArrayList<>();
+
     @DBRef
+    @JsonIgnore
     private List<Message> messages = new ArrayList<>();
 
     private boolean inOffice = false;
@@ -145,19 +154,19 @@ public class Lecturer {
             courses = new ArrayList<>();
         }
 
-        if(!courses.contains(course)){
-            courses.add(course);
-            course.addLecturer(this);
-        }
+//        if(!courses.contains(course)){
+//            courses.add(course);
+//            course.addLecturer(this);
+//        }
     }
 
     public void removeCourse(Course course) {
         if(courses.contains(course)){
             courses.remove(course);
         }
-        if(course.getLecturers().contains(this)){
-            course.removeLecturer(this);
-        }
+//        if(course.getLecturers().contains(this)){
+//            course.removeLecturer(this);
+//        }
     }
 
     public void setCourses(List<Course> courses) {

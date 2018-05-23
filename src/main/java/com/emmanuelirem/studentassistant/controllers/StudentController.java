@@ -14,10 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/student")
@@ -39,7 +42,14 @@ public class StudentController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Mono<Student> addStudentToModel(@AuthenticationPrincipal Mono<Users> principal) {
-        return principal.flatMap(p -> studentService.findByRegistrationNumber(p.getUsername()));
+        if (principal == null) {
+            return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Please Log In"));
+        }
+
+        return principal.flatMap(p -> studentService.findByRegistrationNumber(p.getUsername()))
+                .doOnError(throwable -> {
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Please Log In");
+                });
     }
 
     @GetMapping("/{id}/courses")
@@ -57,24 +67,17 @@ public class StudentController {
 
     @PostMapping("/{id}/courses")
     @ResponseStatus(HttpStatus.OK)
-    public Flux<Course> addCourses(@PathVariable String id, @RequestBody ListHelper<Course> courseList) {
-        return studentService.findById(id).flatMapIterable(
-                student -> {
-                    courseList.getItem().forEach(student::addCourse);
-                    studentService.save(student);
-                    return student.getCourses();
-                });
+    public Flux<Course> addCourses(@PathVariable String id, @RequestBody ArrayList<Course> courseList) {
+
+        return studentService.findById(id)
+                .flatMapMany(
+                        student -> studentService.registerCourses(courseList, student));
     }
 
     @DeleteMapping("/{id}/courses/{courseId}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Student> deleteCourses(@PathVariable String id, @PathVariable("courseId") String courseId) {
-        return courseService.findCourseById(courseId)
-                .flatMap(course -> studentService.findById(id).flatMap(
-                        student -> {
-                            student.removeCourse(course);
-                            return studentService.update(student);
-                        }));
+    public Flux<Course> deleteCourses(@PathVariable String id, @PathVariable("courseId") String courseId) {
+        return studentService.removeCourse(id, courseId);
     }
 
     @GetMapping("/{id}/program")

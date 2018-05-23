@@ -19,6 +19,7 @@ public interface StudentService {
     Mono<Student> update(Student student);
     Flux<Student> saveAll(List<Student> studentList);
     Mono<Student> registerCourse(Course course, Student student);
-    Mono<Student> registerCourses(List<Course> courses, Student student);
+    Flux<Course> registerCourses(List<Course> courses, Student student);
     Mono<Student> removeCourse(Student student, Course course);
+    Flux<Course> removeCourse(String studentId, String courseId);
 }

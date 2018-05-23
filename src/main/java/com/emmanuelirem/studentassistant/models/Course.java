@@ -2,6 +2,8 @@ package com.emmanuelirem.studentassistant.models;
 
 import com.emmanuelirem.studentassistant.models.enums.SemesterEnum;
 import com.emmanuelirem.studentassistant.models.university.Program;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,11 +25,12 @@ public class Course {
     private boolean compulsory;
     private String password;
     private SemesterEnum semester;
-//    @DBRef(lazy = true)
-//    private List<Program> programs = new ArrayList<>();
     @DBRef
+    @JsonIgnore
     private List<Lecturer> lecturers = new ArrayList<>();
+
     @DBRef(lazy = true)
+    @JsonIgnore
     private List<Student> students = new ArrayList<>();
 
     public Course() {
@@ -149,16 +152,16 @@ public class Course {
         }
         if(!students.contains(student)) {
             students.add(student);
-            student.getCourses().add(this);
+            student.addCourse(this);
         }
     }
 
     public void removeStudent(Student student){
-        if(students.contains(student))
-            students.remove(student);
 
-        if(student.getCourses().contains(this))
-            student.getCourses().remove(this);
+        if(students.contains(student)){
+            students.remove(student);
+            student.removeCourse(this);
+        }
     }
 
     public boolean isCompulsory() {
@@ -183,6 +186,34 @@ public class Course {
 
     public void setSemester(SemesterEnum semester) {
         this.semester = semester;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Course course = (Course) o;
+
+        if (units != course.units) return false;
+        if (level != course.level) return false;
+        if (compulsory != course.compulsory) return false;
+        if (!id.equals(course.id)) return false;
+        if (code != null ? !code.equals(course.code) : course.code != null) return false;
+        if (title != null ? !title.equals(course.title) : course.title != null) return false;
+        return password != null ? password.equals(course.password) : course.password == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + units;
+        result = 31 * result + level;
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (compulsory ? 1 : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        return result;
     }
 
     @Override

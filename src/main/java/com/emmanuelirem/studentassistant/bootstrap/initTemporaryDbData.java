@@ -118,7 +118,7 @@ public class initTemporaryDbData implements CommandLineRunner {
 
     private College makeCollege(CollegeEnum name) {
         College college = new College();
-        college.setName(name);
+        college.setName(name.name().replace('_', ' '));
         return college;
     }
 

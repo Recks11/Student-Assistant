@@ -14,6 +14,8 @@ public interface CourseService {
 
     Mono<Course> findCourseById(String id);
 
+    Flux<Course> saveAll(Flux<Course> courseFlux);
+
     Mono<Course> findCourseContainingLecturer(Lecturer lecturer);
 
     Flux<Course> findCoursesWithLecturer(Lecturer lecturer);

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -28,6 +29,10 @@ public class LecturerController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Mono<Lecturer> getCurrentLecturer(@AuthenticationPrincipal Mono<Principal> principal) {
+        if(principal == null) {
+            return Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Please Log In"));
+        }
+
         return principal.flatMap(
                 userPrincipal -> lecturerService.getLecturerByIdentifier(userPrincipal.getName())
         );

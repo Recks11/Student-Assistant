@@ -3,14 +3,13 @@ package com.emmanuelirem.studentassistant.controllers;
 import com.emmanuelirem.studentassistant.models.Lecturer;
 import com.emmanuelirem.studentassistant.models.Student;
 import com.emmanuelirem.studentassistant.services.LecturerService;
-import com.emmanuelirem.studentassistant.services.RegexService;
 import com.emmanuelirem.studentassistant.services.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.context.request.WebRequest;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
@@ -45,6 +44,7 @@ public class AuthController {
     @GetMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public Mono<Map> current(@AuthenticationPrincipal Mono<Principal> principal) {
+        System.out.println("In");
         return principal
                 .map( user -> {
                     Map<String, Object> map = new HashMap<>();

@@ -2,6 +2,8 @@ package com.emmanuelirem.studentassistant.models;
 
 import com.emmanuelirem.studentassistant.models.helper.MatchesIdPattern;
 import com.emmanuelirem.studentassistant.models.university.Program;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,15 +23,19 @@ public class Student {
     private String id = UUID.randomUUID().toString();
     private String firstName;
     private String lastName;
+    @JsonProperty("email")
     private String emailAddress;
 
     @NotBlank(message = "Please fill in this field 😀")
     @Size(min=6,max=10,message = "ID not the right length 😒")
     @MatchesIdPattern
+    @JsonProperty("username")
     private String registrationNumber;
+    @JsonProperty("hall")
     private String hallOfResidence;
     private String roomNumber;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
     @Min(value = 5, message = "your password isn't good")
     private String password;
@@ -37,9 +43,10 @@ public class Student {
     @DBRef
     private Program program;
 
-    @DBRef
+    @DBRef(lazy = true)
     private List<Course> courses = new ArrayList<>();
     @DBRef(lazy = true)
+    @JsonIgnore
     private List<Message> messages = new ArrayList<>();
 
     public Student() {
@@ -156,11 +163,9 @@ public class Student {
     }
 
     public void removeCourse(Course course){
-        if (course.getStudents().contains(this))
-            course.getStudents().remove(this);
-
         if(courses.contains(course)){
             courses.remove(course);
+            course.removeStudent(this);
         }
     }
 
@@ -188,7 +193,32 @@ public class Student {
 
         Student student = (Student) o;
 
-        return id == student.id;
+        if (!id.equals(student.id)) return false;
+        if (firstName != null ? !firstName.equals(student.firstName) : student.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(student.lastName) : student.lastName != null) return false;
+        if (emailAddress != null ? !emailAddress.equals(student.emailAddress) : student.emailAddress != null)
+            return false;
+        if (registrationNumber != null ? !registrationNumber.equals(student.registrationNumber) : student.registrationNumber != null)
+            return false;
+        if (hallOfResidence != null ? !hallOfResidence.equals(student.hallOfResidence) : student.hallOfResidence != null)
+            return false;
+        if (roomNumber != null ? !roomNumber.equals(student.roomNumber) : student.roomNumber != null) return false;
+        if (password != null ? !password.equals(student.password) : student.password != null) return false;
+        return program != null ? program.equals(student.program) : student.program == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (emailAddress != null ? emailAddress.hashCode() : 0);
+        result = 31 * result + (registrationNumber != null ? registrationNumber.hashCode() : 0);
+        result = 31 * result + (hallOfResidence != null ? hallOfResidence.hashCode() : 0);
+        result = 31 * result + (roomNumber != null ? roomNumber.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (program != null ? program.hashCode() : 0);
+        return result;
     }
 
     @Override

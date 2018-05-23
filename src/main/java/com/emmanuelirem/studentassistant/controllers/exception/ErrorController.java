@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import java.text.SimpleDateFormat;
@@ -25,6 +26,12 @@ public class ErrorController {
         error.setMessage(exception.getMessage());
 
         return Mono.just(error);
+    }
+
+
+    public Mono<ResponseStatusException> notFound() {
+
+        return Mono.just(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
     }
 
 }

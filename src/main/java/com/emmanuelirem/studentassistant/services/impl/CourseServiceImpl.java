@@ -27,6 +27,12 @@ public class CourseServiceImpl implements CourseService{
         return courseRepository.save(course);
     }
 
+
+    @Override
+    public Flux<Course> saveAll(Flux<Course> courseFlux) {
+        return courseRepository.saveAll(courseFlux);
+    }
+
     @Override
     public Flux<Course> findCoursesWithLecturer(Lecturer lecturer) {
         return courseRepository.findCoursesByLecturersContains(lecturer);

@@ -6,11 +6,14 @@ import com.emmanuelirem.studentassistant.models.security.Users;
 import com.emmanuelirem.studentassistant.repository.StudentRepository;
 import com.emmanuelirem.studentassistant.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,8 +58,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Mono<Student> save(Student student) {
-        student.setEmailAddress(student.getFirstName().toLowerCase() + "." + student.getLastName().toLowerCase() + "@stu.cu.edu.ng");
         if (regexService.matchesStudentRegNumber(student.getRegistrationNumber())) {
+            student.setEmailAddress(student.getFirstName().toLowerCase() + "." + student.getLastName().toLowerCase() + "@stu.cu.edu.ng");
+            student.setRegistrationNumber(student.getRegistrationNumber().toLowerCase());
+
             Users user = new Users();
             user.setUsername(student.getRegistrationNumber().toLowerCase());
             user.setPassword(encoderService.passwordEncoder().encode(student.getPassword()));
@@ -66,7 +71,6 @@ public class StudentServiceImpl implements StudentService {
             user.setExpired(false);
             user.setCredentialNotExpired(true);
 
-            usersService.save(user).subscribe();
             return studentRepository.save(student)
                     .then(usersService.save(user)
                             .thenReturn(student))
@@ -91,16 +95,33 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Mono<Student> registerCourses(List<Course> courses, Student student) {
-        courses.forEach(student::addCourse);
-        return this.update(student);
+    public Flux<Course> registerCourses(List<Course> courses, Student student) {
+        List<String> courseIdList = new ArrayList<>();
+        courses.forEach(course -> courseIdList.add(course.getId()));
+        List<Course> courseList = new ArrayList<>();
+
+        return courseService.findCoursesByIds(courseIdList)
+                .map((course) -> {
+                    student.addCourse(course);
+                    courseList.add(course);
+                    return course;
+                })
+                .thenMany(courseService.saveAll(Flux.fromIterable(courseList)))
+                .then(this.update(student))
+                .flatMapIterable(Student::getCourses);
     }
 
     @Override
     public Mono<Student> removeCourse(Student student, Course course) {
-        if (course != null)
-            student.removeCourse(course);
-        return this.update(student);
+        if (student != null) {
+            if (course != null) {
+                student.removeCourse(course);
+            }
+        }
+
+        assert student != null;
+        return courseService.saveOrUpdate(course)
+                .then(studentRepository.save(student));
     }
 
     @Override
@@ -110,5 +131,15 @@ public class StudentServiceImpl implements StudentService {
                 .flatMapMany(student -> programService.getById(programId)
                         .flatMapMany(program -> Flux.fromIterable(program.getCourses()))
                         .filter(course -> !student.getCourses().contains(course)));
+    }
+
+    @Override
+    public Flux<Course> removeCourse(String studentId, String courseId) {
+        Mono<Student> studentMono = this.findById(studentId);
+        Mono<Course> courseMono = courseService.findCourseById(courseId);
+
+        return courseMono.zipWith(studentMono)
+                .flatMapMany(objects -> this.removeCourse(objects.getT2(), objects.getT1()))
+                .flatMapIterable(Student::getCourses);
     }
 }

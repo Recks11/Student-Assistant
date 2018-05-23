@@ -12,12 +12,12 @@ public class College {
     @Id
     private String id = UUID.randomUUID().toString();
 
-    private CollegeEnum name;
+    private String name;
 
     public College() {
     }
 
-    public College(CollegeEnum name) {
+    public College(String name) {
         this.name = name;
     }
 
@@ -29,11 +29,11 @@ public class College {
         this.id = id;
     }
 
-    public CollegeEnum getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(CollegeEnum name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -46,6 +46,7 @@ public class College {
 
         return id == college.id;
     }
+
     @Override
     public String toString() {
         return "College{" +

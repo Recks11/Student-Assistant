@@ -57,7 +57,7 @@ public class LecturerServiceImpl implements LecturerService {
             user.setAuthorities(new String[]{"ROLE_LECTURER"});
             user.setExpired(false);
             user.setCredentialNotExpired(true);
-            usersService.save(user).subscribe();
+            lecturer.setUsername(lecturer.getUsername().toLowerCase());
 
             return lecturerRepository.save(lecturer)
                     .then(usersService.save(user))
