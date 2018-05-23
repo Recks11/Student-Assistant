@@ -1,21 +1,27 @@
 <template>
     <div id="app">
-        <app-nav v-if="loggedIn"></app-nav>
+        <app-student-nav v-if="role==='student'"></app-student-nav>
+        <app-lecturer-nav v-if="role === 'lecturer'"></app-lecturer-nav>
         <router-view/>
     </div>
 </template>
 
 <script lang="ts">
     import NavBar from '@/components/global/NavBar.vue'
+    import LecturerNav from '@/components/global/LecturerNav.vue'
     import {Component, Vue} from 'vue-property-decorator';
 
     @Component({
         components: {
-            appNav: NavBar
+            appStudentNav: NavBar,
+            appLecturerNav: LecturerNav
         },
         computed: {
             loggedIn() {
                 return this.$store.getters['login/LOGGED_IN'];
+            },
+            role() {
+                return this.$store.getters['login/USER_ROLE'];
             }
         }
     })

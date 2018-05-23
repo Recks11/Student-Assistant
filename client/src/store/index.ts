@@ -33,6 +33,10 @@ const store: StoreOptions<RootState> = {
         SET_LECTURER: (state, lecturer: Lecturer) => {
             state.activeLecturer = lecturer;
         },
+        RESET_STATE: (state) => {
+            state.activeLecturer = new Lecturer();
+            state.activeStudent = new Student();
+        },
     },
     actions: {
         'action/SET_STUDENT': (context, student: Student) => {
@@ -40,6 +44,9 @@ const store: StoreOptions<RootState> = {
         },
         'action/SET_LECTURER': (context, lecturer: Lecturer) => {
             context.commit('SET_LECTURER');
+        },
+        'action/RESET_STATE': (context) => {
+            context.commit('RESET_STATE')
         },
     },
     modules: {

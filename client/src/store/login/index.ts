@@ -42,24 +42,45 @@ const mutations: MutationTree<LoginState> = {
 
 const actions: ActionTree<LoginState, RootState> = {
     'login/LOG_IN_ACTION': (context, payload: UserDetails) => {
-        return new Promise((resolve, reject) => {
-            axios.get('/auth/login', {
-                auth: {username: payload.username, password: payload.password},
-            }).then((response) => {
-                context.commit('LOG_IN', response);
-            }).then(() => {
-                context.dispatch('student/GET_STORED_STUDENT')
-                    .then(() => {
-                        resolve();
-                    })
-                    .catch(reason => {
-                        reject(reason);
-                    });
-            }).catch(() => {
-                context.commit('LOG_OUT');
-                reject('Invalid credentials');
+        if ( payload.username.charAt(0) === 'c' && payload.username.charAt(1) === 'u' ) {
+            return new Promise((resolve, reject) => {
+                axios.get('/auth/login', {
+                    auth: {username: payload.username, password: payload.password},
+                }).then((response) => {
+                    context.commit('LOG_IN', response);
+                }).then(() => {
+                    context.dispatch('lecturer/GET_STORED_LECTURER')
+                        .then((r) => {
+                            resolve(r);
+                        })
+                        .catch(reason => {
+                            reject(reason);
+                        });
+                }).catch(() => {
+                    context.commit('LOG_OUT');
+                    reject('Invalid credentials');
+                });
             });
-        });
+        } else {
+            return new Promise((resolve, reject) => {
+                axios.get('/auth/login', {
+                    auth: {username: payload.username, password: payload.password},
+                }).then((response) => {
+                    context.commit('LOG_IN', response);
+                }).then(() => {
+                    context.dispatch('student/GET_STORED_STUDENT')
+                        .then((r) => {
+                            resolve(r);
+                        })
+                        .catch(reason => {
+                            reject(reason);
+                        });
+                }).catch(() => {
+                    context.commit('LOG_OUT');
+                    reject('Invalid credentials');
+                });
+            });
+        }
     },
 
     'login/LOGOUT_ACTION': (context) => {
@@ -69,6 +90,7 @@ const actions: ActionTree<LoginState, RootState> = {
             context.dispatch('register/RESET');
             context.dispatch('student/RESET_STUDENT');
             context.dispatch('lecturer/RESET_LECTURER');
+            context.dispatch('action/RESET_STATE');
             context.commit('LOG_OUT');
             resolve();
         });

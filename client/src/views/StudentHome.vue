@@ -41,9 +41,9 @@
                                 <router-link to="/course/register" class="btn btn-success">Add Courses
                                 </router-link>
                             </div>
-                            <div v-else v-for="course in currentStudent.courses" :key="course.id" class="list-group">
+                            <div v-else v-for="course in courseSnippet" :key="course.id" class="list-group">
                                 <li class="list-group-item list-group-item-action d-flex justify-content-between"
-                                     @click="goToCourse(course.id)">
+                                    @click="goToCourse(course.id)" style="cursor: pointer">
                                     <span class="hide-overflow"> {{course.code}} {{course.title}}</span>
                                     <span class="badge badge-pill"
                                           :class="{'badge-danger': +course.units>=3, 'badge-info': course.units<3}">
@@ -52,7 +52,7 @@
                                 </li>
                             </div>
                             <div v-if="currentStudent.courses.length >= 5" class="list-group-item">
-                                <router-link to="/course/view">View all</router-link>
+                                <router-link to="/course/view">View all ({{currentStudent.courses.length}})</router-link>
                             </div>
                         </div>
                     </div>
@@ -101,20 +101,33 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import Student from '../model/Student';
+    import Course from '../model/Course';
 
     @Component
     export default class StudentHome extends Vue {
-        public currentStudent: Student = this.$store.getters[ 'student/GET_STUDENT' ];
         public error: string = '';
 
         public goToCourse(id: string): void {
             this.$store.dispatch('course/GET_COURSE', id).then(
                 () => {
-                    this.$router.push({path: '/course/view/'+ id})
+                    this.$router.push({path: '/course/view/' + id});
                 });
         }
 
+        public get currentStudent(): Student {
+            return this.$store.getters[ 'student/GET_STUDENT' ];
+        }
+
+        public get courseSnippet(): Course[] {
+            if ( this.currentStudent.courses.length >= 4 ) {
+                let courseArray = this.currentStudent.courses;
+                return courseArray.slice(((courseArray.length - 1) - 4), courseArray.length-1).reverse();
+            }
+            return this.currentStudent.courses;
+        }
+
         public created() {
+            console.log('created');
             if ( this.error !== '' ) {
                 this.$router.push('/login');
             }
@@ -129,9 +142,11 @@
     .col-md-4 {
         margin-bottom: 5px;
     }
+
     span {
         font-size: 1rem;
     }
+
     @media screen and (max-width: 1280px) {
         p, a, span, li, .card-header {
             font-size: 0.75rem;

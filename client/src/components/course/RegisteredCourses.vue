@@ -33,7 +33,7 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import Course from '../../model/Course';
-    import CourseHeader from './CourseHeader';
+    import CourseHeader from './CourseHeader.vue';
 
     @Component({
         components: {
@@ -42,10 +42,10 @@
         beforeRouteLeave(to, from, next) {
             if(to.name === 'courseInfo'){
                 this.$store.dispatch('course/GET_COURSE', to.params.id)
-                    .then(() => next(true))
+                    .then(() => next())
                     .catch(() => next(from))
             } else {
-                next(true);
+                next();
             }
         }
     })
@@ -56,10 +56,6 @@
 
         public navigateToCourse(id: string): void {
             this.$router.push('view/'+ id);
-        }
-
-        public beforeRouteLeave(to, from, next): void {
-            console.log('leave')
         }
     }
 </script>

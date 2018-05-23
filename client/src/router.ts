@@ -1,8 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from '@/store';
 
-const About = () => import('./views/About.vue');
+const LecturerHome = () => import('./views/LecturerHome.vue');
 const Register = () => import('@/views/Register.vue');
 const Login = () => import('@/views/Login.vue');
 const StudentHome = () => import('@/views/StudentHome.vue');
@@ -31,11 +30,6 @@ export const router: Router = new Router({
             component: StudentHome,
         },
         {
-            path: '/lecturer',
-            name: 'about',
-            component: About,
-        },
-        {
             path: '/course',
             component: Course,
             children: [
@@ -54,6 +48,11 @@ export const router: Router = new Router({
                 },
             ],
         },
+        {
+            path: '/lecturer',
+            component: LecturerHome
+        }
+        ,
         {
             path: '*',
             redirect: '/login',

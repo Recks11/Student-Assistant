@@ -64,7 +64,9 @@
                     this.error = true;
                     this.message = reason;
                 })
-                .then(() => this.$router.push('/' + this.$store.state.login.role));
+                .then(() => {
+                    this.$router.push({path: '/'+ this.$store.state.login.role})
+                });
         }
 
         public created(): void {

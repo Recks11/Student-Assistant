@@ -31,6 +31,8 @@ const mutations: MutationTree<StudentState> = {
     },
     RESET_STUDENT: (state) => {
         state.student = new Student();
+        state.registeredCourses = [];
+        state.unregisteredCourses = [];
     },
     SET_COURSES: (state, payload: Course[]) => {
         state.student.courses = [];
@@ -68,7 +70,7 @@ const actions: ActionTree<StudentState, RootState> = {
                         let returnedData: Student = response.data;
                         context.commit('SET_STUDENT', returnedData);
                         context.commit('UPDATE_UNREGISTERED_COURSES');
-                        resolve();
+                        resolve(returnedData);
                     }
                 }).catch((response) => {
                 reject(response);
