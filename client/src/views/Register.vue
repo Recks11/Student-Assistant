@@ -56,30 +56,33 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import Student from '../model/Student';
-import {mapGetters} from 'vuex';
+    import {Component, Vue} from 'vue-property-decorator';
+    import Student from '../model/Student';
+    import {mapGetters} from 'vuex';
 
-@Component({
-    computed: {
-        ...mapGetters({
-            registered: 'REGISTERED',
-            error: 'REGISTER_ERROR',
-        }),
-    },
-})
-export default class Register extends Vue {
-    public name: string = 'Register';
-    public student: Student = new Student();
-    public loading: boolean = false;
+    @Component({
+        computed: {
+            ...mapGetters({
+                registered: 'REGISTERED',
+                error: 'REGISTER_ERROR',
+            }),
+        },
+    })
+    export default class Register extends Vue {
+        public name: string = 'Register';
+        public student: Student = new Student();
+        public loading: boolean = false;
 
-    public registerPerson(student: Student): void {
-        this.loading = true;
-        this.$store.dispatch('REGISTER_STUDENT', student)
-            .then(() => this.loading = false);
+        public registerPerson(student: Student): void {
+            this.loading = true;
+            this.$store.dispatch('REGISTER_STUDENT', student)
+                .then(() => {
+                    this.loading = false;
+                    this.$router.push('/login');
+                });
 
+        }
     }
-}
 </script>
 
 <style scoped>
@@ -104,16 +107,20 @@ export default class Register extends Vue {
     svg {
         width: 100%;
     }
-    @media screen and (max-width: 575px){
-        .col-12{
+
+    @media screen and (max-width: 575px) {
+        .col-12 {
             padding-bottom: 10px;
         }
-        svg{
+
+        svg {
             width: 50%;
         }
-        .container{
+
+        .container {
             margin-top: 80px;
         }
+
         .register {
             position: initial;
         }

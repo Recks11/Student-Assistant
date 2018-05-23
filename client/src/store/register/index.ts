@@ -43,6 +43,7 @@ const actions: ActionTree<RegisterState, RootState> = {
                 })
                 .catch((reason) => {
                     context.commit('REGISTRATION_FAILURE');
+                    context.state.error = 'Cannot Register User at this time';
                     reject(reason);
                 });
         })

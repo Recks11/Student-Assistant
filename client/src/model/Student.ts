@@ -107,7 +107,7 @@ export default class Student {
 
     get json(): {} {
         return {
-            firstName: this._id,
+            firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
             username: this.username,

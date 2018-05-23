@@ -11,7 +11,7 @@
                     <div class="card-body text-left">
                         <h3>Name: {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
                         <h3>email: {{currentStudent.email}}</h3>
-                        <template v-if="currentStudent.program !== null">
+                        <template v-if="currentStudent.program.name !== ''">
                             <h3>College: {{ currentStudent.program.department.college.name }}</h3>
 
                             <h3>Department: {{ currentStudent.program.department.name}}</h3>
@@ -42,14 +42,14 @@
                                 </router-link>
                             </div>
                             <div v-else v-for="course in currentStudent.courses" :key="course.id" class="list-group">
-                                <router-link :to="{path: '/student/course/view/'+ course.id}"
-                                             class="list-group-item list-group-item-action d-flex justify-content-between">
+                                <li class="list-group-item list-group-item-action d-flex justify-content-between"
+                                     @click="goToCourse(course.id)">
                                     <span class="hide-overflow"> {{course.code}} {{course.title}}</span>
                                     <span class="badge badge-pill"
                                           :class="{'badge-danger': +course.units>=3, 'badge-info': course.units<3}">
                                         <strong style="color: white;">{{course.units}}</strong>
                                     </span>
-                                </router-link>
+                                </li>
                             </div>
                             <div v-if="currentStudent.courses.length >= 5" class="list-group-item">
                                 <router-link to="/course/view">View all</router-link>
@@ -107,10 +107,10 @@
         public currentStudent: Student = this.$store.getters[ 'student/GET_STUDENT' ];
         public error: string = '';
 
-        public getCurrentStudent() {
-            this.$store.dispatch('student/GET_STORED_STUDENT')
-                .catch((reason) => {
-                    this.error = reason;
+        public goToCourse(id: string): void {
+            this.$store.dispatch('course/GET_COURSE', id).then(
+                () => {
+                    this.$router.push({path: '/course/view/'+ id})
                 });
         }
 
