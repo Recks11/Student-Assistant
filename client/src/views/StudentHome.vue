@@ -10,7 +10,7 @@
                 <div class="col-md-8 d-flex align-items-center">
                     <div class="card-body text-left">
                         <h3>Name: {{currentStudent.firstName}} {{currentStudent.lastName}}</h3>
-                        <h3>email: {{currentStudent.email}}</h3>
+                        <h3>Email: {{currentStudent.email}}</h3>
                         <template v-if="currentStudent.program.name !== ''">
                             <h3>College: {{ currentStudent.program.department.college.name }}</h3>
 
@@ -119,7 +119,7 @@
         }
 
         public get courseSnippet(): Course[] {
-            if ( this.currentStudent.courses.length >= 4 ) {
+            if ( this.currentStudent.courses.length > 4 ) {
                 let courseArray = this.currentStudent.courses;
                 return courseArray.slice(((courseArray.length - 1) - 4), courseArray.length-1).reverse();
             }

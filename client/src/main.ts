@@ -16,6 +16,14 @@ axios.create({
     },
 });
 
+router.beforeEach((to, from, next) => {
+    if (store.getters['login/LOGGED_IN'] === false && to.path!== '/login') {
+        next('/login');
+    } else {
+        next();
+    }
+});
+
 new Vue({
   router,
   store,

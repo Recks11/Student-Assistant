@@ -3,6 +3,8 @@ import {LecturerState} from '@/store/lecturer/types';
 import {RootState} from '../types';
 import {ActionTree, GetterTree, Module, MutationTree} from 'vuex';
 import axios, {AxiosResponse} from 'axios';
+import Program from '@/model/Program';
+import Department from '@/model/Department';
 
 const state: LecturerState = {
     lecturer: new Lecturer(),
@@ -38,12 +40,61 @@ const actions: ActionTree<LecturerState, RootState> = {
                     if ( response.data !== null ) {
                         let returnedData: Lecturer = response.data;
                         context.commit('SET_LECTURER', returnedData);
+                        context.commit('main/SET_LECTURER', returnedData);
                         resolve();
                     }
                 }).catch((response) => {
                 reject(response);
             });
         });
+    },
+    'lecturer/ADD_PROGRAM': (context, payload: Program) => {
+        return new Promise((resolve, reject) => {
+            let lecturerId = context.getters[ 'GET_LECTURER' ].id;
+
+            axios({
+                method: 'post',
+                url: '/api/v1/lecturer/' + lecturerId + '/program',
+                data: payload,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((response) => {
+                let newLecturer: Lecturer = response.data;
+                context.commit('SET_LECTURER', newLecturer);
+
+                resolve(newLecturer);
+            }).catch(reason => {
+                reject(reason);
+            });
+        });
+    },
+    'lecturer/SET_DEPARTMENT': (context, payload: Department) => {
+        return new Promise((resolve, reject) => {
+            let lecturerId = context.getters[ 'GET_LECTURER' ].id;
+            axios.post('/api/v1/lecturer/'+ lecturerId + '/department', payload)
+                .then((response) => {
+                    context.state.lecturer = response.data
+                })
+                .then(() => {
+                    context.commit('department/SET_DEPARTMENT',
+                        context.state.lecturer.departments[context.state.lecturer.departments.length-1]);
+                    context.commit('main/SET_LECTURER', context.state.lecturer);
+                    resolve('Success!');
+                })
+                .catch(() => reject('an error occurred while setting department'));
+        });
+    },
+    'lecturer/toggleInOffice': (context) => {
+        return new Promise((resolve, reject) => {
+            let lecturerId = context.getters[ 'GET_LECTURER' ].id;
+            axios.get('/api/v1/lecturer/'+ lecturerId +'/status/toggleStatus')
+                .then(() => {
+                    context.dispatch('lecturer/GET_STORED_LECTURER')
+                        .then((response) => resolve(response))
+                        .catch(() => reject('could not return your information'))
+                }).catch(() => reject('Could not update status'))
+        })
     },
 };
 

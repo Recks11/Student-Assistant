@@ -6,6 +6,7 @@ import {studentStore} from './student';
 import {lecturerStore} from './lecturer';
 import {ProgramStore} from './program';
 import {CourseStore} from './course';
+import {departmentStore} from '@/store/department';
 import {RootState} from './types';
 
 import Student from '@/model/Student';
@@ -27,26 +28,26 @@ const store: StoreOptions<RootState> = {
         },
     },
     mutations: {
-        SET_STUDENT: (state, student: Student) => {
+        'main/SET_STUDENT': (state, student: Student) => {
             state.activeStudent = student;
         },
-        SET_LECTURER: (state, lecturer: Lecturer) => {
+        'main/SET_LECTURER': (state, lecturer: Lecturer) => {
             state.activeLecturer = lecturer;
         },
-        RESET_STATE: (state) => {
+        'main/RESET_STATE': (state) => {
             state.activeLecturer = new Lecturer();
             state.activeStudent = new Student();
         },
     },
     actions: {
         'action/SET_STUDENT': (context, student: Student) => {
-            context.commit('SET_STUDENT');
+            context.commit('main/SET_STUDENT');
         },
         'action/SET_LECTURER': (context, lecturer: Lecturer) => {
-            context.commit('SET_LECTURER');
+            context.commit('main/SET_LECTURER');
         },
         'action/RESET_STATE': (context) => {
-            context.commit('RESET_STATE')
+            context.commit('main/RESET_STATE')
         },
     },
     modules: {
@@ -56,6 +57,7 @@ const store: StoreOptions<RootState> = {
         lecturer: lecturerStore,
         program: ProgramStore,
         course: CourseStore,
+        department: departmentStore,
     },
 };
 

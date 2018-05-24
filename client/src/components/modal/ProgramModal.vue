@@ -83,7 +83,7 @@
     }
 </script>
 
-<style scoped>
+<style>
     .fade {
         transition: opacity .50s linear;
         -webkit-transition: transform .20s ease-in;

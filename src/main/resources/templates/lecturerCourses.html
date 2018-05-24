@@ -10,36 +10,6 @@
 
 <div>
     <!-- Modal -->
-    <div class="modal fade" id="departmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="departmentModalTitle">Add Program</h5>
-                </div>
-                <div class="modal-body">
-                    <h3>Please Select your Department</h3>
-                    <p style="color: red;">!!This will happen only once!!</p>
-                    <form id="departmentForm" th:action="@{/lecturer/department/}" th:object="${department}" method="post">
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect2">Department:</label>
-                            <select class="form-control" id="exampleFormControlSelect2" th:field="*{name}">
-                                <option th:each="item : ${departments}" th:text="${item.name}" th:value="${item.name} "></option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <script>
-                    var submitForm = function(){
-                        $('#departmentForm').submit();
-                    };
-                </script>
-                <div class="modal-footer">
-                    <a role="button" class="btn btn-secondary" href="/lecturer/">Cancel</a>
-                    <button type="button" class="btn btn-primary" onclick="submitForm()">Select</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <div class="container" th:if="${!lecturer.departments.isEmpty()}">

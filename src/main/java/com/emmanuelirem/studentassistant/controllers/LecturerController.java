@@ -56,27 +56,15 @@ public class LecturerController {
             );
     }
 
-    @GetMapping("/{id}/status/inOffice")
+    @GetMapping("/{id}/status/toggleStatus")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Lecturer> setInOffice(@PathVariable String id) {
+    public Mono<Void> setInOffice(@PathVariable String id) {
         return lecturerService.getLecturerById(id)
             .flatMap(
                 lecturer -> {
-                    lecturer.setInOffice(true);
+                    lecturer.setInOffice(!lecturer.isInOffice());
                     return lecturerService.update(lecturer);
-                }
-            );
-    }
-
-    @GetMapping("/{id}/status/notAvailable")
-    @ResponseStatus(HttpStatus.OK)
-    public Mono<Lecturer> setNotAvailable(WebRequest request) {
-        return lecturerService.getLecturerFromRequest(request).flatMap(
-            lecturer -> {
-                lecturer.setInOffice(false);
-                return lecturerService.update(lecturer);
-            }
-        );
+                }).then();
     }
 
     @PostMapping("/{id}/department")

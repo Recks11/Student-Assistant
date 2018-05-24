@@ -9,6 +9,7 @@ const Course = () => import('@/views/Course.vue');
 const CourseRegistration = () => import('@/components/course/CourseRegistration.vue');
 const RegisteredCourses = () => import('@/components/course/RegisteredCourses.vue');
 const ViewCourse = () => import('@/components/course/ViewCourse.vue');
+const LecturerCourses = () => import('@/views/LecturerCourses.vue');
 
 Vue.use(Router);
 
@@ -51,8 +52,11 @@ export const router: Router = new Router({
         {
             path: '/lecturer',
             component: LecturerHome
-        }
-        ,
+        },
+        {
+            path: '/lecturer/courses',
+            component: LecturerCourses,
+        },
         {
             path: '*',
             redirect: '/login',
