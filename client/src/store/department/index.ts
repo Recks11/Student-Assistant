@@ -2,11 +2,10 @@ import {ActionTree, GetterTree, Module, MutationTree, StoreOptions} from 'vuex';
 import {DepartmentState} from '@/store/department/types';
 import {RootState} from '@/store/types';
 import Department from '@/model/Department';
-import College from '@/model/College';
 import axios from 'axios';
 
 const state: DepartmentState = {
-    department: new Department('', '', new College()),
+    department: new Department(),
     departmentArray: [],
     departmentMap: new Map<string, Department>(),
 };
@@ -51,6 +50,33 @@ const actions: ActionTree<DepartmentState, RootState> = {
                 }).catch(() => reject('Unable to Fetch Departments'));
         });
     },
+    'department/GET_COURSES_FOR_DEPARTMENT': (context) => {
+        return new Promise((resolve, reject) => {
+            let id = context.rootState.activeLecturer.departments[0].id;
+            let dept = context.rootState.activeLecturer.departments[0];
+            axios.get('/api/v1/department/' + id + '/programs')
+                .then((response) => {
+
+                    dept.Programs = response.data;
+                    context.state.department = dept;
+                    context.commit('SET_DEPARTMENT_MAP', context.state.department);
+                    let idx = context.state.departmentArray.findIndex((value) => value.id === id);
+                    if(idx !== -1){
+                        context.state.departmentArray[idx].Programs = response.data;
+                    }
+                    else {
+                        context.state.departmentArray.push(dept);
+                    }
+                    resolve(response.data)
+                })
+                .catch((reason) => reject(reason))
+        })
+    },
+    'department/RESET_DEPARTMENT': (context) => {
+        context.state.department = new Department();
+        context.state.departmentMap = new Map();
+        context.state.departmentArray = [];
+    }
 };
 
 export const departmentStore: Module<DepartmentState, RootState> = {

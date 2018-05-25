@@ -2,10 +2,9 @@ package com.emmanuelirem.studentassistant.auth.impl;
 
 import com.emmanuelirem.studentassistant.auth.UserAuthenticationService;
 import com.emmanuelirem.studentassistant.models.security.Users;
-import com.emmanuelirem.studentassistant.services.UsersService;
+import com.emmanuelirem.studentassistant.services.data.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;

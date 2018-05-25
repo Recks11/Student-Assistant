@@ -41,10 +41,10 @@ const store: StoreOptions<RootState> = {
     },
     actions: {
         'action/SET_STUDENT': (context, student: Student) => {
-            context.commit('main/SET_STUDENT');
+            context.commit('main/SET_STUDENT', student);
         },
         'action/SET_LECTURER': (context, lecturer: Lecturer) => {
-            context.commit('main/SET_LECTURER');
+            context.commit('main/SET_LECTURER', lecturer);
         },
         'action/RESET_STATE': (context) => {
             context.commit('main/RESET_STATE')

@@ -14,7 +14,7 @@
             </div>
 
             <div class="container-fluid">
-                <div class="alert" role="alert" v-for="course in lecturer.courses"
+                <div class="alert" role="alert" v-if="lecturer.courses.length > 0" v-for="course in lecturer.courses"
                      :class="{'alert-danger':course.students.size()===0, 'alert-success':course.students.size() > 0}">
                     <router-link :to="'/lecturer/courses/view/'+course.id"> <h4 class="alert-heading" >{{course.code}}  {{course.title}}</h4> </router-link>
                     <p> {{'There are '+course.students.length+' students registered for this course'}} </p>
@@ -23,7 +23,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -40,7 +39,7 @@
 
         public created(): void {
             this.$store.dispatch('department/GET_STORED_DEPARTMENTS')
-                .then(() => this.message = 'All departments loaded')
+                .then(() => this.message = 'All departments loaded');
         }
     }
 </script>

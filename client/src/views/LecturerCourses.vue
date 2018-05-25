@@ -1,6 +1,7 @@
 <template>
     <main>
         <app-department-modal v-if="currentLecturer.departments.length === 0"></app-department-modal>
+        <router-view></router-view>
     </main>
 </template>
 
@@ -18,6 +19,9 @@
         public get currentLecturer(): Lecturer {
             return this.$store.getters[ 'ACTIVE_LECTURER' ];
         };
+
+        public created(): void {
+        }
     }
 </script>
 

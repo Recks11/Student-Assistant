@@ -154,16 +154,14 @@ public class Lecturer {
             courses = new ArrayList<>();
         }
 
-//        if(!courses.contains(course)){
-//            courses.add(course);
-//            course.addLecturer(this);
-//        }
+        if(!courses.contains(course)){
+            courses.add(course);
+            course.addLecturer(this);
+        }
     }
 
     public void removeCourse(Course course) {
-        if(courses.contains(course)){
-            courses.remove(course);
-        }
+        courses.remove(course);
 //        if(course.getLecturers().contains(this)){
 //            course.removeLecturer(this);
 //        }

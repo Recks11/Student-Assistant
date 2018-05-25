@@ -37,7 +37,7 @@ const mutations: MutationTree<StudentState> = {
     SET_COURSES: (state, payload: Course[]) => {
         state.student.courses = [];
         state.registeredCourses = [];
-        payload.forEach((value, index) => {
+        payload.forEach((value) => {
             state.student.courses.push(value);
             state.registeredCourses.push(value);
         });
@@ -61,6 +61,7 @@ const mutations: MutationTree<StudentState> = {
 const actions: ActionTree<StudentState, RootState> = {
     'student/SET_STUDENT': (context, student: Student) => {
         context.commit('SET_STUDENT', student);
+        context.dispatch('action/SET_STUDENT', student);
     },
     'student/GET_STORED_STUDENT': (context) => {
         return new Promise((resolve, reject) => {
@@ -68,7 +69,7 @@ const actions: ActionTree<StudentState, RootState> = {
                 .then((response: AxiosResponse) => {
                     if ( response.data !== null ) {
                         let returnedData: Student = response.data;
-                        context.commit('SET_STUDENT', returnedData);
+                        context.dispatch('student/SET_STUDENT', returnedData);
                         context.commit('UPDATE_UNREGISTERED_COURSES');
                         resolve(returnedData);
                     }
@@ -90,7 +91,7 @@ const actions: ActionTree<StudentState, RootState> = {
                 }
             }).then((response) => {
                 let newStudent: Student = response.data;
-                context.commit('SET_STUDENT', newStudent);
+                context.dispatch('student/SET_STUDENT', newStudent);
                 context.commit('UPDATE_UNREGISTERED_COURSES');
                 resolve(newStudent);
             }).catch(reason => {
@@ -112,7 +113,8 @@ const actions: ActionTree<StudentState, RootState> = {
             }).then((response) => {
                     let newCourses: Course[] = response.data;
                     context.commit('SET_COURSES', newCourses);
-                    resolve(newCourses);
+                    context.dispatch('action/SET_STUDENT', context.state.student)
+                    resolve(newCourses)
                 })
                 .then(() => context.commit('UPDATE_UNREGISTERED_COURSES'))
                 .catch(reason => {
@@ -134,6 +136,7 @@ const actions: ActionTree<StudentState, RootState> = {
                 })
                 .then(() => context.commit('UPDATE_UNREGISTERED_COURSES'))
                 .then(() => context.commit('REMOVE_COURSE', payload))
+                .then(() => context.dispatch('action/SET_STUDENT', context.state.student))
                 .catch(reason => {
                     reject(reason);
                 });

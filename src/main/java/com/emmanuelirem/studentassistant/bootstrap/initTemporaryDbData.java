@@ -12,8 +12,8 @@ import com.emmanuelirem.studentassistant.models.university.College;
 import com.emmanuelirem.studentassistant.models.university.Department;
 import com.emmanuelirem.studentassistant.models.university.Program;
 import com.emmanuelirem.studentassistant.repository.*;
-import com.emmanuelirem.studentassistant.services.LecturerService;
-import com.emmanuelirem.studentassistant.services.StudentService;
+import com.emmanuelirem.studentassistant.services.data.LecturerService;
+import com.emmanuelirem.studentassistant.services.data.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -98,21 +98,32 @@ public class initTemporaryDbData implements CommandLineRunner {
 //        College engineering = makeCollege(CollegeEnum.College_of_Engineering);
 
         //Add Departments here
-//        Department architecture = makeDepartment(DepartmentsEnum.Architecture, cst);
-//        Department bioChem = makeDepartment(DepartmentsEnum.Biochemistry, cst);
-//        Department buildingTech = makeDepartment(DepartmentsEnum.Building_Technology, cst);
-//        Department bioScience = makeDepartment(DepartmentsEnum.Biological_Sciences, cst);
+        Department architecture = makeDepartment(DepartmentsEnum.Architecture, cst);
+        Department bioChem = makeDepartment(DepartmentsEnum.Biochemistry, cst);
+        Department buildingTech = makeDepartment(DepartmentsEnum.Building_Technology, cst);
+        Department bioScience = makeDepartment(DepartmentsEnum.Biological_Sciences, cst);
         Department cmis = makeDepartment(DepartmentsEnum.Computer_and_Information_Sciences, cst);
-//        Department estateManagement = makeDepartment(DepartmentsEnum.Estate_Management, cst);
-//        Department mathematics = makeDepartment(DepartmentsEnum.Mathematics, cst);
-//            Department physics = makeDepartment(DepartmentsEnum.Physics, cst);
+        Department estateManagement = makeDepartment(DepartmentsEnum.Estate_Management, cst);
+        Department mathematics = makeDepartment(DepartmentsEnum.Mathematics, cst);
+        Department physics = makeDepartment(DepartmentsEnum.Physics, cst);
 
         //Add Programs here
         programList.add(makeProgram(ProgramEnum.Computer_Science, cmis));
         programList.add(makeProgram(ProgramEnum.Management_and_Information_Science, cmis));
+
+        cmis.setPrograms(programList);
 //            programList.add(makeProgram(ProgramEnum.Industrial_Physics, physics));
-        collegeRepository.save(cst).subscribe();
-        departmentRepository.save(cmis).subscribe();
+        collegeRepository.save(cst)
+                .then(departmentRepository.save(cmis))
+                .subscribe();
+        departmentRepository.save(architecture)
+                .then(departmentRepository.save(bioChem))
+                .then(departmentRepository.save(buildingTech))
+                .then(departmentRepository.save(bioScience))
+                .then(departmentRepository.save(estateManagement))
+                .then(departmentRepository.save(mathematics))
+                .then(departmentRepository.save(physics))
+                .subscribe();
         programRepository.saveAll(programList).subscribe();
     }
 
@@ -270,7 +281,6 @@ public class initTemporaryDbData implements CommandLineRunner {
                     program.setCourses(miscoursesList);
                     return programRepository.save(program).subscribe();
                 }).subscribe();
-
 
 
     }

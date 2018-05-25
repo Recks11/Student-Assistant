@@ -51,8 +51,9 @@
                                     </span>
                                 </li>
                             </div>
-                            <div v-if="currentStudent.courses.length >= 5" class="list-group-item">
-                                <router-link to="/course/view">View all ({{currentStudent.courses.length}})</router-link>
+                            <div v-if="currentStudent.courses.length >= 5" class="list-group-item" style="padding: unset">
+                                <router-link to="/course/view">View all ({{currentStudent.courses.length}})
+                                </router-link>
                             </div>
                         </div>
                     </div>
@@ -71,6 +72,9 @@
                                 <li class="list-group-item d-flex justify-content-between align-items-center hide-overflow">
                                     CSC 411 Test on friday by 10am <span class="badge badge-primary badge-pill">1</span>
                                 </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center hide-overflow">
+                                    CSC 411 Test on friday by 10am <span class="badge badge-primary badge-pill">1</span>
+                                </li>
                             </ul>
 
                         </div>
@@ -82,12 +86,12 @@
                             </div>
                             <!-- Responsive calendar - START -->
                             <div v-if="currentStudent.program !== null" class="responsive-calendar">
-                                <div style="height: 400px; width: 100%">
-                                    <iframe src="https://calendar.google.com/calendar/embed?src=emmanuel.irem%40stu.cu.edu.ng&ctz=Africa%2FLagos"
-                                            style="border: 0" width="100%" height="100%" frameborder="0"
-                                            scrolling="no">
-                                    </iframe>
-                                </div>
+                                <!--<div style="height: 400px; width: 100%">-->
+                                    <!--<iframe src="https://calendar.google.com/calendar/embed?src=emmanuel.irem%40stu.cu.edu.ng&ctz=Africa%2FLagos"-->
+                                            <!--style="border: 0" width="100%" height="100%" frameborder="0"-->
+                                            <!--scrolling="no">-->
+                                    <!--</iframe>-->
+                                <!--</div>-->
                             </div>
                             <!-- Responsive calendar - END -->
                         </div>
@@ -121,18 +125,18 @@
         public get courseSnippet(): Course[] {
             if ( this.currentStudent.courses.length > 4 ) {
                 let courseArray = this.currentStudent.courses;
-                return courseArray.slice(((courseArray.length - 1) - 4), courseArray.length-1).reverse();
+                return courseArray.slice(((courseArray.length - 1) - 4), courseArray.length - 1).reverse();
             }
             return this.currentStudent.courses;
         }
 
         public created() {
-            console.log('created');
             if ( this.error !== '' ) {
                 this.$router.push('/login');
             }
             if ( this.$store.getters[ 'GET_PROGRAM_ARRAY' ].length === 0 ) {
-                this.$store.dispatch('program/GET_STORED_PROGRAMS');
+                this.$store.dispatch('program/GET_STORED_PROGRAMS')
+                    .catch((err) => console.log(err))
             }
         }
     }

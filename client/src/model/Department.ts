@@ -1,16 +1,11 @@
 import College from '@/model/College';
+import Reference from '@/model/Reference';
 
 export default class Department {
-    private _id: string;
-    private _name: string;
-    private _college: College;
-
-
-    constructor(id: string, name: string, college: College) {
-        this._id = id;
-        this._name = name;
-        this._college = college;
-    }
+    private _id: string = '';
+    private _name: string = '';
+    private _college: College = new College();
+    private _Programs: Reference[] = []
 
     get id(): string {
         return this._id;
@@ -36,11 +31,20 @@ export default class Department {
         this._college = value;
     }
 
+    get Programs(): Reference[] {
+        return this._Programs;
+    }
+
+    set Programs(value: Reference[]) {
+        this._Programs = value;
+    }
+
     get json(): {} {
         return {
             id : this._id,
             name : this._name,
             college : this._college,
+            programs: this._Programs,
         };
 
     }

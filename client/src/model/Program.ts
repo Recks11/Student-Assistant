@@ -1,13 +1,12 @@
 import Department from '@/model/Department';
 import Course from '@/model/Course';
-import College from '@/model/College';
 
 export default class Program {
     private _id: string = '';
 
     private _name: string = '';
 
-    private _department: Department = new Department('', '', new College());
+    private _department: Department = new Department();
 
     private _courses: Course[] = [];
 

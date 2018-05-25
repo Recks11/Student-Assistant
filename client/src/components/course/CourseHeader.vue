@@ -21,7 +21,7 @@
     @Component
     export default class CourseHeader extends Vue {
         @Prop({default: 'COURSE HEADER'}) header!: string;
-        @Prop({default: () => new Course()}) course!: Course;
+        @Prop({default: () => new Course()}) course!: Object;
     }
 </script>
 

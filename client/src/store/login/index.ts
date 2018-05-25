@@ -50,10 +50,13 @@ const actions: ActionTree<LoginState, RootState> = {
                     context.commit('LOG_IN', response);
                 }).then(() => {
                     context.dispatch('lecturer/GET_STORED_LECTURER')
-                        .then((r) => {
-                            resolve(r);
+                        .then((returnedLecturer) => {
+                            context.dispatch('action/SET_LECTURER', returnedLecturer)
+                                .then(() => resolve(returnedLecturer))
+                                .catch(() => reject('User not Set'));
                         })
                         .catch(reason => {
+                            context.commit('LOG_OUT')
                             reject(reason);
                         });
                 }).catch(() => {
@@ -69,11 +72,14 @@ const actions: ActionTree<LoginState, RootState> = {
                     context.commit('LOG_IN', response);
                 }).then(() => {
                     context.dispatch('student/GET_STORED_STUDENT')
-                        .then((r) => {
-                            resolve(r);
+                        .then((returnedStudent) => {
+                            context.dispatch('action/SET_STUDENT', returnedStudent)
+                                .then((data) => resolve(data))
+                                .catch(() => reject('User not set'));
                         })
                         .catch(reason => {
-                            reject(reason);
+                            context.commit('LOG_OUT');
+                            reject('Invalid Credentials :(');
                         });
                 }).catch(() => {
                     context.commit('LOG_OUT');
@@ -85,14 +91,16 @@ const actions: ActionTree<LoginState, RootState> = {
 
     'login/LOGOUT_ACTION': (context) => {
         return new Promise((resolve) => {
-            context.dispatch('course/RESET_COURSE');
-            context.dispatch('program/RESET_PROGRAM');
-            context.dispatch('register/RESET');
-            context.dispatch('student/RESET_STUDENT');
-            context.dispatch('lecturer/RESET_LECTURER');
-            context.dispatch('action/RESET_STATE');
-            context.commit('LOG_OUT');
-            resolve();
+            context.dispatch('course/RESET_COURSE')
+                .then(() => context.dispatch('register/RESET'))
+                .then(() => context.dispatch('program/RESET_PROGRAM'))
+                .then(() => context.dispatch('student/RESET_STUDENT'))
+                .then(() => context.dispatch('lecturer/RESET_LECTURER'))
+                .then(() => context.dispatch('action/RESET_STATE'))
+                .then(() => context.dispatch('department/RESET_DEPARTMENT'))
+                .then(() => context.dispatch('student/RESET_STUDENT'))
+                .then(() => context.commit('LOG_OUT'))
+                .then(() => resolve("Logout Successful"))
         });
     },
 };

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from './store';
 
 const LecturerHome = () => import('./views/LecturerHome.vue');
 const Register = () => import('@/views/Register.vue');
@@ -8,8 +9,10 @@ const StudentHome = () => import('@/views/StudentHome.vue');
 const Course = () => import('@/views/Course.vue');
 const CourseRegistration = () => import('@/components/course/CourseRegistration.vue');
 const RegisteredCourses = () => import('@/components/course/RegisteredCourses.vue');
-const ViewCourse = () => import('@/components/course/ViewCourse.vue');
+const StudentViewCourse = () => import('@/components/course/ViewCourse.vue');
 const LecturerCourses = () => import('@/views/LecturerCourses.vue');
+const LecturerAddCourse = () => import ('@/components/lecturer/AddCourse.vue');
+const LecturerViewCourse = () => import('@/components/lecturer/ViewCourse.vue');
 
 Vue.use(Router);
 
@@ -45,7 +48,7 @@ export const router: Router = new Router({
                 {
                     name: 'courseInfo',
                     path: 'view/:id',
-                    component: ViewCourse,
+                    component: StudentViewCourse,
                 },
             ],
         },
@@ -56,6 +59,20 @@ export const router: Router = new Router({
         {
             path: '/lecturer/courses',
             component: LecturerCourses,
+            children: [
+                {
+                    path: 'add',
+                    component: LecturerAddCourse,
+                    beforeEnter: (to, from, next) => {
+                        store.dispatch('department/GET_COURSES_FOR_DEPARTMENT')
+                            .then(() => next());
+                    },
+                },
+                {
+                    path: 'view',
+                    component: LecturerViewCourse,
+                }
+            ]
         },
         {
             path: '*',
@@ -63,4 +80,5 @@ export const router: Router = new Router({
         }
     ],
     mode: 'history',
+    linkActiveClass: 'active',
 });

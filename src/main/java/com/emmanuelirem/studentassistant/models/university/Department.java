@@ -1,15 +1,20 @@
 package com.emmanuelirem.studentassistant.models.university;
 
 import com.emmanuelirem.studentassistant.models.Course;
+import com.emmanuelirem.studentassistant.models.helper.Reference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Document
-public class Department {
+public class Department extends Reference {
 
     @Id
     private String id = UUID.randomUUID().toString();
@@ -18,6 +23,11 @@ public class Department {
 
     @DBRef
     private College college;
+
+    @DBRef
+    @JsonIgnore
+    private List<Program> programs = new ArrayList<>();
+
 
     public Department() {
     }
@@ -42,6 +52,7 @@ public class Department {
         this.name = name;
     }
 
+
     public College getCollege() {
         return college;
     }
@@ -51,6 +62,23 @@ public class Department {
             return;
         }
         this.college = college;
+    }
+
+    public List<Program> getPrograms() {
+        return programs;
+    }
+
+    public void setPrograms(List<Program> programs) {
+        this.programs = programs;
+    }
+
+    public void addProgram(Program program) {
+        if(!this.programs.contains(program))
+            this.programs.add(program);
+    }
+
+    public void removeProgram(Program program) {
+        this.programs.remove(program);
     }
 
     private boolean sameAsFormer(College newCollege) {

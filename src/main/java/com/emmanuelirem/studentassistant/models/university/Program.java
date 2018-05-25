@@ -1,6 +1,7 @@
 package com.emmanuelirem.studentassistant.models.university;
 
 import com.emmanuelirem.studentassistant.models.Course;
+import com.emmanuelirem.studentassistant.models.helper.Reference;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Document
-public class Program {
+public class Program extends Reference {
 
     @Id
     private String id = UUID.randomUUID().toString();

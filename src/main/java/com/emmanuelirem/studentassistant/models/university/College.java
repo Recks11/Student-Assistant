@@ -1,13 +1,16 @@
 package com.emmanuelirem.studentassistant.models.university;
 
 import com.emmanuelirem.studentassistant.models.enums.CollegeEnum;
+import com.emmanuelirem.studentassistant.models.helper.Reference;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Document
-public class College {
+public class College extends Reference {
 
     @Id
     private String id = UUID.randomUUID().toString();
