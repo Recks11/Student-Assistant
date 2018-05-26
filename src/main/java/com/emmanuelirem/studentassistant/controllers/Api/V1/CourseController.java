@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/v1/courses")
-@CrossOrigin("*")
 public class CourseController {
 
     private final StudentService studentService;
@@ -53,5 +52,11 @@ public class CourseController {
     public Flux<Lecturer> lecturersForLecturerCourse(@PathVariable String id) {
         return courseService.findCourseById(id)
                 .flatMapIterable(Course::getLecturers);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<Course> addCourse(@RequestBody Course course){
+        return courseService.saveOrUpdate(course);
     }
 }

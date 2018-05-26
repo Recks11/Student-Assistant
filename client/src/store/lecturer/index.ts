@@ -50,7 +50,7 @@ const actions: ActionTree<LecturerState, RootState> = {
     },
     'lecturer/ADD_PROGRAM': (context, payload: Program) => {
         return new Promise((resolve, reject) => {
-            let lecturerId = context.getters[ 'GET_LECTURER' ].id;
+            let lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
 
             axios({
                 method: 'post',
@@ -70,7 +70,7 @@ const actions: ActionTree<LecturerState, RootState> = {
     },
     'lecturer/SET_DEPARTMENT': (context, payload: Department) => {
         return new Promise((resolve, reject) => {
-            let lecturerId = context.getters[ 'GET_LECTURER' ].id;
+            let lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
             axios.post('/api/v1/lecturer/' + lecturerId + '/department', payload)
                 .then((response) => {
                     context.state.lecturer = response.data
@@ -86,7 +86,7 @@ const actions: ActionTree<LecturerState, RootState> = {
     },
     'lecturer/toggleInOffice': (context) => {
         return new Promise((resolve, reject) => {
-            let lecturerId = context.getters[ 'GET_LECTURER' ].id;
+            let lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
             axios.get('/api/v1/lecturer/' + lecturerId + '/status/toggleStatus')
                 .then(() => {
                     context.dispatch('lecturer/GET_STORED_LECTURER')
@@ -97,7 +97,7 @@ const actions: ActionTree<LecturerState, RootState> = {
     },
     'lecturer/ADD_COURSE': (context, payload: Course) => {
         return new Promise((resolve, reject) => {
-            let lecturerId = context.getters[ 'GET_LECTURER' ].id;
+            let lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
             axios.post('/api/v1/lecturer/' + lecturerId + '/course', payload)
                 .then((response) => {
                     let updatedLecturer: Lecturer = response.data;
@@ -108,7 +108,7 @@ const actions: ActionTree<LecturerState, RootState> = {
     },
     'lecturer/REMOVE_COURSE': (context, payload: Course) => {
         return new Promise((resolve, reject) => {
-            let lecturerId = context.getters[ 'GET_LECTURER' ].id;
+            let lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
             axios.delete('/api/v1/lecturer/' + lecturerId + '/course/' + payload.id)
                 .then((response) => {
                     let updatedLecturer: Lecturer = response.data;

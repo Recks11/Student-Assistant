@@ -23,16 +23,10 @@ import java.util.ArrayList;
 public class StudentController {
 
     private final StudentService studentService;
-    private final ProgramService programService;
-    private final SortService sortService;
-    private final CourseService courseService;
 
     @Autowired
-    public StudentController(StudentService studentService, ProgramService programService, SortService sortService, CourseService courseService) {
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
-        this.programService = programService;
-        this.sortService = sortService;
-        this.courseService = courseService;
     }
 
     @GetMapping
@@ -58,7 +52,8 @@ public class StudentController {
     @ResponseStatus(HttpStatus.OK)
     public Flux<Course> getUnRegisteredCourses(@PathVariable String id) {
         return studentService.findById(id)
-                .flatMapMany(student -> studentService.findUnregisteredCoursesForStudent(student.getId(), student.getProgram().getId()));
+                .flatMapMany(
+                        student -> studentService.findUnregisteredCoursesForStudent(student.getId(), student.getProgram().getId()));
     }
 
     @PostMapping("/{id}/courses")

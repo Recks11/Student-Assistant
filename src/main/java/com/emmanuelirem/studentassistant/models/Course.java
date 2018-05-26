@@ -120,11 +120,9 @@ public class Course {
         if(this.lecturers == null) {
             this.lecturers = new ArrayList<>();
         }
-        if (!lecturer.getCourses().contains(this)) {
-            lecturer.addCourse(this);
-        }
         if(!this.lecturers.contains(lecturer)){
             this.lecturers.add(lecturer);
+            lecturer.addCourse(this);
         }
     }
 

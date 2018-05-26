@@ -4,8 +4,10 @@ import com.emmanuelirem.studentassistant.models.Course;
 import com.emmanuelirem.studentassistant.models.Lecturer;
 import com.emmanuelirem.studentassistant.models.Student;
 import com.emmanuelirem.studentassistant.models.security.Users;
+import com.emmanuelirem.studentassistant.repository.CourseRepository;
 import com.emmanuelirem.studentassistant.repository.LecturerRepository;
 import com.emmanuelirem.studentassistant.services.data.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,21 +15,27 @@ import org.springframework.web.context.request.WebRequest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Slf4j
 @Service
 @Transactional
 public class LecturerServiceImpl implements LecturerService {
 
     private final EncoderService encoderService;
     private final RegexService regexService;
-    private LecturerRepository lecturerRepository;
-    private CourseService courseService;
-    private UsersService usersService;
+    private final LecturerRepository lecturerRepository;
+    private final CourseRepository courseRepository;
+    private final UsersService usersService;
 
 
     @Autowired
-    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService, UsersService usersService, EncoderService encoderService, RegexService regexService) {
+    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseRepository courseRepository,
+                               UsersService usersService, EncoderService encoderService,
+                               RegexService regexService) {
         this.lecturerRepository = lecturerRepository;
-        this.courseService = courseService;
+        this.courseRepository = courseRepository;
         this.usersService = usersService;
         this.encoderService = encoderService;
         this.regexService = regexService;
@@ -88,19 +96,24 @@ public class LecturerServiceImpl implements LecturerService {
         //ONLY JESUS KNOWS WHY THIS CODE BREAKS THE LECTURER END POINT
         //I AM VERY CONFUSED AND SAD
         //IT WORKS BUT THE `/lecturer` END POINT JUST BREAKS. COMPLETELY
-        return lecturerRepository.findById(lecturerId)
-                .flatMap(lecturer -> {
-                    course.addLecturer(lecturer);
+        //FIXED!!: Saving courses with a list instead of a single object fixed the problem weird
+
+        List<Course> courses = new ArrayList<>();
+        return lecturerRepository.findById(lecturerId).log()
+                .map(lecturer -> {
                     lecturer.addCourse(course);
-                    return courseService.saveOrUpdate(course)
-                            .then(this.update(lecturer));
-                });
+                    courses.add(course);
+                    return lecturer;
+                })
+                .flatMap(lecturerRepository::save)
+                .thenMany(courseRepository.saveAll(courses))
+                .then(lecturerRepository.findById(lecturerId));
     }
 
     @Override
     public Mono<Lecturer> removeCourseFromLecturer(String lecturerId, String courseId) {
         return lecturerRepository.findById(lecturerId)
-                .flatMap(lecturer -> courseService.findCourseById(courseId)
+                .flatMap(lecturer -> courseRepository.findById(courseId)
                         .map(course -> {
                             lecturer.getCourses().remove(course);
                             return lecturer;
@@ -109,7 +122,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public Flux<Course> getCoursesWithLecturer(Lecturer lecturer) {
-        return courseService.findCoursesWithLecturer(lecturer);
+        return courseRepository.findCoursesByLecturersContains(lecturer);
     }
 
     @Override

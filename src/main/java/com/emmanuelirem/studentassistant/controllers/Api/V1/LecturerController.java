@@ -18,7 +18,7 @@ import java.security.Principal;
 @RequestMapping("/api/v1/lecturer")
 public class LecturerController {
 
-    private LecturerService lecturerService;
+    private final LecturerService lecturerService;
 
     @Autowired
     public LecturerController(LecturerService lecturerService) {
@@ -84,7 +84,7 @@ public class LecturerController {
     }
 
     @PostMapping("/{id}/course")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public Mono<Lecturer> addCourses(@PathVariable String id,
                                      @RequestBody Course course) {
 

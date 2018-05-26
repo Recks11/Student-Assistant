@@ -8,6 +8,7 @@ import com.emmanuelirem.studentassistant.services.data.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.WebRequest;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class StudentServiceImpl implements StudentService {
         List<String> courseIdList = new ArrayList<>();
         courses.forEach(course -> courseIdList.add(course.getId()));
         List<Course> courseList = new ArrayList<>();
-
+        Hooks.onOperatorDebug();
         return courseService.findCoursesByIds(courseIdList)
                 .map((course) -> {
                     student.addCourse(course);

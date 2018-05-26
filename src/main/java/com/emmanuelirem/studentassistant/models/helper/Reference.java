@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 
 public class Reference<T> {
 
-    @Transient
     private String id;
 
     @Transient
