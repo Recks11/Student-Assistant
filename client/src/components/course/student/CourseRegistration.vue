@@ -81,7 +81,7 @@
         public selectedCourses: Course[] = [];
 
         public get numberOfRegisteredCourses(): number {
-            return this.$store.getters['student/GET_REGISTERED_COURSES'].length
+            return this.$store.getters[ 'student/GET_REGISTERED_COURSES' ].length
         }
 
         public get currentStudent(): void {
@@ -98,11 +98,16 @@
         }
 
         public registerCourses(courses: Course[]): void {
+            this.$store.commit('main/LOADING', true);
             this.$store.dispatch('course/REGISTER_STUDENT', courses)
+                .then(() => this.$store.commit('main/LOADING', false))
         }
+
         public removeCourse(id: string): void {
+            this.$store.commit('main/LOADING', true);
             this.$store.dispatch('student/REMOVE_COURSE', id)
-    }
+                .then(() => this.$store.commit('main/LOADING', false))
+        }
 
         public created(): void {
             this.$store.commit('UPDATE_UNREGISTERED_COURSES');
@@ -115,15 +120,19 @@
         width: 100vw;
 
     }
+
     .badge-pill {
         cursor: pointer;
     }
+
     h3.text-center {
         margin-bottom: 0;
     }
+
     .badge-primary:hover {
         background-color: #10b0ff;
     }
+
     .badge-danger:hover {
         background-color: #ff3a4e;
     }

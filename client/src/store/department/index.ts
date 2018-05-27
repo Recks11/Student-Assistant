@@ -41,7 +41,7 @@ const actions: ActionTree<DepartmentState, RootState> = {
         return new Promise((resolve, reject) => {
             axios.get('/api/v1/department')
                 .then((response) => {
-                    let responseData: Department[] = response.data;
+                    const responseData: Department[] = response.data;
                     context.commit('REPLACE_DEPARTMENT_ARRAY', responseData);
                     responseData.forEach((value, index) => {
                         context.commit('SET_DEPARTMENT_MAP', value);
@@ -50,17 +50,17 @@ const actions: ActionTree<DepartmentState, RootState> = {
                 }).catch(() => reject('Unable to Fetch Departments'));
         });
     },
-    'department/GET_COURSES_FOR_DEPARTMENT': (context) => {
+    'department/GET_COURSES_FOR_DEPARTMENT': (context, payload: Department) => {
         return new Promise((resolve, reject) => {
-            let id = context.rootState.activeLecturer.departments[0].id;
-            let dept = context.rootState.activeLecturer.departments[0];
+            const id = payload.id;
+            const dept = payload;
             axios.get('/api/v1/department/' + id + '/programs')
                 .then((response) => {
 
                     dept.Programs = response.data;
                     context.state.department = dept;
                     context.commit('SET_DEPARTMENT_MAP', context.state.department);
-                    let idx = context.state.departmentArray.findIndex((value) => value.id === id);
+                    const idx = context.state.departmentArray.findIndex((value) => value.id === id);
                     if(idx !== -1){
                         context.state.departmentArray[idx].Programs = response.data;
                     }

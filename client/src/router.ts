@@ -52,10 +52,17 @@ export const router: Router = new Router({
                     component: StudentViewCourse,
                     beforeEnter: (to, from, next) => {
                         console.log("before enter");
+                        store.commit('main/LOADING', true);
                         store.dispatch('course/GET_COURSE', to.params.id)
                             .then(() => store.dispatch('course/GET_COURSE_LECTURERS', to.params.id)
-                                .then(() => next()))
-                            .catch(() => next(from))
+                                .then(() => {
+                                    store.commit('main/LOADING', false);
+                                    next();
+                                }))
+                            .catch(() => {
+                                store.commit('main/LOADING', false);
+                                next(from);
+                            })
                     },
                 },
             ],
@@ -72,7 +79,7 @@ export const router: Router = new Router({
                     path: 'add',
                     component: LecturerAddCourse,
                     beforeEnter: (to, from, next) => {
-                        store.dispatch('department/GET_COURSES_FOR_DEPARTMENT')
+                        store.dispatch('department/GET_COURSES_FOR_DEPARTMENT', store.getters['ACTIVE_LECTURER'].departments[0])
                             .then(() => next())
                             .catch(() => next());
                     },
@@ -85,11 +92,21 @@ export const router: Router = new Router({
                     path: 'view/:id',
                     component: LecturerViewCourse,
                     beforeEnter: (to, from, next) => {
+                        store.commit('main/LOADING', true);
                         store.dispatch('course/GET_COURSE', to.params.id)
                             .then(() => store.dispatch('course/GET_COURSE_STUDENTS', to.params.id)
-                                .then(() => next())
-                                .catch(() => next(from)))
-                            .catch(() => next(from))
+                                .then(() => {
+                                    store.commit('main/LOADING', false);
+                                    next()
+                                })
+                                .catch(() => {
+                                    store.commit('main/LOADING', false);
+                                    next(from)
+                                }))
+                            .catch(() => {
+                                store.commit('main/LOADING', false);
+                                next(from)
+                            })
                     }
                 },
             ]

@@ -54,11 +54,16 @@ const actions: ActionTree<ProgramState, RootState> = {
                     context.commit('SET_PROGRAMS', responseMap);
                     resolve(responseMap);
                 }).catch(reason => {
-                    reject(reason);
+                reject(reason);
             });
         });
-    },'program/PICK_PROGRAM': (context, payload: Program) => {
-        context.dispatch('student/ADD_PROGRAM', payload);
+    }, 'program/PICK_PROGRAM': (context, payload: Program) => {
+        return new Promise((resolve, reject) => {
+
+            context.dispatch('student/ADD_PROGRAM', payload)
+                .then(() => resolve())
+                .catch(() => reject());
+        });
     },
     'program/RESET_PROGRAM': (context) => {
         context.commit('RESET_PROGRAM');

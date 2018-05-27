@@ -132,8 +132,7 @@
                 this.$router.push('/login');
             }
             if ( this.$store.getters[ 'GET_PROGRAM_ARRAY' ].length === 0 ) {
-                this.$store.dispatch('program/GET_STORED_PROGRAMS')
-                    .catch((err) => console.log(err))
+                this.$store.dispatch('program/GET_STORED_PROGRAMS');
             }
         }
     }

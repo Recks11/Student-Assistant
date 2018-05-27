@@ -3,6 +3,9 @@
         <app-student-nav v-if="role==='student'"></app-student-nav>
         <app-lecturer-nav v-if="role === 'lecturer'"></app-lecturer-nav>
         <router-view/>
+        <div id="loading" :class="{'show-loading': isLoading, 'hide-loading': !isLoading}">
+            <h3 style="color: white">LOADING...</h3>
+        </div>
     </div>
 </template>
 
@@ -26,6 +29,9 @@
         }
     })
     export default class App extends Vue {
+        public get isLoading(): boolean {
+            return this.$store.getters['LOADING'];
+        }
     }
 </script>
 
@@ -44,7 +50,25 @@
     #nav {
         padding: 30px;
     }
-
+    #loading {
+        position: fixed;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.4);
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1071;
+    }
+    .show-loading{
+        display: flex !important;
+    }
+    .hide-loading{
+        display: none !important;
+    }
     #nav a {
         font-weight: bold;
         color: #2c3e50;

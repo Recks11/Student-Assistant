@@ -33,7 +33,7 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import CourseHeader from '../CourseHeader';
+    import CourseHeader from '../CourseHeader.vue';
     import Course from '../../../model/Course';
 
     @Component({

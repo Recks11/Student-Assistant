@@ -15,13 +15,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(course, index) in registeredCourses" :key="course.id" @click="navigateToCourse(course.id)" style="cursor: pointer;">
-                        <th >{{index + 1}}</th>
-                        <td >{{course.level}}</td>
-                        <td >{{course.semester}}</td>
-                        <td >{{course.code}}</td>
-                        <td > {{course.title}}</td>
-                        <td >{{course.units}}</td>
+                    <tr v-for="(course, index) in registeredCourses" :key="course.id"
+                        @click="navigateToCourse(course.id)" style="cursor: pointer;">
+                        <th>{{index + 1}}</th>
+                        <td>{{course.level}}</td>
+                        <td>{{course.semester}}</td>
+                        <td>{{course.code}}</td>
+                        <td> {{course.title}}</td>
+                        <td>{{course.units}}</td>
                     </tr>
                     </tbody>
                 </table>

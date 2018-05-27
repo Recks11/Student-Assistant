@@ -17,11 +17,11 @@
                         </thead>
                         <tbody>
                         <tr v-for="(student, idx) in course.students">
-                            <th scope="row" >{{idx+1}}</th>
-                            <td >{{student.firstName}} {{student.lastName}}</td>
-                            <td ><a :href="'mailto:'+ student.email.toLowerCase()" >{{student.email}}</a></td>
-                            <td >{{student.hall}} {{student.roomNumber}}</td>
-                            <td >{{student.program.name}}</td>
+                            <th scope="row">{{idx+1}}</th>
+                            <td>{{student.firstName}} {{student.lastName}}</td>
+                            <td><a :href="'mailto:'+ student.email.toLowerCase()">{{student.email}}</a></td>
+                            <td>{{student.hall}} {{student.roomNumber}}</td>
+                            <td>{{student.program.name}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -34,7 +34,7 @@
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
     import Course from '../../../model/Course';
-    import CourseHeader from '../CourseHeader';
+    import CourseHeader from '../CourseHeader.vue';
 
     @Component({
         components: {
@@ -43,10 +43,7 @@
     })
     export default class ViewCourse extends Vue {
         public get course(): Course {
-            return this.$store.getters['GET_COURSE'];
-        }
-        public created(): void {
-            console.log(this.course.students)
+            return this.$store.getters[ 'GET_COURSE' ];
         }
     }
 </script>

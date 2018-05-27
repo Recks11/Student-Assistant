@@ -36,7 +36,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public Mono<Course> viewCourses(@PathVariable String id){
+    public Mono<Course> viewCourses(@PathVariable String id) {
         return courseService.findCourseById(id);
     }
 
@@ -56,7 +56,7 @@ public class CourseController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public Mono<Course> addCourse(@RequestBody Course course){
+    public Mono<Course> addCourse(@RequestBody Course course) {
         return courseService.saveOrUpdate(course);
     }
 }

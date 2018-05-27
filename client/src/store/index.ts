@@ -18,6 +18,7 @@ const store: StoreOptions<RootState> = {
     state: {
         activeStudent: new Student(),
         activeLecturer: new Lecturer(),
+        loading: false,
     },
     getters: {
         ACTIVE_LECTURER: (state) => {
@@ -25,6 +26,9 @@ const store: StoreOptions<RootState> = {
         },
         ACTIVE_STUDENT: (state) => {
             return state.activeStudent;
+        },
+        LOADING: (state) => {
+            return state.loading;
         },
     },
     mutations: {
@@ -37,6 +41,9 @@ const store: StoreOptions<RootState> = {
         'main/RESET_STATE': (state) => {
             state.activeLecturer = new Lecturer();
             state.activeStudent = new Student();
+        },
+        'main/LOADING': (state, payload: boolean) => {
+            state.loading = payload;
         },
     },
     actions: {

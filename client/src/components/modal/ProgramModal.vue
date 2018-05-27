@@ -14,11 +14,13 @@
                         <form id="programForm" method="post">
                             <div class="form-group">
                                 <label for="college">College: </label>
-                                <p type="text" readonly class="form-control-plaintext" id="college"> {{programs[0].department.college.name}}</p>
+                                <p type="text" readonly class="form-control-plaintext" id="college">
+                                    {{programs[0].department.college.name}}</p>
                             </div>
                             <div class="form-group">
                                 <label for="department">Department:</label>
-                                <p type="text" readonly class="form-control-plaintext" id="department">{{programs[0].department.name}}</p>
+                                <p type="text" readonly class="form-control-plaintext" id="department">
+                                    {{programs[0].department.name}}</p>
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlSelect2">Program:</label>
@@ -31,7 +33,8 @@
                     </div>
                     <div class="modal-footer">
                         <a role="button" class="btn btn-secondary" style="color: white" @click="goHome()">Cancel</a>
-                        <button type="button" class="btn btn-primary" :disabled="pickedProgramId===''" @click.prevent="chooseProgram(pickedProgramId)">
+                        <button type="button" class="btn btn-primary" :disabled="pickedProgramId===''"
+                                @click.prevent="chooseProgram(pickedProgramId)">
                             Select
                         </button>
                     </div>
@@ -54,13 +57,18 @@
             background: false,
             card: true
         };
-        public programs: Program[] = this.$store.getters['GET_PROGRAM_ARRAY'];
-        public allPrograms: Map<String, Program> = this.$store.getters['GET_ALL_PROGRAMS'];
+        public programs: Program[] = this.$store.getters[ 'GET_PROGRAM_ARRAY' ];
+        public allPrograms: Map<String, Program> = this.$store.getters[ 'GET_ALL_PROGRAMS' ];
         public pickedProgramId: string = '';
 
         public chooseProgram(programId: string): void {
-            this.$store.dispatch('program/PICK_PROGRAM', this.allPrograms.get(programId)).then();
-            this.closeModal();
+            this.$store.commit('main/LOADING', true);
+            this.$store.dispatch('program/PICK_PROGRAM', this.allPrograms.get(programId))
+                .then(() => {
+                    this.$store.commit('main/LOADING', false);
+                    this.closeModal();
+                })
+                .catch(() => this.$store.commit('main/LOADING', false));
         }
 
         public closeModal(): void {

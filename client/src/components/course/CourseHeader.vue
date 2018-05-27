@@ -9,7 +9,8 @@
             <h4 class="alert-heading"> {{course.code}} {{course.title}} </h4>
 
             <p v-if="userRole === 'student'">
-                There {{course.lecturers.length===1?'is': 'are'}} {{course.lecturers.length}} lecturer{{course.lecturers.length===1?'': 's'}} for this course</p>
+                There {{course.lecturers.length===1?'is': 'are'}} {{course.lecturers.length}}
+                lecturer{{course.lecturers.length===1?'': 's'}} for this course</p>
 
             <p v-if="userRole === 'lecturer'">{{course.students.length}} students are registered this course</p>
 
@@ -27,8 +28,9 @@
     export default class CourseHeader extends Vue {
         @Prop({default: 'COURSE HEADER'}) header!: string;
         @Prop({default: () => new Course()}) course!: Object;
+
         public get userRole(): string {
-            return this.$store.getters['login/USER_ROLE'];
+            return this.$store.getters[ 'login/USER_ROLE' ];
         }
     }
 </script>

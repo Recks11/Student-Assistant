@@ -4,4 +4,5 @@ import Lecturer from '../model/Lecturer';
 export interface RootState {
     activeStudent: Student;
     activeLecturer: Lecturer;
+    loading: boolean;
 }

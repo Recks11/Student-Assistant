@@ -42,6 +42,7 @@ const mutations: MutationTree<LoginState> = {
 
 const actions: ActionTree<LoginState, RootState> = {
     'login/LOG_IN_ACTION': (context, payload: UserDetails) => {
+        context.commit('main/LOADING', true);
         if ( payload.username.charAt(0) === 'c' && payload.username.charAt(1) === 'u' ) {
             return new Promise((resolve, reject) => {
                 axios.get('/auth/login', {
@@ -52,7 +53,10 @@ const actions: ActionTree<LoginState, RootState> = {
                     context.dispatch('lecturer/GET_STORED_LECTURER')
                         .then((returnedLecturer) => {
                             context.dispatch('lecturer/SET_LECTURER', returnedLecturer)
-                                .then(() => resolve(returnedLecturer))
+                                .then(() => {
+                                    resolve(returnedLecturer);
+                                    context.commit('main/LOADING', false);
+                                })
                                 .catch(() => reject('User not Set'));
                         })
                         .catch(reason => {
@@ -74,7 +78,10 @@ const actions: ActionTree<LoginState, RootState> = {
                     context.dispatch('student/GET_STORED_STUDENT')
                         .then((returnedStudent) => {
                             context.dispatch('action/SET_STUDENT', returnedStudent)
-                                .then((data) => resolve(data))
+                                .then((data) => {
+                                    resolve(data);
+                                    context.commit('main/LOADING', false);
+                                })
                                 .catch(() => reject('User not set'));
                         })
                         .catch(reason => {

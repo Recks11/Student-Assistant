@@ -2,47 +2,55 @@
     <div class="AddCourse">
         <div class="container" v-if="departments.length > 0" v-for="department in departments" :key="department.id">
             <div class="row" style="margin-bottom: 20px;">
-                <div class="col-12" :class="{'col-md-6': department.Programs.length === 2,'col-md-4': department.Programs.length === 3}" v-for="program in department.Programs">
+                <div class="col-12"
+                     :class="{'col-md-6': department.Programs.length === 2,'col-md-4': department.Programs.length === 3}"
+                     v-for="program in department.Programs">
                     <div class="card">
                         <div class="card-header">
                             {{program.name}}
                         </div>
                         <div class="wrapper">
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center" v-for="course in program.courses" v-if="lecturerLecturesCourse(course)">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center"
+                                    v-for="course in program.courses" v-if="lecturerLecturesCourse(course)">
                                 <span class="hide-overflow">
                                     {{course.compulsory===true?'[C] ':'[E] '}} {{course.code}} {{course.title}}</span>
-                                <span class="badge badge-pill badge-danger">
+                                    <span class="badge badge-pill badge-danger">
                             <a style="cursor: pointer;" @click="removeCourse(course.id)">
                                 <strong style="color: white;">X</strong>
                             </a>
                         </span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center"> Add Courses Below</li>
-                        </ul>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"> Add
+                                    Courses Below
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-12" :class="{'col-md-6': department.Programs.length === 2,'col-md-4': department.Programs.length === 3}" v-for="program in department.Programs">
+                <div class="col-12"
+                     :class="{'col-md-6': department.Programs.length === 2,'col-md-4': department.Programs.length === 3}"
+                     v-for="program in department.Programs">
                     <div class="card">
                         <div class="card-header">
                             {{program.name}}
                         </div>
                         <div class="wrapper">
 
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center" v-for="course in program.courses" v-if="!lecturerLecturesCourse(course)">
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center"
+                                    v-for="course in program.courses" v-if="!lecturerLecturesCourse(course)">
                                 <span class="hide-overflow">
                                     {{course.compulsory===true?'[C] ':'[E] '}} {{course.code}} {{course.title}}</span>
-                                <span class="badge badge-pill badge-success">
+                                    <span class="badge badge-pill badge-success">
                             <a style="cursor: pointer" @click="addCourse(course)">
                                 <strong style="color: white;">ADD</strong>
                             </a>
                         </span>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -66,23 +74,37 @@
         }
 
         public get departments(): Department[] {
-            return this.$store.getters['GET_DEPARTMENT_ARRAY'];
+            return this.$store.getters[ 'GET_DEPARTMENT_ARRAY' ];
         }
 
         public get lecturer(): Lecturer {
-            return this.$store.getters['ACTIVE_LECTURER'];
+            return this.$store.getters[ 'ACTIVE_LECTURER' ];
         }
 
         public addCourse(course: Course): void {
+            this.$store.commit('main/LOADING', true);
             this.$store.dispatch('lecturer/ADD_COURSE', course)
-                .then(() => this.message = 'success')
-                .catch(() => this.message = 'An error occurred');
+                .then(() => {
+                    this.message = 'success';
+                    this.$store.commit('main/LOADING', false);
+                })
+                .catch(() => {
+                    this.message = 'An error occurred';
+                    this.$store.commit('main/LOADING', false);
+                });
         }
 
         public removeCourse(id: string): void {
+            this.$store.commit('main/LOADING', true);
             this.$store.dispatch('lecturer/REMOVE_COURSE', id)
-                .then(() => this.message = 'success')
-                .catch(() => this.message = 'An error occurred');
+                .then(() => {
+                    this.message = 'success';
+                    this.$store.commit('main/LOADING', false);
+                })
+                .catch(() => {
+                    this.message = 'An error occurred';
+                    this.$store.commit('main/LOADING', false);
+                });
         }
     }
 </script>
@@ -92,6 +114,7 @@
         max-height: 600px;
         overflow: scroll;
     }
+
     .card {
         margin-bottom: 20px;
     }

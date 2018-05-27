@@ -22,7 +22,8 @@
                     </div>
                     <div class="modal-footer">
                         <a role="button" class="btn btn-secondary" style="color: white" @click="goHome()">Cancel</a>
-                        <button type="button" class="btn btn-primary" :disabled="deptId===''" @click.prevent="chooseDepartment()">
+                        <button type="button" class="btn btn-primary" :disabled="deptId===''"
+                                @click.prevent="chooseDepartment()">
                             Select
                         </button>
                     </div>
@@ -45,20 +46,27 @@
             background: false,
             card: true
         };
-        public allDepts: Department[] = this.$store.getters['GET_DEPARTMENT_ARRAY'];
-        public allDepartments: Map<String, Department> = this.$store.getters['GET_DEPARTMENT_MAP'];
+        public allDepts: Department[] = this.$store.getters[ 'GET_DEPARTMENT_ARRAY' ];
+        public allDepartments: Map<String, Department> = this.$store.getters[ 'GET_DEPARTMENT_MAP' ];
         public deptId: string = '';
         public message: string = '';
 
         public chooseDepartment(): void {
             let chosenDept = this.allDepartments.get(this.deptId);
-            console.log(chosenDept);
+            this.$store.commit('main/LOADING', true);
             this.$store.dispatch('lecturer/SET_DEPARTMENT', chosenDept)
                 .catch((r) => {
                     this.message = r;
                     return;
-                });
-            this.closeModal();
+                }).then(() => {
+                this.$store.dispatch('department/GET_COURSES_FOR_DEPARTMENT', chosenDept)
+                    .then(() => {
+                        this.closeModal();
+                        this.$store.commit('main/LOADING', false);
+                    });
+            });
+
+
         }
 
         public closeModal(): void {

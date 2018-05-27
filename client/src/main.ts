@@ -10,7 +10,6 @@ axios.defaults.responseType = 'json';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.defaults.baseURL = 'http://localhost:8080';
 axios.create({
-    baseURL: `http://localhost:8080`,
     headers: {
         'Access-Control-Allow-Origin': 'http://localhost:8081',
     },

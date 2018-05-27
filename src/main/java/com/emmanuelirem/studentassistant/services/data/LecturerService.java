@@ -25,7 +25,7 @@ public interface LecturerService {
 
     Flux<Lecturer> getLecturersForCourses(Course course);
 
-    Mono<Lecturer>  getLecturerByIdentifier(String name);
+    Mono<Lecturer> getLecturerByIdentifier(String name);
 
     Mono<Lecturer> getLecturerFromRequest(WebRequest request);
 }
