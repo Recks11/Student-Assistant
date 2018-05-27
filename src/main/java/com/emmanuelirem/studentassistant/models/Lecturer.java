@@ -38,7 +38,7 @@ public class Lecturer {
     @DBRef
     private List<Course> courses = new ArrayList<>();
 
-    @DBRef(lazy = true)
+    @DBRef
     @JsonIgnore
     private List<Message> messages = new ArrayList<>();
 
@@ -161,7 +161,8 @@ public class Lecturer {
     }
 
     public void removeCourse(Course course) {
-            courses.remove(course);
+        courses.remove(course);
+        if(course.getLecturers().contains(this))
             course.removeLecturer(this);
     }
 
@@ -184,6 +185,7 @@ public class Lecturer {
     }
 
     public void removeMessage(Message message){
+        if(messages.contains(message))
             messages.remove(message);
     }
 
@@ -206,28 +208,6 @@ public class Lecturer {
 
     public void setInOffice(boolean inOffice) {
         this.inOffice = inOffice;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Lecturer lecturer = (Lecturer) o;
-
-        if (!id.equals(lecturer.id)) return false;
-        if (firstName != null ? !firstName.equals(lecturer.firstName) : lecturer.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(lecturer.lastName) : lecturer.lastName != null) return false;
-        return username.equals(lecturer.username);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + username.hashCode();
-        return result;
     }
 
     @Override
