@@ -162,9 +162,8 @@ public class Lecturer {
 
     public void removeCourse(Course course) {
         courses.remove(course);
-//        if(course.getLecturers().contains(this)){
-//            course.removeLecturer(this);
-//        }
+        if(course.getLecturers().contains(this))
+            course.removeLecturer(this);
     }
 
     public void setCourses(List<Course> courses) {

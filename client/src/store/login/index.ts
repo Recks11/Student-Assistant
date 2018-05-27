@@ -51,7 +51,7 @@ const actions: ActionTree<LoginState, RootState> = {
                 }).then(() => {
                     context.dispatch('lecturer/GET_STORED_LECTURER')
                         .then((returnedLecturer) => {
-                            context.dispatch('action/SET_LECTURER', returnedLecturer)
+                            context.dispatch('lecturer/SET_LECTURER', returnedLecturer)
                                 .then(() => resolve(returnedLecturer))
                                 .catch(() => reject('User not Set'));
                         })

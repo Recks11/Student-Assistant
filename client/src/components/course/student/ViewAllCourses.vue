@@ -32,22 +32,13 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import Course from '../../model/Course';
-    import CourseHeader from './CourseHeader.vue';
+    import Course from '../../../model/Course';
+    import CourseHeader from '../CourseHeader.vue';
 
     @Component({
         components: {
             appCourseHeader: CourseHeader,
         },
-        beforeRouteLeave(to, from, next) {
-            if(to.name === 'courseInfo'){
-                this.$store.dispatch('course/GET_COURSE', to.params.id)
-                    .then(() => next())
-                    .catch(() => next(from))
-            } else {
-                next();
-            }
-        }
     })
     export default class RegisteredCourses extends Vue {
         public get registeredCourses(): Course[] {
@@ -55,7 +46,7 @@
         }
 
         public navigateToCourse(id: string): void {
-            this.$router.push('view/'+ id);
+            this.$router.push({path: '/course/view/' + id});
         }
     }
 </script>

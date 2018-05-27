@@ -5,6 +5,7 @@ export default class Course {
 
     private _id: string = '';
     private _units: number = 0;
+    private _level: number = 0;
     private _title: string = '';
     private _compulsory: boolean = false;
     private _password: string = '';
@@ -30,6 +31,15 @@ export default class Course {
 
     set units(value: number) {
         this._units = value;
+    }
+
+
+    get level(): number {
+        return this._level;
+    }
+
+    set level(value: number) {
+        this._level = value;
     }
 
     get title(): string {
@@ -104,6 +114,7 @@ export default class Course {
         return {
             id: this.id,
             units: this.units,
+            level: this.level,
             title: this.title,
             compulsory: this.compulsory,
             password: this.password,

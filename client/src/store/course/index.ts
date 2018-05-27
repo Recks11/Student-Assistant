@@ -56,19 +56,11 @@ const actions: ActionTree<CourseState, RootState> = {
     },
     'course/GET_COURSE': (context, payload: string) => {
         return new Promise((resolve, reject) => {
-
             axios.get('/api/v1/courses/' + payload)
                 .then((response) => {
                     state.course = response.data;
-                    context.commit('SET_COURSE', response.data)
-                })
-                .then(() => {
-                    context.dispatch('course/GET_COURSE_LECTURERS', payload)
-                        .then(() => {
-                            resolve();
-                        }).catch(reason => {
-                        reject(reason);
-                    });
+                    context.commit('SET_COURSE', response.data);
+                    resolve()
                 })
                 .catch(reason => {
                     reject(reason);

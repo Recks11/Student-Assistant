@@ -24,12 +24,21 @@ const mutations: MutationTree<LecturerState> = {
     RESET_LECTURER_STATE: (state) => {
         state.lecturer = new Lecturer();
     },
+    SET_LECTURER_COURSES: (state, payload) => {
+        state.lecturer.courses = payload;
+    },
+    REMOVE_LECTURER_COURSE: (state, payload) => {
+
+    },
 };
 
 const actions: ActionTree<LecturerState, RootState> = {
     'lecturer/SET_LECTURER': (context, lecturer: Lecturer) => {
-        context.commit('SET_STUDENT');
-        context.rootState.activeLecturer = lecturer;
+        return new Promise((resolve, reject) => {
+            context.commit('SET_LECTURER', lecturer);
+            context.dispatch('action/SET_LECTURER', lecturer)
+                .then(() => resolve());
+        })
     },
     'lecturer/RESET_LECTURER': (context) => {
         context.commit('RESET_LECTURER_STATE');
@@ -91,8 +100,8 @@ const actions: ActionTree<LecturerState, RootState> = {
                 .then(() => {
                     context.dispatch('lecturer/GET_STORED_LECTURER')
                         .then((response) => resolve(response))
-                        .catch(() => reject('could not return your information'))
-                }).catch(() => reject('Could not update status'))
+                        .catch(() => reject('could not return your information'));
+                }).catch(() => reject('Could not update status'));
         })
     },
     'lecturer/ADD_COURSE': (context, payload: Course) => {
@@ -101,18 +110,18 @@ const actions: ActionTree<LecturerState, RootState> = {
             axios.post('/api/v1/lecturer/' + lecturerId + '/course', payload)
                 .then((response) => {
                     let updatedLecturer: Lecturer = response.data;
-                    context.state.lecturer.courses = updatedLecturer.courses;
+                    context.commit('SET_LECTURER_COURSES', updatedLecturer.courses);
                     resolve(updatedLecturer.courses);
                 }).catch((error) => reject(error));
         });
     },
-    'lecturer/REMOVE_COURSE': (context, payload: Course) => {
+    'lecturer/REMOVE_COURSE': (context, payload: string) => {
         return new Promise((resolve, reject) => {
             let lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
-            axios.delete('/api/v1/lecturer/' + lecturerId + '/course/' + payload.id)
+            axios.delete('/api/v1/lecturer/' + lecturerId + '/course/' + payload)
                 .then((response) => {
                     let updatedLecturer: Lecturer = response.data;
-                    context.state.lecturer.courses = updatedLecturer.courses;
+                    context.commit('SET_LECTURER_COURSES', updatedLecturer.courses);
                     resolve(updatedLecturer.courses);
                 }).catch((error) => reject(error));
         });

@@ -18,24 +18,22 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Service
-@Transactional
 public class LecturerServiceImpl implements LecturerService {
 
     private final EncoderService encoderService;
     private final RegexService regexService;
     private final LecturerRepository lecturerRepository;
-    private final CourseRepository courseRepository;
+    private final CourseService courseService;
     private final UsersService usersService;
 
 
     @Autowired
-    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseRepository courseRepository,
+    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService,
                                UsersService usersService, EncoderService encoderService,
                                RegexService regexService) {
         this.lecturerRepository = lecturerRepository;
-        this.courseRepository = courseRepository;
+        this.courseService = courseService;
         this.usersService = usersService;
         this.encoderService = encoderService;
         this.regexService = regexService;
@@ -99,30 +97,34 @@ public class LecturerServiceImpl implements LecturerService {
         //FIXED!!: Saving courses with a list instead of a single object fixed the problem weird
 
         List<Course> courses = new ArrayList<>();
-        return lecturerRepository.findById(lecturerId).log()
-                .map(lecturer -> {
+        return this.getLecturerById(lecturerId).log()
+                .map((lecturer) -> {
                     lecturer.addCourse(course);
                     courses.add(course);
                     return lecturer;
                 })
-                .flatMap(lecturerRepository::save)
-                .thenMany(courseRepository.saveAll(courses))
-                .then(lecturerRepository.findById(lecturerId));
+                .flatMap(this::update)
+                .thenMany(courseService.saveAll(Flux.fromIterable(courses)))
+                .then(this.getLecturerById(lecturerId));
     }
 
     @Override
     public Mono<Lecturer> removeCourseFromLecturer(String lecturerId, String courseId) {
+        List<Course> courses = new ArrayList<>();
         return lecturerRepository.findById(lecturerId)
-                .flatMap(lecturer -> courseRepository.findById(courseId)
-                        .map(course -> {
-                            lecturer.getCourses().remove(course);
-                            return lecturer;
-                        }));
+                .flatMap(lecturer -> courseService.findCourseById(courseId)
+                        .flatMap(course -> {
+                            lecturer.removeCourse(course);
+                            courses.add(course);
+                            return this.update(lecturer);
+                        }))
+                .thenMany(courseService.saveAll(Flux.fromIterable(courses)))
+                .then(this.getLecturerById(lecturerId));
     }
 
     @Override
     public Flux<Course> getCoursesWithLecturer(Lecturer lecturer) {
-        return courseRepository.findCoursesByLecturersContains(lecturer);
+        return courseService.findCoursesWithLecturer(lecturer);
     }
 
     @Override

@@ -1,6 +1,6 @@
 <template>
     <div class="AddCourse">
-        <div class="container" v-for="department in departments" :key="department.id">
+        <div class="container" v-if="departments.length > 0" v-for="department in departments" :key="department.id">
             <div class="row" style="margin-bottom: 20px;">
                 <div class="col-12" :class="{'col-md-6': department.Programs.length === 2,'col-md-4': department.Programs.length === 3}" v-for="program in department.Programs">
                     <div class="card">
@@ -13,7 +13,7 @@
                                 <span class="hide-overflow">
                                     {{course.compulsory===true?'[C] ':'[E] '}} {{course.code}} {{course.title}}</span>
                                 <span class="badge badge-pill badge-danger">
-                            <a @click="removeCourse(course.id)">
+                            <a style="cursor: pointer;" @click="removeCourse(course.id)">
                                 <strong style="color: white;">X</strong>
                             </a>
                         </span>
@@ -53,9 +53,9 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from 'vue-property-decorator';
-    import Lecturer from '../../model/Lecturer';
-    import Department from '../../model/Department';
-    import Course from '../../model/Course';
+    import Lecturer from '../../../model/Lecturer';
+    import Department from '../../../model/Department';
+    import Course from '../../../model/Course';
 
     @Component
     export default class AddCourse extends Vue {
@@ -65,11 +65,11 @@
             return this.lecturer.courses.findIndex(value => value.id === course.id) !== -1
         }
 
-        get departments(): Department[] {
+        public get departments(): Department[] {
             return this.$store.getters['GET_DEPARTMENT_ARRAY'];
         }
 
-        get lecturer(): Lecturer {
+        public get lecturer(): Lecturer {
             return this.$store.getters['ACTIVE_LECTURER'];
         }
 

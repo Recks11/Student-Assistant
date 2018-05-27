@@ -14,11 +14,10 @@
             </div>
 
             <div class="container-fluid">
-                <div class="alert" role="alert" v-if="lecturer.courses.length > 0" v-for="course in lecturer.courses"
-                     :class="{'alert-danger':course.students.size()===0, 'alert-success':course.students.size() > 0}">
+                <div class="alert alert-success" role="alert" v-if="lecturer.courses.length > 0" v-for="course in lecturer.courses">
                     <router-link :to="'/lecturer/courses/view/'+course.id"> <h4 class="alert-heading" >{{course.code}}  {{course.title}}</h4> </router-link>
-                    <p> {{'There are '+course.students.length+' students registered for this course'}} </p>
-                    <hr>
+                    <!--<p> {{// 'There are '+course.students.length+' students registered for this course'}} </p>-->
+                    <hr >
                     <p class="mb-0"> {{'This is an '+course.semester+' semester course'}} </p>
                 </div>
             </div>
@@ -28,7 +27,7 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import Lecturer from '../model/Lecturer';
+    import Lecturer from '../../model/Lecturer';
 
     @Component
     export default class LecturerHome extends Vue {

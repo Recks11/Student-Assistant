@@ -104,18 +104,15 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import Student from '../model/Student';
-    import Course from '../model/Course';
+    import Student from '../../model/Student';
+    import Course from '../../model/Course';
 
     @Component
     export default class StudentHome extends Vue {
         public error: string = '';
 
         public goToCourse(id: string): void {
-            this.$store.dispatch('course/GET_COURSE', id).then(
-                () => {
-                    this.$router.push({path: '/course/view/' + id});
-                });
+            this.$router.push({path: '/course/view/' + id});
         }
 
         public get currentStudent(): Student {

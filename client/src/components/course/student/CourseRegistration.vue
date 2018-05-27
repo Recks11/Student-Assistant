@@ -66,10 +66,10 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import Student from '../../model/Student';
-    import ProgramModal from '../modal/ProgramModal.vue'
-    import Course from '../../model/Course';
-    import CourseHeader from './CourseHeader.vue';
+    import Student from '../../../model/Student';
+    import ProgramModal from '../../modal/ProgramModal.vue'
+    import Course from '../../../model/Course';
+    import CourseHeader from '../CourseHeader.vue';
 
     @Component({
         components: {
