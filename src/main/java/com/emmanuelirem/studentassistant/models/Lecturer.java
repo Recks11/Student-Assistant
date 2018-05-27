@@ -35,7 +35,7 @@ public class Lecturer {
     @DBRef
     private List<Department> departments = new ArrayList<>();
 
-    @DBRef
+    @DBRef(lazy = true)
     private List<Course> courses = new ArrayList<>();
 
     @DBRef

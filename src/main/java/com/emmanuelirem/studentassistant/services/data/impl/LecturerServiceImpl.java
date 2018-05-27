@@ -91,10 +91,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public Mono<Lecturer> addCourseToLecturer(String lecturerId, Course course) {
-        //ONLY JESUS KNOWS WHY THIS CODE BREAKS THE LECTURER END POINT
-        //I AM VERY CONFUSED AND SAD
-        //IT WORKS BUT THE `/lecturer` END POINT JUST BREAKS. COMPLETELY
-        //FIXED!!: Saving courses with a list instead of a single object fixed the problem weird
+        //FIXED!!: The problem was lecturer coursesList and courses LecturerList were being eagerly fetched
 
         return this.getLecturerById(lecturerId)
                 .flatMap(lecturer -> {
