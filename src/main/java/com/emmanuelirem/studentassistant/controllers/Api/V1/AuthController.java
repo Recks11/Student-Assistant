@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
@@ -54,10 +55,9 @@ public class AuthController {
                 });
     }
 
-//    @GetMapping("/logout")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Mono<Void> logout(HttpSession) {
-//
-//    }
+    @GetMapping("/logout")
+    public Mono<Void> logout(WebSession session) {
+        return session.invalidate();
+    }
 
 }

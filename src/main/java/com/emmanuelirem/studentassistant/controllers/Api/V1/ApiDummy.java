@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class ApiDummy {
 
-    @GetMapping()
+    @GetMapping
     public String api() {
+        return "index";
+    }
+
+    @GetMapping("error")
+    public String error() {
         return "index";
     }
 }

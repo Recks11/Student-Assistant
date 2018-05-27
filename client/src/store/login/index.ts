@@ -57,14 +57,19 @@ const actions: ActionTree<LoginState, RootState> = {
                                     resolve(returnedLecturer);
                                     context.commit('main/LOADING', false);
                                 })
-                                .catch(() => reject('User not Set'));
+                                .catch(() => {
+                                    reject('User not Set');
+                                    context.commit('main/LOADING', false);
+                                });
                         })
                         .catch(reason => {
-                            context.commit('LOG_OUT')
+                            context.commit('LOG_OUT');
+                            context.commit('main/LOADING', false);
                             reject(reason);
                         });
                 }).catch(() => {
                     context.commit('LOG_OUT');
+                    context.commit('main/LOADING', false);
                     reject('Invalid credentials');
                 });
             });
@@ -82,15 +87,20 @@ const actions: ActionTree<LoginState, RootState> = {
                                     resolve(data);
                                     context.commit('main/LOADING', false);
                                 })
-                                .catch(() => reject('User not set'));
+                                .catch(() => {
+                                    reject('User not set');
+                                    context.commit('main/LOADING', false);
+                                });
                         })
                         .catch(reason => {
                             context.commit('LOG_OUT');
                             reject('Invalid Credentials :(');
+                            context.commit('main/LOADING', false);
                         });
                 }).catch(() => {
                     context.commit('LOG_OUT');
                     reject('Invalid credentials');
+                    context.commit('main/LOADING', false);
                 });
             });
         }
@@ -107,7 +117,7 @@ const actions: ActionTree<LoginState, RootState> = {
                 .then(() => context.dispatch('department/RESET_DEPARTMENT'))
                 .then(() => context.dispatch('student/RESET_STUDENT'))
                 .then(() => context.commit('LOG_OUT'))
-                .then(() => resolve("Logout Successful"))
+                .then(() => resolve("Logout Successful"));
         });
     },
 };

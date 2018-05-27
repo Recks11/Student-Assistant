@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-//@ControllerAdvice
+@ControllerAdvice
 public class ErrorController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -27,11 +27,4 @@ public class ErrorController {
 
         return Mono.just(error);
     }
-
-
-    public Mono<ResponseStatusException> notFound() {
-
-        return Mono.just(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
-    }
-
 }

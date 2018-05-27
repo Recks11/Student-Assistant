@@ -3,10 +3,12 @@ package com.emmanuelirem.studentassistant.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.EnableWebFlux;
+import org.springframework.web.reactive.config.ViewResolverRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.reactive.result.view.ViewResolver;
+import org.thymeleaf.spring5.view.reactive.ThymeleafReactiveViewResolver;
 
 @Configuration
-@EnableWebFlux
 public class WebConfig implements WebFluxConfigurer {
 
 
@@ -24,7 +26,4 @@ public class WebConfig implements WebFluxConfigurer {
 
         // Add more mappings...
     }
-
-
-
 }

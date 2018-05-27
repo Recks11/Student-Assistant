@@ -25,7 +25,7 @@ public class SecurityConfig {
 
         return http
                 .authorizeExchange()
-                .pathMatchers("/auth/**",  "/api/**")
+                .pathMatchers("/auth/**",  "/api/**", "/**", "/login")
                 .permitAll()
                 .pathMatchers( "/logout", "/user")
                 .authenticated()
