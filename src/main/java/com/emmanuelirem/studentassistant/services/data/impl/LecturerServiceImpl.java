@@ -18,24 +18,22 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Service
-@Transactional
 public class LecturerServiceImpl implements LecturerService {
 
     private final EncoderService encoderService;
     private final RegexService regexService;
     private final LecturerRepository lecturerRepository;
-    private final CourseRepository courseRepository;
+    private final CourseService courseService;
     private final UsersService usersService;
 
 
     @Autowired
-    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseRepository courseRepository,
+    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseService courseService,
                                UsersService usersService, EncoderService encoderService,
                                RegexService regexService) {
         this.lecturerRepository = lecturerRepository;
-        this.courseRepository = courseRepository;
+        this.courseService = courseService;
         this.usersService = usersService;
         this.encoderService = encoderService;
         this.regexService = regexService;
@@ -98,31 +96,31 @@ public class LecturerServiceImpl implements LecturerService {
         //IT WORKS BUT THE `/lecturer` END POINT JUST BREAKS. COMPLETELY
         //FIXED!!: Saving courses with a list instead of a single object fixed the problem weird
 
-        List<Course> courses = new ArrayList<>();
-        return lecturerRepository.findById(lecturerId).log()
-                .map(lecturer -> {
+        return this.getLecturerById(lecturerId)
+                .flatMap(lecturer -> {
                     lecturer.addCourse(course);
-                    courses.add(course);
-                    return lecturer;
+                    return this.update(lecturer);
                 })
-                .flatMap(lecturerRepository::save)
-                .thenMany(courseRepository.saveAll(courses))
-                .then(lecturerRepository.findById(lecturerId));
+                .then(courseService.saveOrUpdate(course))
+                .then(getLecturerById(lecturerId));
     }
 
     @Override
     public Mono<Lecturer> removeCourseFromLecturer(String lecturerId, String courseId) {
-        return lecturerRepository.findById(lecturerId)
-                .flatMap(lecturer -> courseRepository.findById(courseId)
-                        .map(course -> {
-                            lecturer.getCourses().remove(course);
-                            return lecturer;
+
+        return this.getLecturerById(lecturerId)
+                .flatMap(lecturer -> courseService.findCourseById(courseId)
+                        .flatMap(savedCourse -> {
+                            lecturer.removeCourse(savedCourse);
+                            savedCourse.removeLecturer(lecturer);
+                            return courseService.saveOrUpdate(savedCourse)
+                                    .flatMap(course -> this.update(lecturer));
                         }));
     }
 
     @Override
     public Flux<Course> getCoursesWithLecturer(Lecturer lecturer) {
-        return courseRepository.findCoursesByLecturersContains(lecturer);
+        return courseService.findCoursesWithLecturer(lecturer);
     }
 
     @Override

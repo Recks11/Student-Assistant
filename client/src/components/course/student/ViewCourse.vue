@@ -1,6 +1,6 @@
 <template>
     <div class="ViewCourse">
-        <app-course-header :course="course"></app-course-header>
+        <app-course-header :course="course" :userRole="userRole"></app-course-header>
         <table class="table">
             <thead>
             <tr>
@@ -26,8 +26,8 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import CourseHeader from './CourseHeader.vue';
-    import Course from '../../model/Course';
+    import CourseHeader from '../CourseHeader.vue';
+    import Course from '../../../model/Course';
 
     @Component({
         components: {
@@ -37,6 +37,10 @@
     export default class ViewCourse extends Vue {
         public get course(): Course {
             return this.$store.getters['GET_COURSE'];
+        }
+
+        public get userRole(): string {
+            return this.$store.getters['login/USER_ROLE']
         }
     }
 </script>

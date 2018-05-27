@@ -4,7 +4,7 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import Student from '../model/Student';
+    import Student from '../../model/Student';
 
     @Component
     export default class Course extends Vue {

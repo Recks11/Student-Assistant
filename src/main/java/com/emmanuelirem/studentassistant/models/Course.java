@@ -25,7 +25,7 @@ public class Course {
     private boolean compulsory;
     private String password;
     private SemesterEnum semester;
-    @DBRef
+    @DBRef(lazy = true)
     @JsonIgnore
     private List<Lecturer> lecturers = new ArrayList<>();
 
