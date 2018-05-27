@@ -1,6 +1,6 @@
 # Student Assistant Project
 Student Assistant project (Thymeleaf practice)
-Switch to the reactive branch for the WebFlux version
+<p>Switch to the reactive branch for the WebFlux version</p>
 <h3>Technologies used</h3>
 <ul>
   <li>Spring Boot 2.0</li>
