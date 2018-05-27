@@ -11,7 +11,7 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.create();
 
 router.beforeEach((to, from, next) => {
-    if (store.getters['login/LOGGED_IN'] === false && to.path!== '/login') {
+    if (store.getters['login/LOGGED_IN'] === false && to.path!== '/login' && to.path!== '/register') {
         next('/login');
     } else {
         next();
