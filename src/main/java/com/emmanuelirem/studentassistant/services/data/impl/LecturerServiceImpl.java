@@ -116,8 +116,10 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public Flux<Course> getCoursesWithLecturer(Lecturer lecturer) {
-        return courseService.findCoursesWithLecturer(lecturer);
+    public Flux<Lecturer> getLecturersForCourses(Course course) {
+        List<String> idList = new ArrayList<>();
+        course.getLecturers().forEach(lecturer -> idList.add(lecturer.getId()));
+        return lecturerRepository.findAllById(idList);
     }
 
     @Override

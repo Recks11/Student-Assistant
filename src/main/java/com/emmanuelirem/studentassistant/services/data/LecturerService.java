@@ -23,7 +23,7 @@ public interface LecturerService {
 
     Mono<Lecturer> removeCourseFromLecturer(String lecturerId, String courseId);
 
-    Flux<Course> getCoursesWithLecturer(Lecturer lecturer);
+    Flux<Lecturer> getLecturersForCourses(Course course);
 
     Mono<Lecturer>  getLecturerByIdentifier(String name);
 

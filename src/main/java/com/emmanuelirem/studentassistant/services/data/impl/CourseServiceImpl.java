@@ -43,11 +43,6 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Mono<Course> findCourseContainingLecturer(Lecturer lecturer) {
-        return courseRepository.findCourseByLecturersContains(lecturer);
-    }
-
-    @Override
     public Flux<Course> findCoursesByIds(List<String> idList) {
         return courseRepository.findAllById(idList);
     }

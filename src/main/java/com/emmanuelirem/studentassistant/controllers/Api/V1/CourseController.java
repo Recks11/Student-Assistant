@@ -51,7 +51,7 @@ public class CourseController {
     @ResponseStatus(HttpStatus.OK)
     public Flux<Lecturer> lecturersForLecturerCourse(@PathVariable String id) {
         return courseService.findCourseById(id)
-                .flatMapIterable(Course::getLecturers);
+                .flatMapMany(lecturerService::getLecturersForCourses);
     }
 
     @PostMapping
