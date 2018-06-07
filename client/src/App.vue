@@ -37,7 +37,7 @@
 
         public created(): void {
             let link: HTMLLinkElement = document.createElement('link');
-                link.rel = 'stylesheet';
+                link.rel = 'preload';
                 link.href = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css';
                 link.integrity = 'sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4';
                 link.crossOrigin = 'anonymous';
