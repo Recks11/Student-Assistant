@@ -4,7 +4,7 @@ import store from './store';
 
 const LecturerHome = () => import('./views/lecturer/LecturerHome.vue');
 const Register = () => import('@/views/Register.vue');
-const Login = () => import('@/views/Login.vue');
+import Login from '@/views/Login.vue';
 const StudentHome = () => import('@/views/student/StudentHome.vue');
 const Course = () => import('@/views/student/StudentCourse.vue');
 const CourseRegistration = () => import('@/components/course/student/CourseRegistration.vue');
@@ -40,7 +40,7 @@ export const router: Router = new Router({
             children: [
                 {
                     path: 'register',
-                    component: CourseRegistration
+                    component: CourseRegistration,
                 },
                 {
                     path: 'view',
@@ -51,7 +51,6 @@ export const router: Router = new Router({
                     path: 'view/:id',
                     component: StudentViewCourse,
                     beforeEnter: (to, from, next) => {
-                        console.log("before enter");
                         store.commit('main/LOADING', true);
                         store.dispatch('course/GET_COURSE', to.params.id)
                             .then(() => store.dispatch('course/GET_COURSE_LECTURERS', to.params.id)
@@ -69,7 +68,7 @@ export const router: Router = new Router({
         },
         {
             path: '/lecturer',
-            component: LecturerHome
+            component: LecturerHome,
         },
         {
             path: '/lecturer/courses',
@@ -79,7 +78,8 @@ export const router: Router = new Router({
                     path: 'add',
                     component: LecturerAddCourse,
                     beforeEnter: (to, from, next) => {
-                        store.dispatch('department/GET_COURSES_FOR_DEPARTMENT', store.getters['ACTIVE_LECTURER'].departments[0])
+                        store.dispatch('department/GET_COURSES_FOR_DEPARTMENT',
+                        store.getters['ACTIVE_LECTURER'].departments[0])
                             .then(() => next())
                             .catch(() => next());
                     },
@@ -97,24 +97,24 @@ export const router: Router = new Router({
                             .then(() => store.dispatch('course/GET_COURSE_STUDENTS', to.params.id)
                                 .then(() => {
                                     store.commit('main/LOADING', false);
-                                    next()
+                                    next();
                                 })
                                 .catch(() => {
                                     store.commit('main/LOADING', false);
-                                    next(from)
+                                    next(from);
                                 }))
                             .catch(() => {
                                 store.commit('main/LOADING', false);
-                                next(from)
-                            })
-                    }
+                                next(from);
+                            });
+                    },
                 },
-            ]
+            ],
         },
         {
             path: '*',
             redirect: '/login',
-        }
+        },
     ],
     mode: 'history',
     linkActiveClass: 'active',

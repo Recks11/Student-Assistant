@@ -29,8 +29,22 @@
         }
     })
     export default class App extends Vue {
+        public bootstrapAdded: boolean = false;
+
         public get isLoading(): boolean {
             return this.$store.getters['LOADING'];
+        }
+
+        public created(): void {
+            let link: HTMLLinkElement = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css';
+                link.integrity = 'sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4';
+                link.crossOrigin = 'anonymous';
+            if (this.bootstrapAdded === false) {
+                document.head.appendChild(link);
+                this.bootstrapAdded = true;
+            }
         }
     }
 </script>

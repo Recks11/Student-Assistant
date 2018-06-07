@@ -49,8 +49,8 @@
             }),
         },
     })
-
     export default class Login extends Vue {
+        public bootstrapAdded: boolean = false;
         public message: string = '';
         public error: boolean = false;
         public user = {
