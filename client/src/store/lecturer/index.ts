@@ -12,23 +12,23 @@ const state: LecturerState = {
 };
 
 const getters: GetterTree<LecturerState, RootState> = {
-    GET_LECTURER: (state) => {
-        return state.lecturer;
+    GET_LECTURER: (lecturerState) => {
+        return lecturerState.lecturer;
     },
 };
 
 const mutations: MutationTree<LecturerState> = {
-    SET_LECTURER: (state, lecturer: Lecturer) => {
-        state.lecturer = lecturer;
+    SET_LECTURER: (lecturerState, lecturer: Lecturer) => {
+        lecturerState.lecturer = lecturer;
     },
-    RESET_LECTURER_STATE: (state) => {
-        state.lecturer = new Lecturer();
+    RESET_LECTURER_STATE: (lecturerState) => {
+        lecturerState.lecturer = new Lecturer();
     },
-    SET_LECTURER_COURSES: (state, payload) => {
-        state.lecturer.courses = payload;
+    SET_LECTURER_COURSES: (lecturerState, payload) => {
+        lecturerState.lecturer.courses = payload;
     },
-    REMOVE_LECTURER_COURSE: (state, payload) => {
-
+    REMOVE_LECTURER_COURSE: (lecturerState, payload) => {
+        // @TODO implement functionality
     },
 };
 
@@ -38,7 +38,7 @@ const actions: ActionTree<LecturerState, RootState> = {
             context.commit('SET_LECTURER', lecturer);
             context.dispatch('action/SET_LECTURER', lecturer)
                 .then(() => resolve());
-        })
+        });
     },
     'lecturer/RESET_LECTURER': (context) => {
         context.commit('RESET_LECTURER_STATE');
@@ -48,7 +48,7 @@ const actions: ActionTree<LecturerState, RootState> = {
             axios.get('/api/v1/lecturer')
                 .then((response: AxiosResponse) => {
                     if ( response.data !== null ) {
-                        let returnedLecturer: Lecturer = response.data;
+                        const returnedLecturer: Lecturer = response.data;
                         context.dispatch('lecturer/SET_LECTURER', returnedLecturer);
                         resolve(returnedLecturer);
                     }
@@ -59,30 +59,30 @@ const actions: ActionTree<LecturerState, RootState> = {
     },
     'lecturer/ADD_PROGRAM': (context, payload: Program) => {
         return new Promise((resolve, reject) => {
-            let lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
+            const lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
 
             axios({
                 method: 'post',
                 url: '/api/v1/lecturer/' + lecturerId + '/program',
                 data: payload,
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
             }).then((response) => {
-                let newLecturer: Lecturer = response.data;
+                const newLecturer: Lecturer = response.data;
                 context.dispatch('lecturer/SET_LECTURER', newLecturer);
                 resolve(newLecturer);
-            }).catch(reason => {
+            }).catch((reason) => {
                 reject(reason);
             });
         });
     },
     'lecturer/SET_DEPARTMENT': (context, payload: Department) => {
         return new Promise((resolve, reject) => {
-            let lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
+            const lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
             axios.post('/api/v1/lecturer/' + lecturerId + '/department', payload)
                 .then((response) => {
-                    context.state.lecturer = response.data
+                    context.state.lecturer = response.data;
                 })
                 .then(() => {
                     context.commit('department/SET_DEPARTMENT',
@@ -95,21 +95,21 @@ const actions: ActionTree<LecturerState, RootState> = {
     },
     'lecturer/toggleInOffice': (context) => {
         return new Promise((resolve, reject) => {
-            let lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
+            const lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
             axios.get('/api/v1/lecturer/' + lecturerId + '/status/toggleStatus')
                 .then(() => {
                     context.dispatch('lecturer/GET_STORED_LECTURER')
                         .then((response) => resolve(response))
                         .catch(() => reject('could not return your information'));
                 }).catch(() => reject('Could not update status'));
-        })
+        });
     },
     'lecturer/ADD_COURSE': (context, payload: Course) => {
         return new Promise((resolve, reject) => {
-            let lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
+            const lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
             axios.post('/api/v1/lecturer/' + lecturerId + '/course', payload)
                 .then((response) => {
-                    let updatedLecturer: Lecturer = response.data;
+                    const updatedLecturer: Lecturer = response.data;
                     context.commit('SET_LECTURER_COURSES', updatedLecturer.courses);
                     resolve(updatedLecturer.courses);
                 }).catch((error) => reject(error));
@@ -117,15 +117,15 @@ const actions: ActionTree<LecturerState, RootState> = {
     },
     'lecturer/REMOVE_COURSE': (context, payload: string) => {
         return new Promise((resolve, reject) => {
-            let lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
+            const lecturerId = context.getters[ 'ACTIVE_LECTURER' ].id;
             axios.delete('/api/v1/lecturer/' + lecturerId + '/course/' + payload)
                 .then((response) => {
-                    let updatedLecturer: Lecturer = response.data;
+                    const updatedLecturer: Lecturer = response.data;
                     context.commit('SET_LECTURER_COURSES', updatedLecturer.courses);
                     resolve(updatedLecturer.courses);
                 }).catch((error) => reject(error));
         });
-    }
+    },
 };
 
 export const lecturerStore: Module<LecturerState, RootState> = {

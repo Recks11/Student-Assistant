@@ -121,7 +121,7 @@
 
         public get courseSnippet(): Course[] {
             if ( this.currentStudent.courses.length > 4 ) {
-                let courseArray = this.currentStudent.courses;
+                const courseArray = this.currentStudent.courses;
                 return courseArray.slice(((courseArray.length - 1) - 4), courseArray.length - 1).reverse();
             }
             return this.currentStudent.courses;

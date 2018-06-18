@@ -75,7 +75,7 @@
 
         public logout(): void {
             this.$store.dispatch('login/LOGOUT_ACTION');
-            this.$router.push('/login')
+            this.$router.push('/login');
         }
 
         public hideDropdowns(): void {
@@ -87,7 +87,7 @@
         public created(): void {
             this.$router.afterEach((to, from) => {
                 this.hideDropdowns();
-            })
+            });
         }
     }
 </script>

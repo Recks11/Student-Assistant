@@ -3,6 +3,7 @@ import App from './App.vue';
 import {router} from './router';
 import store from './store';
 import axios from 'axios';
+import './registerServiceWorker';
 
 Vue.config.productionTip = false;
 axios.defaults.timeout = 5000;
@@ -11,7 +12,7 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 axios.create();
 
 router.beforeEach((to, from, next) => {
-    if (store.getters['login/LOGGED_IN'] === false && to.path!== '/login' && to.path!== '/register') {
+    if (store.getters['login/LOGGED_IN'] === false && to.path !== '/login' && to.path !== '/register') {
         next('/login');
     } else {
         next();

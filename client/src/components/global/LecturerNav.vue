@@ -115,14 +115,14 @@
 
         public logout(): void {
             this.$store.dispatch('login/LOGOUT_ACTION');
-            this.$router.push('/login')
+            this.$router.push('/login');
         }
 
         public hideDropdowns(): void {
             this.showCourse = false;
             this.showLogout = false;
             this.showMobile = false;
-            this.showStatus = false
+            this.showStatus = false;
         }
 
         public toggleOffice(): void {
@@ -134,7 +134,7 @@
         public created(): void {
             this.$router.afterEach((to, from) => {
                 this.hideDropdowns();
-            })
+            });
         }
     }
 </script>

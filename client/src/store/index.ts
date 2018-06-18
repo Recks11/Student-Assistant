@@ -54,7 +54,7 @@ const store: StoreOptions<RootState> = {
             context.commit('main/SET_LECTURER', lecturer);
         },
         'action/RESET_STATE': (context) => {
-            context.commit('main/RESET_STATE')
+            context.commit('main/RESET_STATE');
         },
     },
     modules: {

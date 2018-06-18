@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from './store';
+import store from '@/store';
 
-const LecturerHome = () => import('./views/lecturer/LecturerHome.vue');
+const LecturerHome = () => import('@/views/lecturer/LecturerHome.vue');
 const Register = () => import('@/views/Register.vue');
 import Login from '@/views/Login.vue';
 const StudentHome = () => import('@/views/student/StudentHome.vue');
@@ -61,7 +61,7 @@ export const router: Router = new Router({
                             .catch(() => {
                                 store.commit('main/LOADING', false);
                                 next(from);
-                            })
+                            });
                     },
                 },
             ],

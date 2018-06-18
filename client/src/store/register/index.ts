@@ -11,30 +11,30 @@ const state: RegisterState = {
 };
 
 const getters: GetterTree<RegisterState, RootState> = {
-    REGISTERED: (state) => {
-        return state.successful;
+    REGISTERED: (registerState) => {
+        return registerState.successful;
     },
-    REGISTER_ERROR: (state) => {
-        return state.error;
+    REGISTER_ERROR: (registerState) => {
+        return registerState.error;
     },
 };
 
 const mutations: MutationTree<RegisterState> = {
-    REGISTRATION_SUCCESS: (state) => {
-        state.successful = true;
+    REGISTRATION_SUCCESS: (registerState) => {
+        registerState.successful = true;
     },
-    REGISTRATION_FAILURE: (state) => {
-        state.successful = false;
-        state.error = 'Unable to register User at this time'
+    REGISTRATION_FAILURE: (registerState) => {
+        registerState.successful = false;
+        registerState.error = 'Unable to register User at this time';
     },
-    REGISTER_RESET_STATE: (state) => {
-        state.successful = false;
-        state.error = ''
+    REGISTER_RESET_STATE: (registerState) => {
+        registerState.successful = false;
+        registerState.error = '';
     },
 };
 
 const actions: ActionTree<RegisterState, RootState> = {
-    REGISTER_STUDENT: (context, student: Student) => {
+    'REGISTER_STUDENT': (context, student: Student) => {
         return new Promise((resolve, reject) => {
             axios.post('/auth/register/student', student.json)
                 .then(() => {
@@ -46,9 +46,9 @@ const actions: ActionTree<RegisterState, RootState> = {
                     context.state.error = 'Cannot Register User at this time';
                     reject(reason);
                 });
-        })
+        });
     },
-    REGISTER_LECTURER: (context, lecturer: Lecturer) => {
+    'REGISTER_LECTURER': (context, lecturer: Lecturer) => {
         return new Promise((resolve, reject) => {
             axios.post('/auth/register/lecturer', lecturer.json)
                 .then(() => {

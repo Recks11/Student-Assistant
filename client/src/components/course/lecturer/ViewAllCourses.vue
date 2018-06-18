@@ -43,10 +43,10 @@
     })
     export default class ViewCourse extends Vue {
         public get registeredCourses(): Course[] {
-            return this.$store.getters['ACTIVE_LECTURER'].courses
+            return this.$store.getters['ACTIVE_LECTURER'].courses;
         }
         public navigateToCourse(id: string): void {
-            this.$router.push({path: 'view/'+ id});
+            this.$router.push({path: 'view/' + id});
         }
     }
 </script>

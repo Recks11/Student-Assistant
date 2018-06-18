@@ -11,28 +11,28 @@ const state: DepartmentState = {
 };
 
 const getters: GetterTree<DepartmentState, RootState> = {
-    GET_DEPARTMENT: (state) => {
-        return state.department;
+    GET_DEPARTMENT: (departmentState) => {
+        return departmentState.department;
     },
-    GET_DEPARTMENT_ARRAY: (state) => {
-        return state.departmentArray;
+    GET_DEPARTMENT_ARRAY: (departmentState) => {
+        return departmentState.departmentArray;
     },
-    GET_DEPARTMENT_MAP: (state) => {
-        return state.departmentMap;
+    GET_DEPARTMENT_MAP: (departmentState) => {
+        return departmentState.departmentMap;
     },
 
 };
 
 const mutations: MutationTree<DepartmentState> = {
-    'department/SET_DEPARTMENT': (state, payload: Department) => {
-        return state.department = payload;
+    'department/SET_DEPARTMENT': (departmentState, payload: Department) => {
+        return departmentState.department = payload;
     },
-    REPLACE_DEPARTMENT_ARRAY: (state, payload: Department[]) => {
-        return state.departmentArray = payload;
+    'REPLACE_DEPARTMENT_ARRAY': (departmentState, payload: Department[]) => {
+        return departmentState.departmentArray = payload;
     },
-    SET_DEPARTMENT_MAP: (state, payload: Department) => {
-        state.departmentMap.set(payload.id, payload);
-        return state.departmentMap;
+    'SET_DEPARTMENT_MAP': (departmentState, payload: Department) => {
+        departmentState.departmentMap.set(payload.id, payload);
+        return departmentState.departmentMap;
     },
 };
 
@@ -61,27 +61,26 @@ const actions: ActionTree<DepartmentState, RootState> = {
                     context.state.department = dept;
                     context.commit('SET_DEPARTMENT_MAP', context.state.department);
                     const idx = context.state.departmentArray.findIndex((value) => value.id === id);
-                    if(idx !== -1){
+                    if (idx !== -1) {
                         context.state.departmentArray[idx].Programs = response.data;
-                    }
-                    else {
+                    } else {
                         context.state.departmentArray.push(dept);
                     }
-                    resolve(response.data)
+                    resolve(response.data);
                 })
-                .catch((reason) => reject(reason))
-        })
+                .catch((reason) => reject(reason));
+        });
     },
     'department/RESET_DEPARTMENT': (context) => {
         context.state.department = new Department();
         context.state.departmentMap = new Map();
         context.state.departmentArray = [];
-    }
+    },
 };
 
 export const departmentStore: Module<DepartmentState, RootState> = {
-    state: state,
-    getters: getters,
-    mutations: mutations,
-    actions: actions
+    state,
+    getters,
+    mutations,
+    actions,
 };

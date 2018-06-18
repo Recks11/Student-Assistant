@@ -12,33 +12,33 @@ const state: CourseState = {
 };
 
 const getters: GetterTree<CourseState, RootState> = {
-    GET_COURSES_MAP: (state) => {
-        return state.courses;
+    GET_COURSES_MAP: (courseState) => {
+        return courseState.courses;
     },
-    GET_COURSE: (state) => {
-        return state.course;
+    GET_COURSE: (courseState) => {
+        return courseState.course;
     },
 };
 
 const mutations: MutationTree<CourseState> = {
-    RESET_COURSE: (state) => {
-        state.courses = new Map<string, Course>();
-        state.course = new Course();
+    RESET_COURSE: (courseState) => {
+        courseState.courses = new Map<string, Course>();
+        courseState.course = new Course();
     },
-    ADD_COURSE: (state, payload: Course) => {
-        state.courses.set(payload.id, payload);
+    ADD_COURSE: (courseState, payload: Course) => {
+        courseState.courses.set(payload.id, payload);
     },
-    REMOVE_COURSE: (state, payload: string) => {
-        state.courses.delete(payload);
+    REMOVE_COURSE: (courseState, payload: string) => {
+        courseState.courses.delete(payload);
     },
-    SET_COURSE: (state, payload: Course) => {
-        state.course = payload;
+    SET_COURSE: (courseState, payload: Course) => {
+        courseState.course = payload;
     },
-    SET_COURSE_LECTURERS: (state, payload: Lecturer[]) => {
-        state.course.lecturers = payload;
+    SET_COURSE_LECTURERS: (courseState, payload: Lecturer[]) => {
+        courseState.course.lecturers = payload;
     },
-    SET_COURSE_STUDENTS: (state, payload: Student[]) => {
-        state.course.students = payload;
+    SET_COURSE_STUDENTS: (courseState, payload: Student[]) => {
+        courseState.course.students = payload;
     },
 };
 
@@ -60,9 +60,9 @@ const actions: ActionTree<CourseState, RootState> = {
                 .then((response) => {
                     state.course = response.data;
                     context.commit('SET_COURSE', response.data);
-                    resolve()
+                    resolve();
                 })
-                .catch(reason => {
+                .catch((reason) => {
                     reject(reason);
                 });
         });
@@ -74,7 +74,7 @@ const actions: ActionTree<CourseState, RootState> = {
                     context.commit('SET_COURSE_LECTURERS', response.data);
                     resolve();
                 })
-                .catch(reason => {
+                .catch((reason) => {
                     reject(reason);
                 });
         });
@@ -86,7 +86,7 @@ const actions: ActionTree<CourseState, RootState> = {
                     context.commit('SET_COURSE_STUDENTS', response.data);
                     resolve();
                 })
-                .catch(reason => {
+                .catch((reason) => {
                     reject(reason);
                 });
         });

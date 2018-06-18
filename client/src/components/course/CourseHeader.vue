@@ -26,8 +26,11 @@
 
     @Component
     export default class CourseHeader extends Vue {
-        @Prop({default: 'COURSE HEADER'}) header!: string;
-        @Prop({default: () => new Course()}) course!: Object;
+        @Prop({default: 'COURSE HEADER'}) 
+        public header!: string;
+
+        @Prop({default: () => new Course()}) 
+        public course!: Object;
 
         public get userRole(): string {
             return this.$store.getters[ 'login/USER_ROLE' ];

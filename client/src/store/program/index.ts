@@ -11,31 +11,31 @@ const state: ProgramState = {
 };
 
 const getters: GetterTree<ProgramState, RootState> = {
-    GET_PROGRAM: (state) => {
-        return state.programsMap;
+    GET_PROGRAM: (programState) => {
+        return programState.programsMap;
     },
-    GET_ALL_PROGRAMS: (state) => {
-        return state.programsMap;
+    GET_ALL_PROGRAMS: (programState) => {
+        return programState.programsMap;
     },
-    GET_PROGRAM_ARRAY: (state) => {
-        return state.programArray;
+    GET_PROGRAM_ARRAY: (programState) => {
+        return programState.programArray;
     },
 };
 
 const mutations: MutationTree<ProgramState> = {
-    PICK_PROGRAM: (state, payload: Program) => {
-        state.program = payload;
+    PICK_PROGRAM: (programState, payload: Program) => {
+        programState.program = payload;
     },
-    SET_PROGRAMS: (state, payload: Map<string, Program>) => {
-        state.programsMap = payload;
+    SET_PROGRAMS: (programState, payload: Map<string, Program>) => {
+        programState.programsMap = payload;
         payload.forEach((value, key) => {
-            state.programArray.push(value)
+            programState.programArray.push(value);
         });
     },
-    RESET_PROGRAM: (state) => {
-        state.programArray = [];
-        state.programsMap = new Map<string, Program>();
-        state.program = new Program();
+    RESET_PROGRAM: (programState) => {
+        programState.programArray = [];
+        programState.programsMap = new Map<string, Program>();
+        programState.program = new Program();
     },
 };
 
@@ -43,17 +43,17 @@ const actions: ActionTree<ProgramState, RootState> = {
     'program/GET_STORED_PROGRAMS': (context) => {
         return new Promise((resolve, reject) => {
             axios.get('/api/v1/program')
-                .then(response => {
-                    let programArray: Program[] = response.data;
-                    let responseMap = new Map<string, Program>();
+                .then((response) => {
+                    const programArray: Program[] = response.data;
+                    const responseMap = new Map<string, Program>();
                     programArray.forEach(
-                        item => {
+                        (item) => {
                             responseMap.set(item.id, item);
-                        }
+                        },
                     );
                     context.commit('SET_PROGRAMS', responseMap);
                     resolve(responseMap);
-                }).catch(reason => {
+                }).catch((reason) => {
                 reject(reason);
             });
         });

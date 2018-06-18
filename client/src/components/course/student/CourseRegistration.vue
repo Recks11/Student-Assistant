@@ -66,9 +66,9 @@
 
 <script lang="ts">
     import {Component, Vue} from 'vue-property-decorator';
-    import Student from '../../../model/Student';
-    import ProgramModal from '../../modal/ProgramModal.vue'
-    import Course from '../../../model/Course';
+    import Student from '@/model/Student';
+    import ProgramModal from '@/components/modal/ProgramModal.vue';
+    import Course from '@/model/Course';
     import CourseHeader from '../CourseHeader.vue';
 
     @Component({
@@ -81,7 +81,7 @@
         public selectedCourses: Course[] = [];
 
         public get numberOfRegisteredCourses(): number {
-            return this.$store.getters[ 'student/GET_REGISTERED_COURSES' ].length
+            return this.$store.getters[ 'student/GET_REGISTERED_COURSES' ].length;
         }
 
         public get currentStudent(): void {
@@ -89,7 +89,7 @@
         }
 
         public get studentHasChosenProgram(): boolean {
-            let actualStudent: Student = this.$store.getters[ 'student/GET_STUDENT' ];
+            const actualStudent: Student = this.$store.getters[ 'student/GET_STUDENT' ];
             return actualStudent.program.id !== '';
         }
 
@@ -101,12 +101,14 @@
             this.$store.commit('main/LOADING', true);
             this.$store.dispatch('course/REGISTER_STUDENT', courses)
                 .then(() => this.$store.commit('main/LOADING', false))
+                .catch(() => this.$store.commit('main/LOADING', false));
         }
 
         public removeCourse(id: string): void {
             this.$store.commit('main/LOADING', true);
             this.$store.dispatch('student/REMOVE_COURSE', id)
                 .then(() => this.$store.commit('main/LOADING', false))
+                .catch(() => this.$store.commit('main/LOADING', false));
         }
 
         public created(): void {

@@ -14,9 +14,6 @@ export default class Course {
     private _students: Student[] = [];
 
 
-    constructor() { }
-
-
     get id(): string {
         return this._id;
     }

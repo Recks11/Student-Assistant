@@ -18,9 +18,6 @@
     export default class LecturerCourses extends Vue {
         public get currentLecturer(): Lecturer {
             return this.$store.getters[ 'ACTIVE_LECTURER' ];
-        };
-
-        public created(): void {
         }
     }
 </script>

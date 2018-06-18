@@ -11,32 +11,32 @@ const state: LoginState = {
 };
 
 const getters: GetterTree<LoginState, RootState> = {
-    'login/LOGGED_IN': (state) => {
-        return state.loggedIn;
+    'login/LOGGED_IN': (loginState) => {
+        return loginState.loggedIn;
     },
-    'login/USER_ROLE': (state) => {
-        return state.role;
+    'login/USER_ROLE': (loginState) => {
+        return loginState.role;
     },
 };
 
 const mutations: MutationTree<LoginState> = {
-    LOG_IN: (state, response: AxiosResponse) => {
+    LOG_IN: (loginState, response: AxiosResponse) => {
 
-        state.loggedIn = true;
+        loginState.loggedIn = true;
         const authToken = response.config.headers.Authorization;
         const role: string = response.data.roles[ 0 ];
 
-        state.authenticationToken = authToken;
+        loginState.authenticationToken = authToken;
         axios.defaults.headers.common.Authorization = authToken;
-        state.role = role.replace('ROLE_', '').toLowerCase();
-        state.username = response.data.name;
+        loginState.role = role.replace('ROLE_', '').toLowerCase();
+        loginState.username = response.data.name;
     },
-    LOG_OUT: (state) => {
-        state.authenticationToken = '';
+    LOG_OUT: (loginState) => {
+        loginState.authenticationToken = '';
         axios.defaults.headers.common.Authorization = '';
-        state.loggedIn = false;
-        state.username = '';
-        state.role = 'anonymous';
+        loginState.loggedIn = false;
+        loginState.username = '';
+        loginState.role = 'anonymous';
     },
 };
 
@@ -62,7 +62,7 @@ const actions: ActionTree<LoginState, RootState> = {
                                     context.commit('main/LOADING', false);
                                 });
                         })
-                        .catch(reason => {
+                        .catch((reason) => {
                             context.commit('LOG_OUT');
                             context.commit('main/LOADING', false);
                             reject(reason);
@@ -79,6 +79,10 @@ const actions: ActionTree<LoginState, RootState> = {
                     auth: {username: payload.username, password: payload.password},
                 }).then((response) => {
                     context.commit('LOG_IN', response);
+                }).catch(() => {
+                    context.commit('LOG_OUT');
+                    reject('Network Error');
+                    context.commit('main/LOADING', false);
                 }).then(() => {
                     context.dispatch('student/GET_STORED_STUDENT')
                         .then((returnedStudent) => {
@@ -92,16 +96,12 @@ const actions: ActionTree<LoginState, RootState> = {
                                     context.commit('main/LOADING', false);
                                 });
                         })
-                        .catch(reason => {
+                        .catch((reason) => {
                             context.commit('LOG_OUT');
                             reject('Invalid Credentials :(');
                             context.commit('main/LOADING', false);
                         });
-                }).catch(() => {
-                    context.commit('LOG_OUT');
-                    reject('Invalid credentials');
-                    context.commit('main/LOADING', false);
-                });
+                })
             });
         }
     },
@@ -117,7 +117,7 @@ const actions: ActionTree<LoginState, RootState> = {
                 .then(() => context.dispatch('department/RESET_DEPARTMENT'))
                 .then(() => context.dispatch('student/RESET_STUDENT'))
                 .then(() => context.commit('LOG_OUT'))
-                .then(() => resolve("Logout Successful"));
+                .then(() => resolve('Logout Successful'));
         });
     },
 };

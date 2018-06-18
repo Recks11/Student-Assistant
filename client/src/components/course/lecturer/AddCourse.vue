@@ -70,7 +70,7 @@
         public message: string = '';
 
         public lecturerLecturesCourse(course: Course): boolean {
-            return this.lecturer.courses.findIndex(value => value.id === course.id) !== -1
+            return this.lecturer.courses.findIndex(value => value.id === course.id) !== -1;
         }
 
         public get departments(): Department[] {

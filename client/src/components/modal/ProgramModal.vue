@@ -55,7 +55,7 @@
         public show: { modal: boolean, background: boolean, card: boolean } = {
             modal: false,
             background: false,
-            card: true
+            card: true,
         };
         public programs: Program[] = this.$store.getters[ 'GET_PROGRAM_ARRAY' ];
         public allPrograms: Map<String, Program> = this.$store.getters[ 'GET_ALL_PROGRAMS' ];

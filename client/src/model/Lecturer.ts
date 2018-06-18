@@ -14,9 +14,6 @@ export default class Lecturer {
     private _departments: Department[] = [];
     private _courses: Course[] = [];
 
-    constructor() {
-    }
-
     get id(): string {
         return this._id;
     }

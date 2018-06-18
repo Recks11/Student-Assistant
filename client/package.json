@@ -1,5 +1,5 @@
 {
-  "name": "student-assistant",
+  "name": "student-assistant-pwa",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "register-service-worker": "^1.0.0",
     "vue": "^2.5.16",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^6.0.0",
@@ -16,20 +17,11 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-beta.10",
-    "@vue/cli-plugin-typescript": "^3.0.0-beta.10",
-    "@vue/cli-service": "^3.0.0-beta.10",
-    "vue-template-compiler": "^2.5.13"
-  },
-  "babel": {
-    "presets": [
-      "@vue/app"
-    ]
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
+    "@vue/cli-plugin-babel": "^3.0.0-rc.2",
+    "@vue/cli-plugin-pwa": "^3.0.0-rc.2",
+    "@vue/cli-plugin-typescript": "^3.0.0-rc.2",
+    "@vue/cli-service": "^3.0.0-rc.2",
+    "vue-template-compiler": "^2.5.16"
   },
   "browserslist": [
     "> 1%",

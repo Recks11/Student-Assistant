@@ -10,14 +10,14 @@
 </template>
 
 <script lang="ts">
-    import NavBar from '@/components/global/NavBar.vue'
-    import LecturerNav from '@/components/global/LecturerNav.vue'
+    import NavBar from '@/components/global/NavBar.vue';
+    import LecturerNav from '@/components/global/LecturerNav.vue';
     import {Component, Vue} from 'vue-property-decorator';
 
     @Component({
         components: {
             appStudentNav: NavBar,
-            appLecturerNav: LecturerNav
+            appLecturerNav: LecturerNav,
         },
         computed: {
             loggedIn() {
@@ -25,21 +25,33 @@
             },
             role() {
                 return this.$store.getters['login/USER_ROLE'];
-            }
-        }
+            },
+        },
     })
     export default class App extends Vue {
-
+        public bootstrapAdded: boolean = false;
         public get isLoading(): boolean {
             return this.$store.getters['LOADING'];
         }
 
         public created(): void {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css';
+            link.integrity = 'sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4';
+            link.crossOrigin = 'anonymous';
+            if (this.bootstrapAdded === false) {
+                // document.head.appendChild(link);
+                this.bootstrapAdded = true;
+            }
         }
     }
 </script>
 
 <style>
+    .statusbar-overlay {
+        background: #030717;
+    }
     html,body {
         margin-top: 30px;
     }
@@ -77,7 +89,6 @@
         font-weight: bold;
         color: #2c3e50;
     }
-
     #nav a.router-link-exact-active {
         color: #42b983;
     }

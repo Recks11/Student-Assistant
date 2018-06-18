@@ -65,7 +65,7 @@
                     this.message = reason;
                 })
                 .then(() => {
-                    this.$router.push({path: '/'+ this.$store.state.login.role})
+                    this.$router.push({path: '/' + this.$store.state.login.role});
                 });
         }
 

@@ -33,7 +33,7 @@
 
     @Component({
         components: {
-            appCourseHeader: CourseHeader
+            appCourseHeader: CourseHeader,
         },
     })
     export default class ViewCourse extends Vue {
@@ -42,7 +42,7 @@
         }
 
         public get userRole(): string {
-            return this.$store.getters[ 'login/USER_ROLE' ]
+            return this.$store.getters[ 'login/USER_ROLE' ];
         }
     }
 </script>
